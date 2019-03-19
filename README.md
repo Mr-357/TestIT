@@ -21,7 +21,7 @@ Dodatno:
 - Poeni za 1v1
 - Poeni za postovanje pitanja i odgovora
 - Up/Down votes na forumu za diskusiju
-- Flairs and shit kao nagrada za osvajanje poena
+- Flairs kao nagrada za osvajanje poena
 - Ranking
 - Editor za matematicke formule
 - Code editor
@@ -45,7 +45,7 @@ Hosting: https://test-it.azurewebsites.net/
 
 - [x] Predlog projekta predat 02.03.2019
 - [x] Vizija sistema do 10.03.2019. godine
-- [ ] Plan realizacije projekta do 17.03.2019. godine
+- [x] Plan realizacije projekta do 20.03.2019. godine
 - [ ] Specifikacija zahteva do 31.03.2019. godine
 - [ ] Arhitekturni projekat do 21.04.2019. godine
 - [ ] Test plan do 05.05.2019. godine
