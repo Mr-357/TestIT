@@ -50,4 +50,4 @@ Hosting: https://test-it.azurewebsites.net/
 - [ ] Arhitekturni projekat do 21.04.2019. godine
 - [ ] Test plan do 05.05.2019. godine
 - [ ] Test specifikacija do 12.05.2019. godine
-- [ ] Korisnièko uputstvo do 09.06.2019. godine
+- [ ] Korisnicko uputstvo do 09.06.2019. godine
