@@ -46,8 +46,8 @@ Hosting: https://test-it.azurewebsites.net/
 - [x] Predlog projekta predat 02.03.2019
 - [x] Vizija sistema do 10.03.2019. godine
 - [x] Plan realizacije projekta do 20.03.2019. godine
-- [ ] Specifikacija zahteva do 31.03.2019. godine
+- [x] Specifikacija zahteva do 31.03.2019. godine
 - [ ] Arhitekturni projekat do 21.04.2019. godine
 - [ ] Test plan do 05.05.2019. godine
 - [ ] Test specifikacija do 12.05.2019. godine
-- [ ] Korisniƒçko uputstvo do 09.06.2019. godine
+- [ ] KorisniËko uputstvo do 09.06.2019. godine
