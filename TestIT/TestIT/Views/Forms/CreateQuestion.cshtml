@@ -1,14 +1,19 @@
-﻿@model TestIT.Models.Form
+@model TestIT.Models.Form
 
 @{
     ViewData["Title"] = "Create a quiz";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Kreiranje kviza:  </h1>
+<h1>Create a quiz</h1>
 <script src="~/js/site.js" type="module"></script> 
-<link rel="stylesheet" type="text/css" href="~/css/questions.css">
 <hr />
+
+<div>
+    <!-- Show or hide the new question form -->
+    <button onclick="createQuestion(document.getElementsByClassName('new-question-form'));" class="btn btn-primary">+</button>
+    <input type='button' value='Show questions' class="btn btn-primary" onclick='window.location = "@Url.Action("Index", "Forms")";' />
+</div>
 
 <div class="row">
     <div class="col-md-4">
@@ -16,20 +21,6 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <br /> 
-                <div class="quiz-creation">
-                    <label> Ime kviza: </label>
-                    <br />
-                    <textarea asp-for="Data" class="form-control" style="resize: both"></textarea>
-                    <div>
-                        <br />
-                        <input type='button' value='Prikazi postojeca pitanja' class="btn btn-primary" onclick="showQuestions();" />
-                        <input type='button' value='+' onclick="createQuestion(document.getElementsByClassName('new-question-form'));" class="btn btn-primary"/>
-                        
-                        <p id="disclaimer" hidden="hidden">Jos uvek niste dodali pitanja, ili:</p>
-                        <div id="questions" hidden="hidden">
-                        </div>
-                    </div>
-                </div>
                 <div class="new-question-form" hidden="hidden">
                     <label>Question: </label>
                     <br />
@@ -45,16 +36,19 @@
                         <br /> 
                         <input type="radio" onchange="createAnswerImageArea();" value="Image" name="AnswerType"/> Image
                         <br /> 
-                        <input type='button' value='Dodaj pitanje' class="btn btn-primary" onclick="addQuestion();" />
                     </div>
                 </div>
                 <span asp-validation-for="Data" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Napravi" class="btn btn-primary"/>
+                <input  hidden="hidden" type="submit" value="Create" class="btn btn-primary new-question-form"/>
             </div>
         </form>
     </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
