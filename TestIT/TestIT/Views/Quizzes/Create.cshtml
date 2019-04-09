@@ -1,0 +1,73 @@
+﻿@model TestIT.Models.Quiz
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Create a quiz";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <br />
+                <div class="quiz-creation">
+                    <label> Ime kviza: </label>
+                    <br />
+                    <textarea asp-for="Name" class="form-control" style="resize: both"></textarea>
+                    <div class="form-group">
+                        <label asp-for="numberOfQustionsPerTry" class="control-label"></label>
+                        <input asp-for="numberOfQustionsPerTry" class="form-control" />
+                        <span asp-validation-for="numberOfQustionsPerTry" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="time" class="control-label"></label>
+                        <input asp-for="time" class="form-control" />
+                        <span asp-validation-for="time" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <br />
+                        <input type='button' value='Prikazi postojeca pitanja' class="btn btn-primary" onclick="showQuestions();" />
+                        <input type='button' value='+' onclick="createQuestion(document.getElementsByClassName('new-question-form'));" class="btn btn-primary" />
+
+                        <p id="disclaimer" hidden="hidden">Jos uvek niste dodali pitanja, ili:</p>
+                        <div id="questions" hidden="hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="new-question-form" hidden="hidden">
+                    <label>Question: </label>
+                    <br />
+                    <textarea asp-for="Name" class="form-control" style="resize: both"></textarea>
+                    <label>Answer: </label>
+
+                    <div id="answer-options">
+                        <label>Pick answer type: </label>
+                        <br />
+                        <input type="radio" onchange="createAnswerTextArea();" value="Text" name="AnswerType" /> Text
+                        <br />
+                        <input type="radio" onchange="createAnswerSelectionArea();" value="Select" name="AnswerType" /> Select
+                        <br />
+                        <input type="radio" onchange="createAnswerImageArea();" value="Image" name="AnswerType" /> Image
+                        <br />
+                        <input type='button' value='Dodaj pitanje' class="btn btn-primary" onclick="addQuestion();" />
+                    </div>
+                </div>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Napravi" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

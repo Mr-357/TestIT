@@ -7,12 +7,13 @@ using TestIT.Models;
 
 namespace TestIT.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
         public DbSet<TestIT.Models.Form> Form { get; set; }
+        public DbSet<TestIT.Models.Quiz> Quiz { get; set; }
     }
 }

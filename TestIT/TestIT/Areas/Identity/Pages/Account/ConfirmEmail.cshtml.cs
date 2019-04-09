@@ -12,9 +12,9 @@ namespace TestIT.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ConfirmEmailModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<TestIT.Models.ApplicationUser> _userManager;
 
-        public ConfirmEmailModel(UserManager<IdentityUser> userManager)
+        public ConfirmEmailModel(UserManager<TestIT.Models.ApplicationUser> userManager)
         {
             _userManager = userManager;
         }

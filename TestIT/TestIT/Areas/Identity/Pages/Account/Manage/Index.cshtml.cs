@@ -13,13 +13,13 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<TestIT.Models.ApplicationUser> _userManager;
+        private readonly SignInManager<TestIT.Models.ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
         public IndexModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<TestIT.Models.ApplicationUser> userManager,
+            SignInManager<TestIT.Models.ApplicationUser> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
