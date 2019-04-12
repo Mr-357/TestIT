@@ -12,14 +12,31 @@ namespace TestIT.Models
         public int ID { get; set; }
         public String QuestionText { get; set; }
         public float Points { get; set; }
+        public byte[] Picture { get; set; }
         public List<Answer> Answers { get; set; }
     }
 
-    public class Answer
+    public abstract class Answer
     {
         [Key]
         public int ID { get; set; }
         public bool IsCorrect { get; set; }
+    }
 
+    public class RegionAnswer: Answer
+    {
+        public float x1 { get; set; }
+        public float x2 { get; set; }
+        public float y1 { get; set; }
+        public float y2 { get; set; }
+    }
+    public class TextAnswer : Answer
+    {
+        public String text { get; set; }
+    }
+
+    public class PictureAnswer : Answer
+    {
+        public byte[] Picture  { get; set; }
     }
 }

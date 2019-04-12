@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestIT.Data;
 using TestIT.Models;
+using TestIT.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+
 
 
 namespace TestIT.Controllers
@@ -16,6 +18,7 @@ namespace TestIT.Controllers
     public class QuizzesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private Quiz tempQuiz;
 
         public QuizzesController(ApplicationDbContext context)
         {
@@ -59,6 +62,7 @@ namespace TestIT.Controllers
         // GET: Quizs/Create
         public IActionResult Create()
         {
+            this.tempQuiz = new Quiz();
             return View();
         }
 
@@ -67,18 +71,31 @@ namespace TestIT.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,numberOfQustionsPerTry,time,Visibility")] Quiz quiz)
+        public async Task<IActionResult> Create(CreateQuizViewModel model, string command)
         {
-            if (ModelState.IsValid)
+            if(command.Equals("Napravi"))
             {
-                string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                ApplicationUser currentUser = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
-                currentUser.addQuiz(quiz);
-                _context.Add(quiz);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    ApplicationUser currentUser = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
+                    currentUser.addQuiz(model.Quiz);
+                    _context.Add(model.Quiz);
+                    await _context.SaveChangesAsync();
+                    this.tempQuiz = null;
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(model);
             }
-            return View(quiz);
+            if(command.Equals("Dodaj pitanje"))
+            {
+                if (ModelState.IsValid)
+                {
+                    model.Quiz.Questions.Add(model.TempQuestion);
+                    return View(model);
+                }
+            }
+            return View(model);
         }
 
         // GET: Quizs/Edit/5

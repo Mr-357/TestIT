@@ -21,7 +21,12 @@ namespace TestIT.Models
 
         public List<Question> Questions { get; set; }
 
+        public Quiz()
+        {
+            this.Questions = new List<Question>();
+        }   
     }
+
     public enum quizVisibility
     {
         privateQuiz, PublicQuiz
