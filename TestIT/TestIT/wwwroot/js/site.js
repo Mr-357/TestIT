@@ -1,6 +1,34 @@
 ﻿// DIV koji sadrzi sve opcije za kreiranje odgovora
 const answerOptions = document.getElementById("answer-options");
 
+
+function jsFetch()
+{
+    //ovo je klasicno kao iz web prog
+    const formData = new FormData();
+    formData.append("ID", 15);
+    formData.append("Name", "fetch test");
+
+    const fetchData =
+    {
+        method: "POST",
+        body: formData,
+        credentials: 'include' //ovo se dodaje da salje cookie odnosno podatke o korisniku, postoji sansa da vrati error 500 ako se ne posalje ovo
+    }
+    fetch("/Quizzes/FetchCreate", fetchData)
+        .then(response => {
+            if (!response.ok)
+            {
+                throw new Error(response.statusText);
+            }
+            else
+               // window.location.href = url; ovde sam hteo da me redirektuje nazad na index stranicu ali mora da se refreshuje index pre nego sto se pojavi novi kviz
+               //mozda proradi ako se iskoristi neki tajmer ili tako nesto? u svakom slucaju mi cemo fetch koristiti za in-page a ovo pravljenje kviza moze preko submit-a
+               return;
+        })
+        .catch(error => console.log(error));  
+}
+
 function addQuestion()
 {
     let questions = document.getElementById('questions');

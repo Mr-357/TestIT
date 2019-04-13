@@ -15,8 +15,8 @@ namespace TestIT.Data.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "Discriminator",
                 table: "Answer",
-                nullable: false,
-                defaultValue: "");
+                nullable: false);
+                //defaultValue: "");
 
             migrationBuilder.AddColumn<byte[]>(
                 name: "Picture",

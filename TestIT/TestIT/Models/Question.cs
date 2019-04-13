@@ -37,6 +37,7 @@ namespace TestIT.Models
 
     public class PictureAnswer : Answer
     {
+        
         public byte[] Picture  { get; set; }
     }
 }

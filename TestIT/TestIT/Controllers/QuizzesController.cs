@@ -65,7 +65,30 @@ namespace TestIT.Controllers
             this.tempQuiz = new Quiz();
             return View();
         }
-
+        public class FetchQuiz
+        {
+            public int ID { get; set; }
+            public String Name { get; set; }
+        }
+        //TLDR kako koristiti fetch i controller
+        //ovaj httppost tag znaci da fja podrzava post metodu
+        //fromform tag znaci da pravi objekat iz forme oblika u post-u,postoji i frombody koji to radi iz json-a (mada meni nije uspelo)
+        //iznad ovoga sam napravio pomocnu klasu fetchquiz cisto da vidim kako i da li ovo radi, trebalo bi da radi i sa nasim modelima
+        //fja vraca Ok() zbog one provere u js-u (response.ok) , moguce je da vrati npr json objekat sa nekim informacijama ili url za redirekciju
+        //redirecttoaction() NE RADI preko fetch-a
+        //ostatak objasnjena u site.js
+        [HttpPost]
+        public async Task<IActionResult> FetchCreate([FromForm]FetchQuiz quiz)
+        {
+            string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ApplicationUser current = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
+            Quiz q = new Quiz();
+            q.ID = quiz.ID;
+            q.Name = quiz.Name;
+            current.addQuiz(q);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
         // POST: Quizs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -73,7 +96,7 @@ namespace TestIT.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateQuizViewModel model, string command)
         {
-            if(command.Equals("Napravi"))
+            if(command==null)
             {
                 if (ModelState.IsValid)
                 {
