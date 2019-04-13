@@ -10,12 +10,12 @@
 
 <div class="QuizCreation">
 
-    <div class="QuizCreationInner">
+    <div class="LeftSide">
         <div class="QuizCreationForm">
             <form asp-action="Create">
                 <div class="form-group">
                     <input type='button' value='Povratak nazad' class="btn btn-primary" onclick='window.location = "@Url.Action("Index", "Quizzes")";' />
-                    <input type="button" name="command" value="Napravi" class="btn btn-primary "onclick =' jsFetch();' />
+                    <input type="submit" name="command" value="Napravi" class="btn btn-primary" />
                 </div>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
@@ -36,62 +36,60 @@
                             <span asp-validation-for="Quiz.time" class="text-danger"></span>
                         </div>
                     </div>
-
-                </div>
-                <div class="QuestionCreation">
-                    <input type='button' value='+' onclick="createQuestion(document.getElementsByClassName('new-question-form'));" class="btn btn-primary createQuestionButton" />
-                    <div class="new-question-form" hidden="hidden">
-                        <label>Question: </label>
-                        <br />
-                        <textarea asp-for="TempQuestion.QuestionText" class="form-control" style="resize: both"></textarea>
-                        <span asp-validation-for="TempQuestion.QuestionText" class="text-danger"></span>
-                        <label>Answer: </label>
-                        <div id="answer-options">
-                            <label>Pick answer type: </label>
-                            <br />
-                            <input type="radio" onchange="createAnswerTextArea();" value="Text" name="AnswerType" /> Text
-                            <br />
-                            <input type="radio" onchange="createAnswerSelectionArea();" value="Select" name="AnswerType" /> Select
-                            <br />
-                            <input type="radio" onchange="createAnswerImageArea();" value="Image" name="AnswerType" /> Image
-                            <br />
-                            <input type="submit" name="command" value="Dodaj pitanje" class="btn btn-primary" />
-                        </div>
-                    </div>
-                </div>   
-                <div id="dataStorage" hidden="hidden">@*ovaj deo je za prenos liste iz view u controller*@
-                    <div>
-                        @{
-                            if (Model != null)
-                            {
-                                for (int i = 0; i < Model.Quiz.Questions.Count; i++)
-                                {
-                                    <input asp-for="Quiz.Questions[i].QuestionText" class="form-control" />
-                                }
-                            }
-                        }
-                    </div>
                 </div>
             </form>
         </div>
-    </div>
-    <div class="QuizCreationExistingQuestions">
-            <input type='button' value='Prikazi postojeca pitanja' class="btn btn-primary existingQuestionsButton" onclick="showQuestions();" />
-            <div id="questions" >
-                <ul>
+            <div id="dataStorage" hidden="hidden">@*ovaj deo je za prenos liste iz view u controller*@
+                <div>
                     @{
                         if (Model != null)
                         {
-                            foreach (Question Q in Model.Quiz.Questions)
+                            for (int i = 0; i < Model.Quiz.Questions.Count; i++)
                             {
-                                <li>@Q.QuestionText</li>
+                                <input asp-for="Quiz.Questions[i].QuestionText" class="form-control" />
                             }
                         }
                     }
-                </ul>
+                </div>
             </div>
-        </div>
+    </div>
 
+    <div class="RightSide">
+        <form asp-action="Create">
+            <div class="QuestionCreation">
+                <input type="button" name="command" value="Dodaj pitanje" class="btn btn-primary addQuestionButton" onclick="addQuestion();"/>
+                <div class="new-question-form">
+                    <label>Question text: </label>
+                    <br />
+                    <textarea asp-for="TempQuestion.QuestionText" class="form-control" style="resize: both"></textarea>
+                    <span asp-validation-for="TempQuestion.QuestionText" class="text-danger"></span>
+                    <label>Answer: </label>
+                    <div id="answer-options">
+                        <label>Pick answer type: </label>
+                        <br />
+                        <input type="radio" onchange="createAnswerTextArea();" value="Text" name="AnswerType" /> Text
+                        <br />
+                        <input type="radio" onchange="createAnswerSelectionArea();" value="Select" name="AnswerType" /> Select
+                        <br />
+                        <input type="radio" onchange="createAnswerImageArea();" value="Image" name="AnswerType" /> Image
+                        <br />
+                    </div>
+                </div>
+            </div>  
+        </form> 
+    </div>
+</div>
+
+<div class="addedThings">
+    <div class="ExistingQuestions">
+        <input type='button' value='Prikazi postojeca pitanja' class="btn btn-primary existingQuestionsButton" onclick="showQuestions();" />
+        <div id="questions" hidden="hidden">
+        
+        </div>
+    </div>
+    <div class="AnswersDiv" hidden="hidden">
+
+    </div>
 </div>
 
 @section Scripts {

@@ -11,8 +11,6 @@ using TestIT.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-
-
 namespace TestIT.Controllers
 {
     public class QuizzesController : Controller
@@ -40,6 +38,9 @@ namespace TestIT.Controllers
             return View(currentUser.Quizzes);
             // return View(await _context.Quiz.ToListAsync());
         }
+        
+        
+        
 
         // GET: Quizs/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -77,6 +78,7 @@ namespace TestIT.Controllers
         //fja vraca Ok() zbog one provere u js-u (response.ok) , moguce je da vrati npr json objekat sa nekim informacijama ili url za redirekciju
         //redirecttoaction() NE RADI preko fetch-a
         //ostatak objasnjena u site.js
+        
         [HttpPost]
         public async Task<IActionResult> FetchCreate([FromForm]FetchQuiz quiz)
         {
@@ -96,7 +98,7 @@ namespace TestIT.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateQuizViewModel model, string command)
         {
-            if(command==null)
+            if(command.Equals("Napravi"))
             {
                 if (ModelState.IsValid)
                 {

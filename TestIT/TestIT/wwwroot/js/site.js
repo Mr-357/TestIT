@@ -39,8 +39,6 @@ function addQuestion()
 }
 
 function showQuestions() {
-    let disclaimer = document.getElementById('disclaimer');
-    disclaimer.hidden = !disclaimer.hidden;
     let questions = document.getElementById('questions');
     questions.hidden = !questions.hidden;
 }
@@ -65,21 +63,51 @@ function createAnswerTextArea() {
 
 // Odgovor koji moze da se selektuje od ponudjenih stavki
 function createAnswerSelectionArea() {
+
+    let a = document.getElementsByClassName("AnswersDiv");
+    a[0].hidden = !a[0].hidden;
+
     console.log("TODO: createAnswerSelectionArea()");
     // Close previous selected options
     closeAnswerTextArea();
     closeAnswerImageArea();
 
-    let div = document.createElement('div')
-    div.id = "selectAnswerDiv";
+    let divMain = document.createElement('div');
+    divMain.id = "selectAnswerDiv";
 
-    let label = document.createElement('label');
-    label.innerHTML = "Broj ponudjenih odgovora: "
-    div.appendChild(label);
-    let numberOfAnswers = document.createElement('input');
-    div.appendChild(numberOfAnswers);
+    let divUpper = document.createElement('div');
+    let divLower = document.createElement('div');
 
-    answerOptions.appendChild(div);
+    label = document.createElement('label');
+    label.innerHTML = "Broj tacnih odgovora: ";
+    divLower.appendChild(label);
+    let numberOfCorrectAnswers = document.createElement('input');
+    divLower.appendChild(numberOfCorrectAnswers);
+
+    let innerDiv = document.createElement('div');
+
+    let textArea = document.createElement('textarea');
+    textArea.id = "SelectAnswerTextArea";
+
+    label = document.createElement('label');
+    label.innerHTML = "Tekst odgovora: ";
+
+    let input = document.createElement('input');
+    input.type = "button";
+    input.className = "btn btn-primary addAnswerButton";
+    input.value = "Dodaj odgovor";
+    input.onclick = addAnswer;
+
+    innerDiv.appendChild(label);
+    innerDiv.appendChild(textArea);
+    innerDiv.appendChild(input);
+
+    divLower.appendChild(innerDiv);
+
+    divMain.appendChild(divUpper);
+    divMain.appendChild(divLower);
+
+    answerOptions.appendChild(divMain);
     /* 
      * TODO:
      * Tekst boxevi za svaki od ponudjenih odgovora
@@ -113,6 +141,8 @@ function closeAnswerTextArea() {
 // Gasenje opcija za selekciju ukoliko se promeni izbor tipa odgovora
 function closeAnswerSelectionArea(container) {
     // TODO: nije skroz implementirano
+    let a = document.getElementsByClassName("AnswersDiv");
+    a[0].hidden ="hidden";
     const selectAnswerDiv = document.getElementById("selectAnswerDiv");
     if (selectAnswerDiv != null)
         answerOptions.removeChild(selectAnswerDiv);
@@ -126,4 +156,13 @@ function closeAnswerImageArea(container) {
         answerOptions.removeChild(imageAnswer);
     // TODO
     console.log("TODO: closeAnswerImageArea()")
+}
+
+function addAnswer()
+{
+    let p = document.createElement('p');
+    p.innerHTML = "Dodat odgovor";
+    p.className = "question"
+    let answersDiv = document.getElementsByClassName('AnswersDiv');
+    answersDiv[0].appendChild(p);
 }

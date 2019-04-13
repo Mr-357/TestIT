@@ -2,46 +2,48 @@
     border: solid 1px dimgrey;
 }
 
-.QuizCreation {
+.QuizCreation{
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.LeftSide{
+    flex: 1 1 33.3%;
+    display:flex;
+    flex-direction: column;
+    padding-right: 2.5%;
+}
+
+.RightSide{
+    padding-left: 2.5%;
+    flex: 1 1 66.6%;
+}
+
+.existingQuestionsButton{
+    margin-bottom: 2%;
+}
+
+.addQuestionButton{
+    margin-left:83%;
+    margin-bottom: 2%;
+}
+
+.addedThings{
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
 }
 
-.QuizCreationInner {
-    flex: 1 1 255px;
+.ExistingQuestions{
+    padding-right: 2.5%;
+    flex: 1 1 33.3%;
+    max-width: 33.3%;
 }
 
-.QuizCreationExistingQuestions {
-    flex: 1 1 255px;
+.AnswersDiv{
+    padding-left: 2.5%;
+    flex: 1 1 66.6%;
 }
 
-.QuizCreationExistingQuestions {
-    padding-left: 5%;
-    padding-right: 5%;
-    display: flex;
-    flex-direction: column;
-}
-
-.existingQuestionsButton {
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-bottom: 10px;
-}
-
-.form-group {
-    margin-bottom: 0px;
-}
-
-.createQuestionButton {
-    margin-top: 10px;
-}
-
-@media (max-width: 768px) {
-    .existingQuestionsButton {
-        margin-top: 10px;
-        margin-left: 10%;
-        margin-right: 10%;
-        margin-bottom: 10px;
-    }
+.addAnswerButton{
+    margin:2%;
 }
