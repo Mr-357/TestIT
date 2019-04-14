@@ -11,6 +11,12 @@ namespace TestIT.Models.ViewModels
         public int NumberOdQuestionsPerTry { get; set; }
         public int Time { get; set; }
         public List<QuestionModel> Questions { get; set; }
+
+
+        public CreateQuizViewModel()
+        {
+            this.Questions = new List<QuestionModel>();
+        }
     }
 
     public class QuestionModel
@@ -18,6 +24,11 @@ namespace TestIT.Models.ViewModels
         public string QuestionText { get; set; }
         public int Points { get; set; }
         public List<AnswerModel> Answers{ get; set; }
+
+        public QuestionModel()
+        {
+            this.Answers = new List<AnswerModel>();     
+        }
     }
     public class AnswerModel
     {
