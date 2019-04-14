@@ -63,7 +63,6 @@ namespace TestIT.Controllers
         // GET: Quizs/Create
         public IActionResult Create()
         {
-            this.tempQuiz = new Quiz();
             return View();
         }
         public class FetchQuiz
@@ -80,21 +79,20 @@ namespace TestIT.Controllers
         //ostatak objasnjena u site.js
         
         [HttpPost]
-        public async Task<IActionResult> FetchCreate([FromForm]FetchQuiz quiz)
+        public async Task<IActionResult> FetchCreate([FromForm]CreateQuizViewModel model)
         {
             string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             ApplicationUser current = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
-            Quiz q = new Quiz();
-            q.ID = quiz.ID;
-            q.Name = quiz.Name;
-            current.addQuiz(q);
+            Quiz temp = new Quiz(model);
+            current.addQuiz(new Quiz(model));
             await _context.SaveChangesAsync();
+           // return Redirect("/Quizzes/Index");
             return Ok();
         }
         // POST: Quizs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+       /* [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateQuizViewModel model, string command)
         {
@@ -121,7 +119,7 @@ namespace TestIT.Controllers
                 }
             }
             return View(model);
-        }
+        }*/
 
         // GET: Quizs/Edit/5
         public async Task<IActionResult> Edit(int? id)

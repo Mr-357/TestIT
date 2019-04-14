@@ -1,4 +1,4 @@
-﻿@model TestIT.Models.ViewModels.CreateQuizViewModel
+﻿
 
 @{
     ViewData["Title"] = "Create a quiz";
@@ -15,83 +15,73 @@
             <form asp-action="Create">
                 <div class="form-group">
                     <input type='button' value='Povratak nazad' class="btn btn-primary" onclick='window.location = "@Url.Action("Index", "Quizzes")";' />
-                    <input type="submit" name="command" value="Napravi" class="btn btn-primary" />
+                    <input type="button" name="command" value="Napravi" class="btn btn-primary"  onclick="jsFetch()"/>
                 </div>
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div  class="text-danger"></div>
                 <div class="form-group">
                     <br />
                     <div class="quiz-creation">
                         <label> Ime kviza: </label>
                         <br />
-                        <textarea asp-for="Quiz.Name" class="form-control" style="resize: both"></textarea>
-                        <span asp-validation-for="Quiz.Name" class="text-danger"></span>
+                        <textarea  id="quizName" class="form-control" style="resize: both"></textarea>
                         <div class="form-group">
-                            <label asp-for="Quiz.numberOfQustionsPerTry" class="control-label"></label>
-                            <input asp-for="Quiz.numberOfQustionsPerTry" class="form-control" />
-                            <span asp-validation-for="Quiz.numberOfQustionsPerTry" class="text-danger"></span>
+                            <label class="control-label">Questions per try</label>
+                            <input type="number" id="questionPerTry" class="form-control" />
                         </div>
                         <div class="form-group">
-                            <label asp-for="Quiz.time" class="control-label"></label>
-                            <input asp-for="Quiz.time" class="form-control" />
-                            <span asp-validation-for="Quiz.time" class="text-danger"></span>
+                            <label class="control-label">time</label>
+                            <input type="number" id="timeForQuiz" class="form-control" />
+
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-            <div id="dataStorage" hidden="hidden">@*ovaj deo je za prenos liste iz view u controller*@
+</div>
+
+<div class="RightSide">
+    <form asp-action="Create">
+        <div class="QuestionCreation">
+            <input type="button" name="command" value="Dodaj pitanje" class="btn btn-primary addQuestionButton" onclick="addQuestion();" />
+            <div class="new-question-form">
+                <label>Question text: </label>
+                <br />
+                <textarea id="questionText" class="form-control" style="resize: both"></textarea>
                 <div>
-                    @{
-                        if (Model != null)
-                        {
-                            for (int i = 0; i < Model.Quiz.Questions.Count; i++)
-                            {
-                                <input asp-for="Quiz.Questions[i].QuestionText" class="form-control" />
-                            }
-                        }
-                    }
+                    <label>Points : </label>
+                    <input type="number" name="questionPoints" id="questionPoints" value="" />
+                </div>
+
+                <label>Answer: </label>
+                <div id="answer-options">
+                    <label>Pick answer type: </label>
+                    <br />
+                    <input type="radio" onchange="createAnswerTextArea();" value="Text" name="AnswerType" /> Text
+                    <br />
+                    <input type="radio" onchange="createAnswerSelectionArea();" value="Select" name="AnswerType" /> Select
+                    <br />
+                    <input type="radio" onchange="createAnswerImageArea();" value="Image" name="AnswerType" /> Image
+                    <br />
                 </div>
             </div>
-    </div>
-
-    <div class="RightSide">
-        <form asp-action="Create">
-            <div class="QuestionCreation">
-                <input type="button" name="command" value="Dodaj pitanje" class="btn btn-primary addQuestionButton" onclick="addQuestion();"/>
-                <div class="new-question-form">
-                    <label>Question text: </label>
-                    <br />
-                    <textarea asp-for="TempQuestion.QuestionText" class="form-control" style="resize: both"></textarea>
-                    <span asp-validation-for="TempQuestion.QuestionText" class="text-danger"></span>
-                    <label>Answer: </label>
-                    <div id="answer-options">
-                        <label>Pick answer type: </label>
-                        <br />
-                        <input type="radio" onchange="createAnswerTextArea();" value="Text" name="AnswerType" /> Text
-                        <br />
-                        <input type="radio" onchange="createAnswerSelectionArea();" value="Select" name="AnswerType" /> Select
-                        <br />
-                        <input type="radio" onchange="createAnswerImageArea();" value="Image" name="AnswerType" /> Image
-                        <br />
-                    </div>
-                </div>
-            </div>  
-        </form> 
-    </div>
+        </div>
+    </form>
+</div>
 </div>
 
 <div class="addedThings">
     <div class="ExistingQuestions">
         <input type='button' value='Prikazi postojeca pitanja' class="btn btn-primary existingQuestionsButton" onclick="showQuestions();" />
         <div id="questions" hidden="hidden">
-        
+
         </div>
     </div>
     <div class="AnswersDiv" hidden="hidden">
 
     </div>
-</div>
 
+</div>
+<script src="~/js/QuizForm.js" type="module"></script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
