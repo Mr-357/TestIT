@@ -98,7 +98,7 @@ window.addQuestion = function addQuestion() {
 
     QuestionTemplate = new Question();
     let answersDiv = document.getElementsByClassName('AnswersDiv');
-    answersDiv[0].innerDiv = "";
+    answersDiv[0].innerHTML = "";
     //#################
 
 }
