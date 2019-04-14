@@ -13,7 +13,6 @@ namespace TestIT.Data
             : base(options)
         {
         }
-        public DbSet<TestIT.Models.Form> Form { get; set; }
         public DbSet<TestIT.Models.Quiz> Quiz { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
