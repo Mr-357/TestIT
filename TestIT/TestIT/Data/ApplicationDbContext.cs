@@ -21,6 +21,16 @@ namespace TestIT.Data
             builder.Entity<PictureAnswer>();
             builder.Entity<RegionAnswer>();
 
+            builder.Entity<Answer>()
+                .HasOne(a => a.Question)
+                .WithMany(q => q.Answers)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Question>()
+                .HasOne(q => q.Quiz)
+                .WithMany(quiz => quiz.Questions)
+                .OnDelete(DeleteBehavior.Cascade);
+
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.

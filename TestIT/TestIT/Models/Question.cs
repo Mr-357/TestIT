@@ -13,7 +13,9 @@ namespace TestIT.Models
         public String QuestionText { get; set; }
         public float Points { get; set; }
         public byte[] Picture { get; set; }
-        public List<Answer> Answers { get; set; }
+        public IList<Answer> Answers { get; set; }
+        public Quiz Quiz { get; set; }
+
         public Question()
         {
             this.Answers = new List<Answer>();
@@ -25,6 +27,7 @@ namespace TestIT.Models
         [Key]
         public int ID { get; set; }
         public bool IsCorrect { get; set; }
+        public Question Question { get; set; }
 
     }
 

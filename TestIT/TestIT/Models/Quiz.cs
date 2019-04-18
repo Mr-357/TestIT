@@ -20,12 +20,14 @@ namespace TestIT.Models
         public quizVisibility Visibility { get; set; }
 
 
-        public List<Question> Questions { get; set; }
+        public IList<Question> Questions { get; set; }
 
         public Quiz()
         {
             this.Questions = new List<Question>();
-        }   
+        }
+        
+        //copy constructor
         public Quiz(CreateQuizViewModel model)
         {
             this.Name = model.Name;

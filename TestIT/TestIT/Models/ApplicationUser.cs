@@ -8,7 +8,7 @@ namespace TestIT.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public List<Quiz> Quizzes { get; set; }
+        public IList<Quiz> Quizzes { get; set; }
         public ApplicationUser() : base()
         {
             Quizzes = new List<Quiz>();

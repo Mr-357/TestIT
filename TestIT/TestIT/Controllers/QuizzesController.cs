@@ -195,7 +195,11 @@ namespace TestIT.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var quiz = await _context.Quiz.FindAsync(id);
+            var quiz = await _context.Quiz
+                .Include(q=> q.Questions)
+                .ThenInclude(q => q.Answers)
+                .FirstOrDefaultAsync(e => e.ID == id);
+
             _context.Quiz.Remove(quiz);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
