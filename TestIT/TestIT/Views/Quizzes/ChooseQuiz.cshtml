@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "DoQuiz";
+}
+
+<script src="~/js/ChooseQuiz.js" type="module"></script>
+<link rel="stylesheet" type="text/css" href="~/css/chooseQuizzes.css">
+
+<div class="DoQuiz">
+    <div class="LeftSideDoQuiz">
+        <div>
+            <input type='button' value='Moji kvizovi' class="btn btn-primary" onclick="showPrivateQuizzes()" />
+        </div>
+        <br/>
+        <div>
+            <input type='button' value='Javni kvizovi' class="btn btn-primary" onclick="showPublicQuizzes()" />
+        </div>
+    </div>
+    <div id="MiddleDoQuiz">
+
+    </div>
+    <div id="RightSideDoQuiz">
+
+    </div>
+</div>

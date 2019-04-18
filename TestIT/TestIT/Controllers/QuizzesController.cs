@@ -39,7 +39,10 @@ namespace TestIT.Controllers
             // return View(await _context.Quiz.ToListAsync());
         }
         
-        
+        public IActionResult ChooseQuiz()
+        {
+            return View();
+        }
         
 
         // GET: Quizs/Details/5
