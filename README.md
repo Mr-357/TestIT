@@ -48,7 +48,7 @@ Hosting: https://test-it.azurewebsites.net/ (master branch hostovan)
 - [x] Plan realizacije projekta do 20.03.2019. godine
 - [x] Specifikacija zahteva do 31.03.2019. godine
 - [x] Arhitekturni projekat do 21.04.2019. godine
-- [_] Javni Prototip aplikacije do 6.5.2019 (softgoal)
 - [x] Test plan do 05.05.2019. godine
+- [ ] Javni Prototip aplikacije do 12.5.2019 (softgoal)
 - [ ] Test specifikacija do 12.05.2019. godine
 - [ ] Korisnicko uputstvo do 09.06.2019. godine
