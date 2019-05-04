@@ -1,0 +1,16 @@
+.quiz{
+    border: solid 1px dimgrey;
+}
+
+.DoQuiz{
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.LeftSideDoQuiz{
+    flex: 0 1 100px;
+}
+
+.RightSideDoQuiz{
+    flex: 1 1;
+}

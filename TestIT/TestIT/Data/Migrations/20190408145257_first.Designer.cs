@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestIT.Data;
 
 namespace TestIT.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190408145257_first")]
+    partial class first
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,9 +135,6 @@ namespace TestIT.Data.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
                     b.Property<bool>("IsCorrect");
 
                     b.Property<int?>("QuestionID");
@@ -145,8 +144,6 @@ namespace TestIT.Data.Migrations
                     b.HasIndex("QuestionID");
 
                     b.ToTable("Answer");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Answer");
                 });
 
             modelBuilder.Entity("TestIT.Models.ApplicationUser", b =>
@@ -199,12 +196,23 @@ namespace TestIT.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("TestIT.Models.Question", b =>
+            modelBuilder.Entity("TestIT.Models.Form", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<byte[]>("Picture");
+                    b.Property<string>("Data")
+                        .IsRequired();
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Form");
+                });
+
+            modelBuilder.Entity("TestIT.Models.Question", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<float>("Points");
 
@@ -226,8 +234,6 @@ namespace TestIT.Data.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<string>("Name");
-
                     b.Property<int>("Visibility");
 
                     b.Property<int>("numberOfQustionsPerTry");
@@ -239,39 +245,6 @@ namespace TestIT.Data.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Quiz");
-                });
-
-            modelBuilder.Entity("TestIT.Models.PictureAnswer", b =>
-                {
-                    b.HasBaseType("TestIT.Models.Answer");
-
-                    b.Property<byte[]>("Picture");
-
-                    b.HasDiscriminator().HasValue("PictureAnswer");
-                });
-
-            modelBuilder.Entity("TestIT.Models.RegionAnswer", b =>
-                {
-                    b.HasBaseType("TestIT.Models.Answer");
-
-                    b.Property<float>("x1");
-
-                    b.Property<float>("x2");
-
-                    b.Property<float>("y1");
-
-                    b.Property<float>("y2");
-
-                    b.HasDiscriminator().HasValue("RegionAnswer");
-                });
-
-            modelBuilder.Entity("TestIT.Models.TextAnswer", b =>
-                {
-                    b.HasBaseType("TestIT.Models.Answer");
-
-                    b.Property<string>("text");
-
-                    b.HasDiscriminator().HasValue("TextAnswer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -321,18 +294,16 @@ namespace TestIT.Data.Migrations
 
             modelBuilder.Entity("TestIT.Models.Answer", b =>
                 {
-                    b.HasOne("TestIT.Models.Question", "Question")
+                    b.HasOne("TestIT.Models.Question")
                         .WithMany("Answers")
-                        .HasForeignKey("QuestionID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("QuestionID");
                 });
 
             modelBuilder.Entity("TestIT.Models.Question", b =>
                 {
-                    b.HasOne("TestIT.Models.Quiz", "Quiz")
+                    b.HasOne("TestIT.Models.Quiz")
                         .WithMany("Questions")
-                        .HasForeignKey("QuizID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("QuizID");
                 });
 
             modelBuilder.Entity("TestIT.Models.Quiz", b =>

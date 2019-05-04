@@ -1,0 +1,49 @@
+.question {
+    border: solid 1px dimgrey;
+}
+
+.QuizCreation{
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.LeftSide{
+    flex: 1 1 33.3%;
+    display:flex;
+    flex-direction: column;
+    padding-right: 2.5%;
+}
+
+.RightSide{
+    padding-left: 2.5%;
+    flex: 1 1 66.6%;
+}
+
+.existingQuestionsButton{
+    margin-bottom: 2%;
+}
+
+.addQuestionButton{
+    margin-left:83%;
+    margin-bottom: 2%;
+}
+
+.addedThings{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ExistingQuestions{
+    padding-right: 2.5%;
+    flex: 1 1 33.3%;
+    max-width: 33.3%;
+}
+
+.AnswersDiv{
+    padding-left: 2.5%;
+    flex: 1 1 66.6%;
+}
+
+.addAnswerButton{
+    margin:2%;
+}

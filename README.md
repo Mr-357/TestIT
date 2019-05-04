@@ -1,4 +1,4 @@
-Predlog projekta: Mini kvizovi, kalendar ispita i forum za diskusiju pitanja
+Predlog projekta: Mini kvizovi, forum za diskusiju pitanja i predmeta
 
 Naziv tima: Lambda  
 Naziv projekta: TestIT
@@ -13,41 +13,42 @@ Korisnici:
 - obican korisnik
   - student
   - profesor
-- admin
 - moderator 
+- admin
+
 
 Dodatno:  
 
 - Poeni za 1v1
 - Poeni za postovanje pitanja i odgovora
 - Up/Down votes na forumu za diskusiju
-- Flairs kao nagrada za osvajanje poena
-- Ranking
-- Editor za matematicke formule
-- Code editor
+- Flairs kao nagrada za osvajanje poena (softgoal)
+- Ranking (softgoal)
+- Editor za matematicke formule (softgoal)
+- Code editor (softgoal)
 
 Predlozene tehnologije:
 
-- JS
+- JƧ
 - jQuery
 - HTML
 - CSS
 - ASP.NET Core 2.2
-- Python za preuzimanje podataka sa SIP-a
-- OracleDB, MySQL, Microsoft DB ?
+- MySQL
 
 
 --------------------------------------------------------------------------------------------------------------
 
-Za sada stoji da se sastajemo cetvrtkom jer tada nemamo nista na faksu, tj ove racunske mogu i drugim danima da se odrade.
+Za sada stoji da se sastajemo cetvrtkom jer su tada svi clanovi slobodni
 
-Hosting: https://test-it.azurewebsites.net/  
+Hosting: https://test-it.azurewebsites.net/ (master branch hostovan) 
 
 - [x] Predlog projekta predat 02.03.2019
 - [x] Vizija sistema do 10.03.2019. godine
 - [x] Plan realizacije projekta do 20.03.2019. godine
 - [x] Specifikacija zahteva do 31.03.2019. godine
-- [ ] Arhitekturni projekat do 21.04.2019. godine
-- [ ] Test plan do 05.05.2019. godine
+- [x] Arhitekturni projekat do 21.04.2019. godine
+- [x] Test plan do 05.05.2019. godine
+- [ ] Javni Prototip aplikacije do 12.5.2019 (softgoal)
 - [ ] Test specifikacija do 12.05.2019. godine
 - [ ] Korisnicko uputstvo do 09.06.2019. godine

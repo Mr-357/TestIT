@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestIT.Data;
 
 namespace TestIT.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190414154730_FormRemoved")]
+    partial class FormRemoved
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -321,18 +323,16 @@ namespace TestIT.Data.Migrations
 
             modelBuilder.Entity("TestIT.Models.Answer", b =>
                 {
-                    b.HasOne("TestIT.Models.Question", "Question")
+                    b.HasOne("TestIT.Models.Question")
                         .WithMany("Answers")
-                        .HasForeignKey("QuestionID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("QuestionID");
                 });
 
             modelBuilder.Entity("TestIT.Models.Question", b =>
                 {
-                    b.HasOne("TestIT.Models.Quiz", "Quiz")
+                    b.HasOne("TestIT.Models.Quiz")
                         .WithMany("Questions")
-                        .HasForeignKey("QuizID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("QuizID");
                 });
 
             modelBuilder.Entity("TestIT.Models.Quiz", b =>
