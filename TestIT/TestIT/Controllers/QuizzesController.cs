@@ -140,6 +140,29 @@ namespace TestIT.Controllers
             return View(quiz);
         }
 
+        public async Task<IActionResult> AttemptQuiz(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var quiz = await _context.Quiz
+                .Include(q => q.Questions)
+                .ThenInclude(q => q.Answers)
+                .FirstOrDefaultAsync(e => e.ID == id);
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+            string quizData = Newtonsoft.Json.JsonConvert.SerializeObject(quiz, new Newtonsoft.Json.JsonSerializerSettings()
+            {
+                PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects,
+                Formatting = Newtonsoft.Json.Formatting.Indented
+            });
+            ViewBag.jsonQuiz = (quizData);
+            return View();
+        }
+
         // POST: Quizs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
