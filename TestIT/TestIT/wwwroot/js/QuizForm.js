@@ -28,7 +28,7 @@ window.jsFetch = function jsFetch() {
         redirect: 'follow',
         credentials: 'include' //ovo se dodaje da salje cookie odnosno podatke o korisniku, postoji sansa da vrati error 500 ako se ne posalje ovo
     }
-    fetch("/Quizzes/FetchCreate", fetchData)
+   fetch("/Quizzes/FetchCreate", fetchData)
         .then(response => {
             if (!response.ok) {
                 throw new Error(response.statusText);
@@ -39,6 +39,7 @@ window.jsFetch = function jsFetch() {
                 return;
         })
         .catch(error => console.log(error));
+
 }
 
 //relurzivno kreiranje formData iz kompleksnog objekta trebalo bi da radi za sve vrste objekata

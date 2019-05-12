@@ -89,8 +89,34 @@ namespace TestIT.Controllers
             Quiz temp = new Quiz(model);
             current.addQuiz(new Quiz(model));
             await _context.SaveChangesAsync();
+            
            // return Redirect("/Quizzes/Index");
             return Ok();
+        }
+        //ok ovde sad imamo mali (a mozda i veliki) problem
+        //trnutno nasa Question klasa ima listu odgovora a odgovor u sebi ima bool da li je tacan
+        //to znaci da tehnicki front-end odmah vidi da li je nesto tacno (sto naravno nije dobro)
+        //how do we fix?
+        //moj predlog je da mozda nekako izmenimo kviz pre slanja da se to ne vidi
+        //ali kako bi to radili a da ne menjamo sam kviz? mozda da imamo novi model koji se salje korisniku gde su izbacene odredjene stvari, tako bi mozda i smanjili kolicinu podataka za slanje?
+        //izvrsio sam commit da bi ste ovo procitali i da zakazem sastanak sledece nedelje obavezno da vidimo sta radimo, kad radimo i kako radimo
+        [HttpPost]
+        public async Task<IActionResult> FetchAnswers([FromForm]AnswersViewModel model) //results model?
+        {
+            int i = 0;
+            foreach (Answer a in model.answers)//zbog gore navedenog razloga moze ovako da se proveri da li je tacno za select i slike, za string bi vec morala rucna provera
+            {
+                if (a.IsCorrect)
+                {
+                    i++;
+                }
+            }
+            if (i == model.answers.Count)//  VVVVVVVV
+            {
+                return Ok();   //            VVVVVVVV
+            }
+            
+            return Unauthorized(); //  ovo je za sada placeholder, treba ubaciti ili neki redirect ili mozda da se negde cuva ovaj attempt kako bi se generisao result page
         }
         // POST: Quizs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
