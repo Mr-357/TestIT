@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Predmeti";
+}
+<script src="~/js/Subjects.js" type="module"></script>
+<link rel="stylesheet" type="text/css" href="~/css/Subjects.css">
+
+<p>Ovo je stranica za listanje predmeta po modulu i po godini</p>
+<!-- TODO -->
+<!-- Ovo bi trebalo preko razor-a da se generise iz baze -->
+<div class="modules">
+    <input type='button' value='Racunarstvo i informatika' class="btn btn-primary"/>
+    <input type='button' value='Elektroenergetika' class="btn btn-primary"/>
+    <!-- Elektronske komponente i mikrosistemi -->
+    <input type='button' value='Elektronske komponente' class="btn btn-primary"/> 
+    <input type='button' value='Upravljanje sistemima' class="btn btn-primary"/>
+    <input type='button' value='Elektronika' class="btn btn-primary"/>
+    <input type='button' value='Telekomunikacije' class="btn btn-primary"/>
+</div>
+
+<div>
+    <label class="year-label">I godina</label>
+        <div class="1st-year subjects">
+
+        </div>
+    <label class="year-label">II godina</label>
+        <div class="2nd-year subjects">
+
+        </div>
+    <label class="year-label">III godina</label>
+        <div class="3rd-year subjects">
+
+        </div>
+    <label class="year-label">IV godina</label>
+        <div class="4th-year subjects">
+            
+    </div>
+</div>

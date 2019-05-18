@@ -1,0 +1,16 @@
+.comments-quizzes{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-content: space-between;
+}
+
+.subject-comments{
+    width: 100%;
+    border: 1px solid black;
+}
+
+.subject-quizzes{
+    width:100%;
+    border: 1px solid black;
+}

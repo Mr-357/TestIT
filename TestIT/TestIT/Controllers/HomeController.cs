@@ -20,6 +20,16 @@ namespace TestIT.Controllers
             return View();
         }
 
+        public IActionResult Subjects()
+        {
+            return View();
+        }
+
+        public IActionResult ConcreteSubject()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

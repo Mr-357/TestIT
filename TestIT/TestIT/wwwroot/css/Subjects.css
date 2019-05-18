@@ -1,0 +1,15 @@
+.modules{
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.year-label{
+    border: 1px solid #000000;
+    width: 100%;
+    text-align: center;
+}
+
+.subjects{
+    text-align: center;
+}
