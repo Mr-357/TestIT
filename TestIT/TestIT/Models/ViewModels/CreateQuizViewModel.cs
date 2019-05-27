@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TestIT.Models.ViewModels
 {
-    public class CreateQuizViewModel
+    public class QuizviewModel
     {
         public string Name { get; set; }
         public int NumberOdQuestionsPerTry { get; set; }
@@ -13,10 +13,18 @@ namespace TestIT.Models.ViewModels
         public List<QuestionModel> Questions { get; set; }
 
 
-        public CreateQuizViewModel()
+        public QuizviewModel()
         {
             this.Questions = new List<QuestionModel>();
         }
+    }
+    public class CreateQuizViewModel : QuizviewModel
+    {
+       
+    }
+    public class resultsViewModel : QuizviewModel
+    {
+        public int ID { get; set; }
     }
 
     public class QuestionModel

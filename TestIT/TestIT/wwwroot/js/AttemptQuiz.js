@@ -12,6 +12,7 @@ window.jsonToQzit = function jsonToQzit(json) { //ova fja moze da se renameuje u
 
 window.submitAnswers = function submitAnswers() {
     let result = getherAnswers();
+    console.log(result);
     jsFetch(result);
 }
 
@@ -48,7 +49,6 @@ function jsFetch(result) {
     //console.log(result);
     const formData = new FormData();    
     buildFormData(formData, result);
-    console.log(formData); // ovo iz nekig razloga stampa prazan formData al tako radi i kod CreateQuiz tako da nije problem
     const fetchData =
     {
         method: "POST",
