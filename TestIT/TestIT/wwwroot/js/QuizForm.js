@@ -21,28 +21,28 @@ window.jsFetch = function jsFetch() {
     QuizTemplate.time = document.getElementById("timeForQuiz").value;
     buildFormData(formData, QuizTemplate);
     console.log(formData);
-    const fetchData =
-    {
-        method: "POST",
-        body: formData,
-        redirect: 'follow',
-        credentials: 'include' //ovo se dodaje da salje cookie odnosno podatke o korisniku, postoji sansa da vrati error 500 ako se ne posalje ovo
-    }
-   fetch("/Quizzes/FetchCreate", fetchData)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-            else
-                window.location.replace("/Quizzes/Index"); //ovde sam hteo da me redirektuje nazad na index stranicu ali mora da se refreshuje index pre nego sto se pojavi novi kviz
-                //mozda proradi ako se iskoristi neki tajmer ili tako nesto? u svakom slucaju mi cemo fetch koristiti za in-page a ovo pravljenje kviza moze preko submit-a
-                return;
-        })
-        .catch(error => console.log(error));
+   // const fetchData =
+   // {
+   //     method: "POST",
+   //     body: formData,
+   //     redirect: 'follow',
+   //     credentials: 'include' //ovo se dodaje da salje cookie odnosno podatke o korisniku, postoji sansa da vrati error 500 ako se ne posalje ovo
+   // }
+   //fetch("/Quizzes/FetchCreate", fetchData)
+   //     .then(response => {
+   //         if (!response.ok) {
+   //             throw new Error(response.statusText);
+   //         }
+   //         else
+   //             window.location.replace("/Quizzes/Index"); //ovde sam hteo da me redirektuje nazad na index stranicu ali mora da se refreshuje index pre nego sto se pojavi novi kviz
+   //             //mozda proradi ako se iskoristi neki tajmer ili tako nesto? u svakom slucaju mi cemo fetch koristiti za in-page a ovo pravljenje kviza moze preko submit-a
+   //             return;
+   //     })
+   //     .catch(error => console.log(error));
 
 }
 
-//relurzivno kreiranje formData iz kompleksnog objekta trebalo bi da radi za sve vrste objekata
+//rekurzivno kreiranje formData iz kompleksnog objekta trebalo bi da radi za sve vrste objekata
 function buildFormData(formData, data, parentKey) {
     if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
         Object.keys(data).forEach(key => {

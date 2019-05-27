@@ -1,0 +1,72 @@
+﻿@model TestIT.Models.ViewModels.AttemptQuizViewModel
+@using System.IO;
+@{
+    ViewData["Title"] = "AttemptQuiz2";
+    string quizData = Newtonsoft.Json.JsonConvert.SerializeObject(Model, new Newtonsoft.Json.JsonSerializerSettings()
+    {
+        PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects,
+        Formatting = Newtonsoft.Json.Formatting.Indented,
+        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    });
+}
+<script src="~/js/AttemptQuiz.js" type="module"></script>
+<link rel="stylesheet" type="text/css" href="~/css/AttemptQuiz.css">
+<body onload="jsonToQzit(@quizData);">
+    <h1>AttemptQuiz2</h1>
+    <div id="gornjiDeo">
+        <label>@Model.ID</label>
+        <label>@Model.Name</label>
+    </div>
+    <div id="donjiDeo">
+        <div id="leviDeo">
+            @{
+                foreach (Question question in Model.Questions)
+                {
+                    <button value="@question.QuestionText">@question.QuestionText</button>
+                }
+            }
+        </div>
+        <div id="desniDeo">
+            @{
+                for (int i = 0; i < Model.Questions.Count; i++)
+                {
+                    <div id="qustion@(i) ">
+                        <label>@Model.Questions[i].QuestionText</label>
+                        @{
+                            if (Model.Questions[i].Picture != null)
+                            {
+                                var base64 = Convert.ToBase64String(Model.Questions[i].Picture);
+                                var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                                <img id="imageQ@(i)" src=@imgSrc />
+                            }
+                        }
+                        @{
+                            if (Model.Questions[i].Answers[0].GetType() == typeof(TextAnswer))
+                            {
+                                for (int j = 0; j < Model.Questions[i].Answers.Count; j++)
+                                {
+                                    if (Model.Questions[i].Answers.Count > 1)
+                                    {
+                                        <input type="radio" name="Q@(i)" value="@(((TextAnswer)Model.Questions[i].Answers[j]).text)" />@(((TextAnswer)Model.Questions[i].Answers[j]).text)<br />
+                                    }
+                                    else
+                                    {
+                                        <input name="Q@(i)" />
+                                    }
+                                }
+                            }
+                            else if (Model.Questions[i].Answers[0].GetType() == typeof(RegionAnswer))
+                            {
+                                <Label>Image @Model.Questions[i].Answers.Count regiona da izaberete</Label>
+                            }
+                        }
+                    </div>
+                }
+            }
+            <input type='button' value='Submit' class="btn btn-primary" onclick='submitAnswers()' />
+        </div>
+
+    </div>
+</body>
+
+

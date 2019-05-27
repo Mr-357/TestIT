@@ -10,6 +10,7 @@ using TestIT.Models;
 using TestIT.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using System.IO;
 
 namespace TestIT.Controllers
 {
@@ -188,6 +189,48 @@ namespace TestIT.Controllers
             ViewBag.jsonQuiz = (quizData);
             return View();
         }
+        //GET: 
+        public async Task<IActionResult> AttemptQuiz2(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var quiz = await _context.Quiz
+                .Include(q => q.Questions)
+                .ThenInclude(q => q.Answers)
+                .FirstOrDefaultAsync(e => e.ID == id);
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+            AttemptQuizViewModel viewModel = new AttemptQuizViewModel();
+            viewModel.fillFromQuiz(quiz);
+            return View(viewModel);
+        }
+
+        //POST:
+        [HttpPost]
+        public async Task<IActionResult> results([FromForm]AttemptQuizViewModel viewModel)
+        {
+            int id = viewModel.ID;
+            if (id == null)//i ako mi kaze warning ovde da id nikad ne moze da bude null, mislim da ipak treda ba odtane ova provera
+            {
+                return NotFound();
+            }
+            //var quiz = await _context.Quiz
+            //    .Include(q => q.Questions)
+            //    .ThenInclude(q => q.Answers)
+            //    .FirstOrDefaultAsync(e => e.ID == id);
+            //if (quiz == null)
+            //{
+            //    return NotFound();
+            //}
+            //validate(quiz, viewModel); //tek treba da se implementira
+
+            return Ok();
+        }
+
 
         // POST: Quizs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -260,6 +303,11 @@ namespace TestIT.Controllers
         private bool QuizExists(int id)
         {
             return _context.Quiz.Any(e => e.ID == id);
+        }
+
+        private void validate(Quiz quiz,AttemptQuizViewModel viewModel)
+        {
+            Console.WriteLine("Ovo radi :"+viewModel.ID);
         }
     }
 }
