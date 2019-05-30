@@ -19,7 +19,8 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <!-- <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 custom-background"> -->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3 custom-background">
             <div class="container">
                 <!-- Dodat logo koji vraca na Home page umesto imena aplikacije -->
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/logo.png" width="30px" height="30px"/></a>
@@ -31,13 +32,14 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <!-- <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" style="color:white">Home</a> -->
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" style="color:white; font-weight:bold">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" style="color:white; font-weight:bold">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Subjects">Predmeti</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Subjects" style="color:white; font-weight:bold" >Predmeti</a>
                         </li>
                     </ul>
                 </div>
@@ -50,10 +52,10 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
+    <!-- <footer class="border-top footer text-dark"> -->
+    <footer class="footer text-dark">
         <div class="container">
-            &copy; 2019 - TestIT - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2019 - TestIT - <a asp-area="" class="text-dark" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
 
