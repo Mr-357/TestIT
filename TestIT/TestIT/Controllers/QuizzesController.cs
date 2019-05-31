@@ -211,7 +211,7 @@ namespace TestIT.Controllers
 
         //POST:
         [HttpPost]
-        public async Task<IActionResult> results([FromForm]resultsViewModel result)
+        public async Task<IActionResult> Results([FromForm]resultsViewModel result)
         {
             int id = result.ID;
             if (id == null)//i ako mi kaze warning ovde da id nikad ne moze da bude null, mislim da ipak treda ba odtane ova provera
@@ -228,9 +228,13 @@ namespace TestIT.Controllers
             }
             validate(quiz, result); //tek treba da se implementira
 
-            return Ok();
+            return View();
         }
-
+        /*[HttpGet]
+        public IActionResult Results()
+        {
+            return View();
+        }*/
 
         // POST: Quizs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
