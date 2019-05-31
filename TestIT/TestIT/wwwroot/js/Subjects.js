@@ -1,4 +1,4 @@
-AddSubjectsPerYear();
+//AddSubjectsPerYear();
 
 function AddSubjectsPerYear(){
     let div = document.getElementsByClassName("1st-year");

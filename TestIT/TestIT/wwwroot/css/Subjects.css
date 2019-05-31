@@ -1,7 +1,7 @@
 .modules{
     display: flex;
-    justify-content: space-around;
     margin-bottom: 10px;
+    flex-wrap:wrap;
 }
 .year-label{
     background-color: whitesmoke;
@@ -13,4 +13,23 @@
 
 .subjects{
     text-align: center;
+    width:50%;
+    margin-left:25%;
+    margin-bottom:5px;
+}
+
+.subject-button {
+    display: block;
+    background-color: #5190b6;
+    width: 75%;
+    margin-left: 12.5%;
+    border: 1px solid whitesmoke;
+    border-radius:10px;
+    color:white;
+}
+
+.custom-button{
+    width:16%;
+    margin-left:2px;
+
 }

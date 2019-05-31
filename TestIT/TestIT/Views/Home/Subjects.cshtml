@@ -1,37 +1,59 @@
 @{
     ViewData["Title"] = "Predmeti";
+    List<String> predmeti1 = new List<string> { "Softversko inzinjerstvo", "Objektno orijentisano programiranje" };
+    List<String> predmeti2 = new List<string> { "Softversko inzinjerstvo", "Objektno orijentisano programiranje" };
+    List<String> predmeti3 = new List<string> { "Softversko inzinjerstvo", "Objektno orijentisano programiranje" };
+    List<String> predmeti4 = new List<string> { "Softversko inzinjerstvo", "Objektno orijentisano programiranje" };
+
 }
 <script src="~/js/Subjects.js" type="module"></script>
 <link rel="stylesheet" type="text/css" href="~/css/Subjects.css">
 
-<p>Ovo je stranica za listanje predmeta po modulu i po godini</p>
 <!-- TODO -->
 <!-- Ovo bi trebalo preko razor-a da se generise iz baze -->
 <div class="modules">
-    <input type='button' value='Racunarstvo i informatika' class="custom-button" style="color:white"/>
-    <input type='button' value='Elektroenergetika' class="custom-button" style="color:white"/>
+    <input type='button' value='RII' class="custom-button" style="color:white"/>
+    <input type='button' value='EEN' class="custom-button" style="color:white"/>
     <!-- Elektronske komponente i mikrosistemi -->
-    <input type='button' value='Elektronske komponente i mikrosistemi' class="custom-button" style="color:white"/> 
-    <input type='button' value='Upravljanje sistemima' class="custom-button" style="color:white"/>
-    <input type='button' value='Elektronika' class="custom-button" style="color:white"/>
-    <input type='button' value='Telekomunikacije' class="custom-button" style="color:white"/>
+    <input type='button' value='EKM' class="custom-button" style="color:white"/> 
+    <input type='button' value='UPS' class="custom-button" style="color:white"/>
+    <input type='button' value='EK' class="custom-button" style="color:white"/>
+    <input type='button' value='TK' class="custom-button" style="color:white"/>
 </div>
 
 <div>
     <label class="year-label">I godina</label>
-        <div class="1st-year subjects">
-
+    <div class="1st-year subjects">
+        @{
+            foreach (var el in predmeti1)
+            {
+                <div><a class="subject-button" style=" color:white">@el</a></div>
+            }
+            }
         </div>
     <label class="year-label">II godina</label>
-        <div class="2nd-year subjects">
-
-        </div>
+    <div class="2nd-year subjects">
+        @{
+            foreach (var el in predmeti2)
+            {
+                <div><a class="subject-button" style=" color:white">@el</a></div>
+            }
+         }
+    </div>
     <label class="year-label">III godina</label>
-        <div class="3rd-year subjects">
-
-        </div>
+    <div class="3rd-year subjects">
+        @{
+            foreach (var el in predmeti3)
+            {
+                 <div><a class="subject-button" style=" color:white">@el</a></div>            }
+            }
+    </div>
     <label class="year-label">IV godina</label>
-        <div class="4th-year subjects">
-            
+    <div class="4th-year subjects">
+        @{
+            foreach (var el in predmeti4)
+            {
+                 <div><a class="subject-button" style=" color:white">@el</a></div>            }
+            }
     </div>
 </div>
