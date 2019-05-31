@@ -57,21 +57,53 @@ a:hover{
   text-decoration: none;
 }
 
-.custom-button{
-  border-radius: 7px;
-  background-color: #5190b6; 
-  border: none;
-  margin: 15px 32px;
-  color: black;
-  text-decoration: none;
-  font-size: 35px;
-  width: 30%;
-  line-height: 150px;
-  height: 150px;
+
+.table-button:visited {
+    color: #5190b6;
+}
+.table-button:hover {
+    color: #5190b6;
+}
+.table-button:active {
+    color: #5190b6;
+}
+
+.table-button {
+    font-weight:bold;
+    /*background-color: #5190b6;*/
+    border-radius: 7px;
+    text-decoration: none;
+    border: none;
+    color: #5190b6;
+}
+
+.table-button-danger {
+    font-weight:bold;
+    border-radius: 7px;
+    border: none;
+}
+
+.custom-button {
+    border-radius: 7px;
+    background-color: #5190b6;
+    border: none;
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    line-height: 50px;
+    height: 50px;
+}
+
+.custom-btn {
+    margin: 15px 32px;
+    font-size: 35px;
+    width: 30%;
+    line-height: 150px;
+    height: 150px;
 }
 
 @media(max-width:768px){ 
-  .custom-button{
+  .custom-btn{
     font-size: 15px;
     line-height: 50px;
     height: 50px;
@@ -99,4 +131,24 @@ img{
 
 .custom-background{
   background-color: #5190b6;
+}
+
+.custom-table tr{
+    text-align:center;
+    vertical-align:central;
+}
+
+.custom-table td {
+    vertical-align: middle;
+}
+
+.custom-table th {
+ 
+    background-color: whitesmoke;
+}
+
+@media(max-width:768px) {
+    .remove {
+        color:white;
+    }
 }

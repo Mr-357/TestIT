@@ -4,19 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Moji kvizovi</h1>
 
 <p>
-    <input type='button' value='Napravi novi kviz' class="btn btn-primary" onclick='window.location = "@Url.Action("Create", "Quizzes")";' />
+    <input type='button' value='Napravi novi kviz' style="color:white" class="custom-button" onclick='window.location = "@Url.Action("Create", "Quizzes")";' />
 </p>
-<table class="table">
+<table class="table custom-table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.numberOfQustionsPerTry)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.time)
@@ -34,20 +31,24 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.numberOfQustionsPerTry)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.time)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Visibility)
             </td>
             <td>
-                <a class="text-dark" asp-action="AttemptQuiz" asp-route-id="@item.ID">Attempt</a> |
-                <a class="text-dark" asp-action="AttemptQuiz2" asp-route-id="@item.ID">Attempt2</a> |
-                <a class="text-dark" asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a class="text-dark" asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a class="text-danger" asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                @*<a class="table-button" style="color:#5190b6" asp-action="AttemptQuiz2" asp-route-id="@item.ID">Pokusaj</a>
+        <a class="table-button" style="color:#5190b6" asp-action="Edit" asp-route-id="@item.ID">Izmeni</a>
+        <a class="table-button" style="color:#5190b6" asp-action="Details" asp-route-id="@item.ID">Detalji</a>
+        <a class="table-button-danger text-danger" asp-action="Delete" asp-route-id="@item.ID">Obrisi</a>*@
+
+                <a class="table-button" asp-action="AttemptQuiz2" asp-route-id="@item.ID">Pokusaj</a>
+                <span class="remove">|</span>
+                <a class="table-button" asp-action="Edit" asp-route-id="@item.ID">Izmeni</a>
+                <span class="remove">|</span>
+                <a class="table-button" asp-action="Details" asp-route-id="@item.ID">Detalji</a>
+                <span class="remove">|</span>
+                <a class="table-button-danger text-danger" asp-action="Delete" asp-route-id="@item.ID">Obrisi</a>
             </td>
         </tr>
 }

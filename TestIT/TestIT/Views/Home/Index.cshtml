@@ -16,14 +16,14 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <div>
-            <input type='button' style="color:white" value='Odradi kviz' class="custom-button" onclick='window.location = "@Url.Action("ChooseQuiz", "Quizzes")";' />
+            <input type='button' style="color:white" value='Odradi kviz' class="custom-button custom-btn" onclick='window.location = "@Url.Action("ChooseQuiz", "Quizzes")";' />
         </div>
     }
     else
     {
         <div class="custom-button-container">
-            <a class="custom-button" asp-area="Identity" asp-page="/Account/Register" style="color:white">Register</a>
-            <a class="custom-button" asp-area="Identity" asp-page="/Account/Login" style="color:white">Login</a>
+            <a class="custom-button custom-btn" asp-area="Identity" asp-page="/Account/Register" style="color:white">Register</a>
+            <a class="custom-button custom-btn" asp-area="Identity" asp-page="/Account/Login" style="color:white">Login</a>
         </div>
     }
     

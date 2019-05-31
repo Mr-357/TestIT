@@ -14,8 +14,8 @@
         <div class="QuizCreationForm">
             <form asp-action="Create">
                 <div class="form-group">
-                    <input type='button' value='Povratak nazad' class="btn btn-primary" onclick='window.location = "@Url.Action("Index", "Quizzes")";' />
-                    <input type="button" name="command" value="Napravi" class="btn btn-primary"  onclick="jsFetch()"/>
+                    <input type='button' value='Povratak nazad' class="custom-button" onclick='window.location = "@Url.Action("Index", "Quizzes")";' />
+                    <input type="button" name="command" value="Napravi" class="custom-button"  onclick="jsFetch()"/>
                 </div>
                 <div  class="text-danger"></div>
                 <div class="form-group">
@@ -42,7 +42,7 @@
 <div class="RightSide">
     <form asp-action="Create">
         <div class="QuestionCreation">
-            <input type="button" name="command" value="Dodaj pitanje" class="btn btn-primary addQuestionButton" onclick="addQuestion();" />
+            <input type="button" name="command" value="Dodaj pitanje" class="custom-button addQuestionButton" onclick="addQuestion();" />
             <div class="new-question-form">
                 <label>Question text: </label>
                 <br />
@@ -71,7 +71,7 @@
 
 <div class="addedThings">
     <div class="ExistingQuestions">
-        <input type='button' value='Prikazi postojeca pitanja' class="btn btn-primary existingQuestionsButton" onclick="showQuestions();" />
+        <input type='button' value='Prikazi postojeca pitanja' class="custom-button existingQuestionsButton" onclick="showQuestions();" />
         <div id="questions" hidden="hidden">
 
         </div>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -13,10 +14,13 @@ namespace TestIT.Models
     {
         [Key]
         public int ID { get; set; }
+        [DisplayName("Naziv")]
         public String Name { get; set; }
         public int numberOfQustionsPerTry { get; set; }
+        [DisplayName("Vreme")]
         public int time { get; set; } //time on quiz in minutes, if 0 then unlimited,
-        [DefaultValue(quizVisibility.privateQuiz)]
+        [DefaultValue(quizVisibility.Privatni)]
+        [DisplayName("Tip")]
         public quizVisibility Visibility { get; set; }
 
 
@@ -58,6 +62,6 @@ namespace TestIT.Models
 
     public enum quizVisibility
     {
-        privateQuiz, PublicQuiz
+        Privatni, Javni
     }
 }
