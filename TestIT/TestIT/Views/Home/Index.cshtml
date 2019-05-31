@@ -3,12 +3,12 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "Welcome to TestIT";
+    ViewData["Title"] = "Dobrodošli na TestIT";
 }
 
 <div class="text-center">
     <br/>
-    <h1 class="display-4">Welcome to TestIT</h1>
+    <h1 class="display-4">Dobrodošli na TestIT</h1>
     <br/>
     <img src="~/logo.png"/>
 
@@ -22,8 +22,8 @@
     else
     {
         <div class="custom-button-container">
-            <a class="custom-button custom-btn" asp-area="Identity" asp-page="/Account/Register" style="color:white">Register</a>
-            <a class="custom-button custom-btn" asp-area="Identity" asp-page="/Account/Login" style="color:white">Login</a>
+            <a class="custom-button custom-btn" asp-area="Identity" asp-page="/Account/Register" style="color:white">Registracija</a>
+            <a class="custom-button custom-btn" asp-area="Identity" asp-page="/Account/Login" style="color:white">Prijavljivanje</a>
         </div>
     }
     

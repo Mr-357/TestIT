@@ -37,15 +37,15 @@ namespace TestIT.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email polje mora biti popunjeno")]
+            [EmailAddress(ErrorMessage = "Email nije validan")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Polje za šifru mora biti popunjeno")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Sacuvaj informacije za prijavu")]
             public bool RememberMe { get; set; }
         }
 
@@ -91,7 +91,7 @@ namespace TestIT.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Nevalidan pokusaj prijavljivanja.");
                     return Page();
                 }
             }
