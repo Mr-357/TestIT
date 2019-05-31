@@ -91,7 +91,7 @@ namespace TestIT.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Nevalidan pokusaj prijavljivanja.");
+                    ModelState.AddModelError(string.Empty, "Nevalidan pokušaj prijavljivanja.");
                     return Page();
                 }
             }
