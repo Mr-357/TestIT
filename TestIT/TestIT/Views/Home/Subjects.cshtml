@@ -44,46 +44,46 @@
 </div>
 
 <div>
-    <label class="year-label">I godina</label>
-    <div class="1st-year subjects">
+    <label class="year-label" onclick="HideSubjects('1');">I godina &#9660; </label>
+    <div hidden="hidden" class="1st-year subjects">
         @{
             foreach (var el in predmeti[SelectedModule][1])
             {
                 <div>
-                    <a href = '/Home/ConcreteSubject/' class="subject-button" style=" color:white">@el</a>
+                    <a href = '/Home/ConcreteSubject/' class="subject-button" style="color:#5190b6">@el</a>
                 </div>
             }
         }
         </div>
-    <label class="year-label">II godina</label>
-    <div class="2nd-year subjects">
+    <label class="year-label" onclick="HideSubjects('2');">II godina &#9660; </label>
+    <div hidden="hidden" class="2nd-year subjects">
         @{
             foreach (var el in predmeti[SelectedModule][2])
             {
                 <div>
-                    <a href = '/Home/ConcreteSubject/' class="subject-button" style=" color:white">@el</a>
+                    <a href = '/Home/ConcreteSubject/' class="subject-button" style="color:#5190b6">@el</a>
                 </div>
             }
         }
     </div>
-    <label class="year-label">III godina</label>
-    <div class="3rd-year subjects">
+    <label class="year-label" onclick="HideSubjects('3');">III godina &#9660; </label>
+    <div hidden="hidden" class="3rd-year subjects">
         @{
             foreach (var el in predmeti[SelectedModule][3])
             {
                 <div>
-                    <a href = '/Home/ConcreteSubject/' class="subject-button" style=" color:white">@el</a>
+                    <a href = '/Home/ConcreteSubject/' class="subject-button" style="color:#5190b6">@el</a>
                 </div>
             }
         }
     </div>
-    <label class="year-label">IV godina</label>
-    <div class="4th-year subjects">
+    <label class="year-label" onclick="HideSubjects('4');">IV godina &#9660; </label>
+    <div hidden="hidden" class="4th-year subjects">
         @{
             foreach (var el in predmeti[SelectedModule][4])
             {
                 <div>
-                    <a href = '/Home/ConcreteSubject/' class="subject-button" style=" color:white">@el</a>
+                    <a href = '/Home/ConcreteSubject/' class="subject-button" style="color:#5190b6">@el</a>
                 </div>
             }
         }
