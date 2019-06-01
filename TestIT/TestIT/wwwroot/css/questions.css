@@ -1,5 +1,7 @@
 .question {
-    border: solid 1px dimgrey;
+    background-color: whitesmoke;
+    /* border: solid 1px whitesmoke; */
+    border-radius: 5px;
 }
 
 .QuizCreation{
@@ -19,12 +21,16 @@
     flex: 1 1 66.6%;
 }
 
-.existingQuestionsButton{
-    margin-bottom: 2%;
+.existing-questions-button{
+    margin-bottom: 5px;
 }
 
-.addQuestionButton{
-    margin-left:83%;
+.add-question-container{
+    display: block;
+}
+
+.add-question-button{
+    float:right;
     margin-bottom: 2%;
 }
 
@@ -36,7 +42,6 @@
 .ExistingQuestions{
     padding-right: 2.5%;
     flex: 1 1 33.3%;
-    max-width: 33.3%;
 }
 
 .AnswersDiv{
@@ -45,5 +50,13 @@
 }
 
 .addAnswerButton{
-    margin:2%;
+    float:right;
+}
+
+.answer-text-area{
+    resize: height;
+    width: 100%;
+    height: 50px;
+    min-height: 50px;
+    max-height: 250px;
 }

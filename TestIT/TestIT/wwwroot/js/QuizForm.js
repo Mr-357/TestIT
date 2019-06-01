@@ -93,7 +93,7 @@ window.addQuestion = function addQuestion() {
             console.log("radi Img");
             break;
         default:
-            console.log("niste izabrali nacin odgovora");
+            alert("Niste dodali odgovor");
             break;
     }
 
@@ -101,7 +101,6 @@ window.addQuestion = function addQuestion() {
     let answersDiv = document.getElementsByClassName('AnswersDiv');
     answersDiv[0].innerHTML = "";
     //#################
-
 }
 
 
@@ -132,10 +131,16 @@ window.createAnswerTextArea = function createAnswerTextArea() {
     // Close previous selected options
     closeAnswerImageArea();
     closeAnswerSelectionArea();
+    let div = document.createElement('div');
+    div.id = "answerTextArea";
+
+    let label = document.createElement('label');
+    label.innerHTML = "Unesite tacan odgovor:";
     let textArea = document.createElement('textarea');
-    textArea.style = "resize: both";
-    textArea.id = "answerTextArea";
-    answerOptions.appendChild(textArea);
+    textArea.className = "answer-text-area";
+    div.appendChild(label);
+    div.appendChild(textArea);
+    answerOptions.appendChild(div);
 }
 
 // Odgovor koji moze da se selektuje od ponudjenih stavki
@@ -156,26 +161,31 @@ window.createAnswerSelectionArea = function createAnswerSelectionArea() {
     let divLower = document.createElement('div');
 
     let label = document.createElement('label');
-    label.innerHTML = "Broj tacnih odgovora: ";
+    label.innerHTML = "Broj tacnih odgovora:  ";
     divLower.appendChild(label);
     let numberOfCorrectAnswers = document.createElement('input');
+    numberOfCorrectAnswers.type = "number";
     divLower.appendChild(numberOfCorrectAnswers);
 
     let innerDiv = document.createElement('div');
 
     let textArea = document.createElement('textarea');
+    textArea.className ="answer-text-area";
     textArea.id = "SelectAnswerTextArea";
 
     label = document.createElement('label');
-    label.innerHTML = "Tekst odgovora: ";
+    label.innerHTML = "Odgovor";
+
+    let div = document.createElement('div');
+    div.appendChild(label);
 
     let input = document.createElement('input');
     input.type = "button";
     input.className = "btn btn-primary addAnswerButton";
-    input.value = "govor";
+    input.value = "Dodaj odgovor";
     input.onclick = addAnswer;
 
-    innerDiv.appendChild(label);
+    innerDiv.appendChild(div);
     innerDiv.appendChild(textArea);
     innerDiv.appendChild(input);
 
@@ -197,11 +207,6 @@ window.createAnswerImageArea = function createAnswerImageArea() {
     // Close previously selected options
     closeAnswerTextArea();
     closeAnswerSelectionArea();
-
-    let image = document.createElement('img');
-    image.id = "codeSnippet";
-    image.src = "../java.jpeg";
-    answerOptions.appendChild(image);
     /*
      * TODO:
      * Implement

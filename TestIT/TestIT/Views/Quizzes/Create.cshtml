@@ -5,7 +5,7 @@
 }
 
 <link rel="stylesheet" type="text/css" href="~/css/questions.css">
-
+<h1>Novi kviz</h1>
 <div class="QuizCreation">
 
     <div class="LeftSide">
@@ -17,11 +17,10 @@
                 </div>
                 <div  class="text-danger"></div>
                 <div class="form-group">
-                    <br />
                     <div class="quiz-creation">
                         <label>Ime kviza</label>
                         <br />
-                        <textarea  id="quizName" class="form-control" style="resize: both"></textarea>
+                        <textarea  id="quizName" class="form-control" style="resize: height"></textarea>
                         <br/>
                         <div class="form-group">
                             <label class="control-label">Pitanja po pokušaju</label>
@@ -35,17 +34,30 @@
                 </div>
             </form>
         </div>
+        <div class="addedThings">
+            <div class="ExistingQuestions">
+                <input type='button' value='Prikazi postojeca pitanja' class="btn btn-primary existing-questions-button" onclick="showQuestions();" />
+                <div id="questions" hidden="hidden">
+
+                </div>
+            </div>
+        </div>
 </div>
 
 <div class="RightSide">
     <form asp-action="Create">
         <div class="QuestionCreation">
-            <input type="button" name="command" value="Dodaj pitanje" class="btn btn-primary addQuestionButton" onclick="addQuestion();" />
+            <div class="add-question-container">
+                <input type="button" name="command" value="Dodaj pitanje" class="btn btn-primary add-question-button" onclick="addQuestion();" />
+                <br/>
+                <br/>
+            </div>
             <div class="new-question-form">
                 <label>Pitanje </label>
                 <br />
-                <textarea id="questionText" class="form-control" style="resize: both"></textarea>
+                <textarea id="questionText" class="form-control" style="resize: height"></textarea>
                 <div>
+                    <br/>
                     <label>Broj poena: </label>
                     <input type="number" name="questionPoints" id="questionPoints" value="" />
                 </div>
@@ -64,21 +76,13 @@
             </div>
         </div>
     </form>
-</div>
-</div>
-
-<div class="addedThings">
-    <div class="ExistingQuestions">
-        <input type='button' value='Prikazi postojeca pitanja' class="btn btn-primary existingQuestionsButton" onclick="showQuestions();" />
-        <div id="questions" hidden="hidden">
-
-        </div>
-    </div>
     <div class="AnswersDiv" hidden="hidden">
-
     </div>
-
 </div>
+
+
+            
+
 <script src="~/js/QuizForm.js" type="module"></script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

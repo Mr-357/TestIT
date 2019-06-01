@@ -162,8 +162,10 @@ img{
     background-color: #111F47;
 }
 
+
 .btn-primary {
     background-color: #5190b6;
+    border-color: #5190b6;
 }
 
 .btn-primary:hover{
