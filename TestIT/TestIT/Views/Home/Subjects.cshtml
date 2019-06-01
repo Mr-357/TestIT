@@ -1,59 +1,91 @@
 @{
     ViewData["Title"] = "Predmeti";
-    List<String> predmeti1 = new List<string> { "Softversko inzinjerstvo", "Objektno orijentisano programiranje" };
-    List<String> predmeti2 = new List<string> { "Softversko inzinjerstvo", "Objektno orijentisano programiranje" };
-    List<String> predmeti3 = new List<string> { "Softversko inzinjerstvo", "Objektno orijentisano programiranje" };
-    List<String> predmeti4 = new List<string> { "Softversko inzinjerstvo", "Objektno orijentisano programiranje" };
+                                // modul            godina i lista predmeta
+    var predmeti = new Dictionary<string,Dictionary<int,List<string>>>();
+    var rii = new Dictionary<int,List<string>>(); 
 
+    <!-- Umesto ovakve inicijalizacije trebalo bi citanje iz baze a da baza ima sve ovo sto je dole i takodje i za ostale module -->
+    rii.Add(1,new List<string>(){"Uvod u racunarstvo","Algoritmi i programiranje"});
+    rii.Add(2,new List<string>(){"Diskretna matematika","Racunarski sistemi","Objektno orijentisano programiranje","Logicko projektovanje","Arhitektura i organizacija racunara","Programski jezici"
+                                                    ,"Strukture podataka","Baze podataka","Teorija grafova"});
+    rii.Add(3,new List<string>(){"Razvoj Web aplikacija","Distribuirani sistemi","Teorija igara","Osnovi analize signala i sistema","Sistemi baza podataka","Objektno-orijentisano projektovanje"
+                                                    ,"Operativni sistemi","Računarske mreže","Web programiranje","Projektovanje i analiza algoritama","Mikroračunarski sistemi","Informacioni sistemi"
+                                                    ,"Softversko inženjerstvo","Projekti - VI semestar","Interakcija čovek-računar"});
+    rii.Add(4,new List<string>(){"Algoritmi logičkih igara","Servisno-orijentisane arhitekture",
+                                            "Računarski vid", "Metodi i sistemi za obradu signala","Socijalni i pravni aspekti informatike",
+                                            "Projektovanje računarskih mreža","Stručna praksa","Internet tehnologije","Softversko inžinjerstvo II","Arhitektura i projektovanje softvera",
+                                            "Napredne baze podataka","Računarska grafika","Prepoznavanje uzoraka","Programski prevodioci","Zaštita informacija","Multimedijalni sistemi",
+                                            "Tehnologije za podršku učenju","Paralelni sistemi","Projektovanje računarskog hardvera","Skladištenje podataka i otkrivanje znanja",
+                                            "Veštačka inteligencija","Razvoj sistemskog softvera i sistemsko programiranje","Mobilni sistemi i servisi"});
+    predmeti.Add("RII",rii);
+    predmeti.Add("EEN",null);
+    predmeti.Add("EKM",null);
+    predmeti.Add("UPS",null);
+    predmeti.Add("EK",null);
+    predmeti.Add("TK",null);
+
+    string SelectedModule = "RII";
 }
 <script src="~/js/Subjects.js" type="module"></script>
 <link rel="stylesheet" type="text/css" href="~/css/Subjects.css">
 
 <!-- TODO -->
-<!-- Ovo bi trebalo preko razor-a da se generise iz baze -->
+<!-- Ok ovde sam mislio da ne idemo preko Fetch-a nego da jednostavno kad se klikne neko od ovih dole dugmica da se refresuje stranica sa novim predmetima
+    e ali to bi zahtevalo da nekako u ovom onClick podesimo ovu SelectedModule promenljivu sa odgovarajucim stringom -->
+
 <div class="modules">
-    <input type='button' value='RII' class="custom-button" style="color:white"/>
-    <input type='button' value='EEN' class="custom-button" style="color:white"/>
+    <input type='button' onClick='window.location.reload();' value='RII' class="custom-button" style="color:white"/>
+    <input type='button' onClick='window.location.reload();' value='EEN' class="custom-button" style="color:white"/>
     <!-- Elektronske komponente i mikrosistemi -->
-    <input type='button' value='EKM' class="custom-button" style="color:white"/> 
-    <input type='button' value='UPS' class="custom-button" style="color:white"/>
-    <input type='button' value='EK' class="custom-button" style="color:white"/>
-    <input type='button' value='TK' class="custom-button" style="color:white"/>
+    <input type='button' onClick='window.location.reload();' value='EKM' class="custom-button" style="color:white"/> 
+    <input type='button' onClick='window.location.reload();' value='UPS' class="custom-button" style="color:white"/>
+    <input type='button' onClick='window.location.reload();' value='EK' class="custom-button" style="color:white"/>
+    <input type='button' onClick='window.location.reload();' value='TK' class="custom-button" style="color:white"/>
 </div>
 
 <div>
     <label class="year-label">I godina</label>
     <div class="1st-year subjects">
         @{
-            foreach (var el in predmeti1)
+            foreach (var el in predmeti[SelectedModule][1])
             {
-                <div><a class="subject-button" style=" color:white">@el</a></div>
+                <div>
+                    <a href = '/Home/ConcreteSubject/' class="subject-button" style=" color:white">@el</a>
+                </div>
             }
-            }
+        }
         </div>
     <label class="year-label">II godina</label>
     <div class="2nd-year subjects">
         @{
-            foreach (var el in predmeti2)
+            foreach (var el in predmeti[SelectedModule][2])
             {
-                <div><a class="subject-button" style=" color:white">@el</a></div>
+                <div>
+                    <a href = '/Home/ConcreteSubject/' class="subject-button" style=" color:white">@el</a>
+                </div>
             }
-         }
+        }
     </div>
     <label class="year-label">III godina</label>
     <div class="3rd-year subjects">
         @{
-            foreach (var el in predmeti3)
+            foreach (var el in predmeti[SelectedModule][3])
             {
-                 <div><a class="subject-button" style=" color:white">@el</a></div>            }
+                <div>
+                    <a href = '/Home/ConcreteSubject/' class="subject-button" style=" color:white">@el</a>
+                </div>
             }
+        }
     </div>
     <label class="year-label">IV godina</label>
     <div class="4th-year subjects">
         @{
-            foreach (var el in predmeti4)
+            foreach (var el in predmeti[SelectedModule][4])
             {
-                 <div><a class="subject-button" style=" color:white">@el</a></div>            }
+                <div>
+                    <a href = '/Home/ConcreteSubject/' class="subject-button" style=" color:white">@el</a>
+                </div>
             }
+        }
     </div>
 </div>
