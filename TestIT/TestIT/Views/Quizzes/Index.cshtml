@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<TestIT.Models.Quiz>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Kvizovi";
 }
 
 <h1>Moji kvizovi</h1>
@@ -37,18 +37,13 @@
                 @Html.DisplayFor(modelItem => item.Visibility)
             </td>
             <td>
-                @*<a class="table-button" style="color:#5190b6" asp-action="AttemptQuiz2" asp-route-id="@item.ID">Pokusaj</a>
-        <a class="table-button" style="color:#5190b6" asp-action="Edit" asp-route-id="@item.ID">Izmeni</a>
-        <a class="table-button" style="color:#5190b6" asp-action="Details" asp-route-id="@item.ID">Detalji</a>
-        <a class="table-button-danger text-danger" asp-action="Delete" asp-route-id="@item.ID">Obrisi</a>*@
-
-                <a class="table-button" asp-action="AttemptQuiz2" asp-route-id="@item.ID">Pokusaj</a>
+                <a class="table-button" asp-action="AttemptQuiz2" asp-route-id="@item.ID">Pokušaj</a>
                 <span class="remove">|</span>
                 <a class="table-button" asp-action="Edit" asp-route-id="@item.ID">Izmeni</a>
                 <span class="remove">|</span>
                 <a class="table-button" asp-action="Details" asp-route-id="@item.ID">Detalji</a>
                 <span class="remove">|</span>
-                <a class="table-button-danger text-danger" asp-action="Delete" asp-route-id="@item.ID">Obrisi</a>
+                <a class="table-button-danger text-danger" asp-action="Delete" asp-route-id="@item.ID">Obriši</a>
             </td>
         </tr>
 }

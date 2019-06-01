@@ -1,13 +1,12 @@
 ﻿@model TestIT.Models.Quiz
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalji";
 }
 
-<h1>Details</h1>
+<h1>Detalji</h1>
 
 <div>
-    <h4>Quiz</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -37,6 +36,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-primary">Izmeni</a> 
+    <a asp-action="Index" class="btn btn-primary">Nazad na listu kvizova</a>
 </div>

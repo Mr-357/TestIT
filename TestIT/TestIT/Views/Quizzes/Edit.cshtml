@@ -1,12 +1,11 @@
 ﻿@model TestIT.Models.Quiz
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Izmena";
 }
 
-<h1>Edit</h1>
+<h1>Izmena kviza</h1>
 
-<h4>Quiz</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -29,14 +28,14 @@
                 <span asp-validation-for="time" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="custom-button" />
+                <input type="submit" value="Sačuvaj" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-primary">Povratak na listu kvizova</a>
 </div>
 
 @section Scripts {

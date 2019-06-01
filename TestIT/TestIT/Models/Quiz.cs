@@ -16,6 +16,7 @@ namespace TestIT.Models
         public int ID { get; set; }
         [DisplayName("Naziv")]
         public String Name { get; set; }
+        [DisplayName("Broj pitanja po pokusaju")]
         public int numberOfQustionsPerTry { get; set; }
         [DisplayName("Vreme")]
         public int time { get; set; } //time on quiz in minutes, if 0 then unlimited,

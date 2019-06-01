@@ -164,11 +164,19 @@ img{
 
 .btn-primary {
     background-color: #5190b6;
-   
 }
 
 .btn-primary:hover{
     background-color: #5190b6;
 }
 
-
+.custom-button-danger {
+  border-radius: 7px;
+  background-color: #c82333;
+  border: none;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  line-height: 50px;
+  height: 50px;
+}

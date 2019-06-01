@@ -1,7 +1,5 @@
-﻿
-
-@{
-    ViewData["Title"] = "Create a quiz";
+﻿@{
+    ViewData["Title"] = "Napravi kviz";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
@@ -14,24 +12,24 @@
         <div class="QuizCreationForm">
             <form asp-action="Create">
                 <div class="form-group">
-                    <input type='button' value='Povratak nazad' class="custom-button" onclick='window.location = "@Url.Action("Index", "Quizzes")";' />
+                    <input type='button' value='Povratak nazad' class="custom-button-danger" onclick='window.location = "@Url.Action("Index", "Quizzes")";' />
                     <input type="button" name="command" value="Napravi" class="custom-button"  onclick="jsFetch()"/>
                 </div>
                 <div  class="text-danger"></div>
                 <div class="form-group">
                     <br />
                     <div class="quiz-creation">
-                        <label> Ime kviza: </label>
+                        <label>Ime kviza</label>
                         <br />
                         <textarea  id="quizName" class="form-control" style="resize: both"></textarea>
+                        <br/>
                         <div class="form-group">
-                            <label class="control-label">Questions per try</label>
+                            <label class="control-label">Pitanja po pokušaju</label>
                             <input type="number" id="questionPerTry" class="form-control" />
                         </div>
                         <div class="form-group">
-                            <label class="control-label">time</label>
+                            <label class="control-label">Vreme za izradu kviza (u minutima)</label>
                             <input type="number" id="timeForQuiz" class="form-control" />
-
                         </div>
                     </div>
                 </div>
@@ -44,23 +42,23 @@
         <div class="QuestionCreation">
             <input type="button" name="command" value="Dodaj pitanje" class="custom-button addQuestionButton" onclick="addQuestion();" />
             <div class="new-question-form">
-                <label>Question text: </label>
+                <label>Pitanje </label>
                 <br />
                 <textarea id="questionText" class="form-control" style="resize: both"></textarea>
                 <div>
-                    <label>Points : </label>
+                    <label>Broj poena: </label>
                     <input type="number" name="questionPoints" id="questionPoints" value="" />
                 </div>
 
-                <label>Answer: </label>
+                <label>Odgovor </label>
                 <div id="answer-options">
-                    <label>Pick answer type: </label>
+                    <label>Izaberite tip odgovora </label>
                     <br />
-                    <input type="radio" onchange="createAnswerTextArea();" value="Text" name="AnswerType" /> Text
+                    <input type="radio" onchange="createAnswerTextArea();" value="Text" name="AnswerType" /> Tekst
                     <br />
-                    <input type="radio" onchange="createAnswerSelectionArea();" value="Select" name="AnswerType" /> Select
+                    <input type="radio" onchange="createAnswerSelectionArea();" value="Select" name="AnswerType" /> Izbor
                     <br />
-                    <input type="radio" onchange="createAnswerImageArea();" value="Image" name="AnswerType" /> Image
+                    <input type="radio" onchange="createAnswerImageArea();" value="Image" name="AnswerType" /> Slika
                     <br />
                 </div>
             </div>

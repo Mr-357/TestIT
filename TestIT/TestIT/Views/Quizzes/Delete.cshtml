@@ -1,13 +1,11 @@
 ﻿@model TestIT.Models.Quiz
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Obriši";
 }
 
-<h1>Delete</h1>
-<h3>Are you sure you want to delete this?</h3>
+<h3>Da li ste sigurni da želite da obrišete ovaj kviz?</h3>
 <div>
-    <h4>Quiz</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -26,7 +24,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Delete" class="custom-button" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Obriši" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-primary">Povratak na listu kvizova</a>
     </form>
 </div>
