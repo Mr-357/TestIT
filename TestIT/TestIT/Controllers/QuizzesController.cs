@@ -319,5 +319,11 @@ namespace TestIT.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult AdminQuiz()
+        {
+            return View();
+        }
     }
 }
