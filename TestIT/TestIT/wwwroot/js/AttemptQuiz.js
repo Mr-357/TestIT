@@ -6,9 +6,11 @@ console.log("Attempt Quiz Hello");
 let quiz = null;
 let visibleQuestion = 0;
 
-window.jsonToQzit = function jsonToQzit(json) { //ova fja moze da se renameuje u crtajkviz ili tako nesto
+window.startUp = function startUp(json) { //ova fja moze da se renameuje u crtajkviz ili tako nesto
     quiz = json;
     console.log(quiz);
+    let questionDiv = document.getElementById("question" + visibleQuestion);
+    questionDiv.hidden = "";
 }
 
 window.submitAnswers = function submitAnswers() {
