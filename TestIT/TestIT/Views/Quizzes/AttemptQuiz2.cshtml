@@ -13,61 +13,69 @@
 <link rel="stylesheet" type="text/css" href="~/css/AttemptQuiz.css">
 
 <body onload="startUp(@quizData);">
-    <h1>@Model.Name</h1>
-    <div id="outsideBox" class="outsideBox">
-        <div id="leviDeo" class="leviDeo">
-            @{
-                for (int i = 0; i < Model.Questions.Count; i++)
-                {
-                    <button onclick="showQuestion(@(i));" class="btn" value="Q@i">Q@(i+1)</button>
-                }
-                foreach (Question question in Model.Questions)
-                {
+    <div class="pageBox">
+        <h1>@Model.Name</h1>
+        <div id="outsideBox" class="outsideBox">
+            <div id="leviDeo" class="leviDeo">
+                @{
+                    for (int i = 0; i < Model.Questions.Count; i++)
+                    {
+                        <button onclick="showQuestion(@(i));" class="btn" value="Q@i">Q@(i + 1)</button>
+                    }
+                    foreach (Question question in Model.Questions)
+                    {
 
+                    }
                 }
-            }
-        </div>
-        <div id="desniDeo" class="desniDeo">
-            @{
-                for (int i = 0; i < Model.Questions.Count; i++)
-                {
-                    <div id="question@(i)" hidden ="hidden">
-                        <label>@Model.Questions[i].QuestionText</label>
-                        @{
-                            if (Model.Questions[i].Picture != null)
-                            {
-                                var base64 = Convert.ToBase64String(Model.Questions[i].Picture);
-                                var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
-                                <img id="imageQ@(i)" src=@imgSrc />
-                            }
-                        }
-                        @{
-                            if (Model.Questions[i].Answers[0].GetType() == typeof(TextAnswer))
-                            {
-                                for (int j = 0; j < Model.Questions[i].Answers.Count; j++)
+            </div>
+            <div id="desniDeo" class="desniDeo">
+                @{
+                    for (int i = 0; i < Model.Questions.Count; i++)
+                    {
+                        <div id="question@(i)" hidden="hidden" class="questionBox">
+                            <label class="questionText">@Model.Questions[i].QuestionText</label>
+                            @{
+                                if (Model.Questions[i].Picture != null)
                                 {
-                                    if (Model.Questions[i].Answers.Count > 1)
-                                    {
-                                        <input type="radio" name="Q@(i)" value="@(((TextAnswer)Model.Questions[i].Answers[j]).text)" />@(((TextAnswer)Model.Questions[i].Answers[j]).text)<br />
-                                    }
-                                    else
-                                    {
-                                        <input name="Q@(i)" />
-                                    }
+                                    var base64 = Convert.ToBase64String(Model.Questions[i].Picture);
+                                    var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                                    <img id="imageQ@(i)" src=@imgSrc />
                                 }
                             }
-                            else if (Model.Questions[i].Answers[0].GetType() == typeof(RegionAnswer))
-                            {
-                                <Label>Image @Model.Questions[i].Answers.Count regiona da izaberete</Label>
+                            @{
+                                if (Model.Questions[i].Answers[0].GetType() == typeof(TextAnswer))
+                                {
+                                    <div class="answerBox">
+                                        @{
+                                            for (int j = 0; j < Model.Questions[i].Answers.Count; j++)
+                                            {
+                                                if (Model.Questions[i].Answers.Count > 1)
+                                                {
+                                                    <div>
+                                                        <input type="radio" name="Q@(i)" value="@(((TextAnswer)Model.Questions[i].Answers[j]).text)" />@(((TextAnswer)Model.Questions[i].Answers[j]).text)<br />
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <textarea name="Q@(i)"></textarea>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                    
+                                }
+                                else if (Model.Questions[i].Answers[0].GetType() == typeof(RegionAnswer))
+                                {
+                                    <Label>Image @Model.Questions[i].Answers.Count regiona da izaberete</Label>
+                                }
                             }
-                        }
-                    </div>
+                        </div>
+                    }
                 }
-            }
-                    <input type='button' value='Submit' class="btn btn-primary" onclick='submitAnswers()' />
+                <input type='button' value='Submit' class="btn btn-primary" onclick='submitAnswers()' />
+            </div>
         </div>
-    </div>
-    
+    </div>  
 </body>
 
 

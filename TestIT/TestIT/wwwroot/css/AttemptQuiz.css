@@ -1,10 +1,15 @@
 ﻿body h1 {
-    text-align: center;
+    
     color: #0d004f;
 }
-
+.pageBox{
+    display:flex;
+    flex-direction:column;
+    height:100%;
+}
 .outsideBox{
     display:flex;
+    margin-top:5%
 }
 .leviDeo {
     border-right: groove;
@@ -20,4 +25,34 @@
 .desniDeo {
     display:flex;
     flex-direction:column;
+    flex:1;
 }
+.desniDeo button{
+    align-items:center;
+}
+.questionBox {
+    margin:1%;
+    display: flex;
+    flex-direction: column;
+    
+    border-radius:10%;
+}
+
+.questionBox textarea {
+    margin-left: 5%;
+    margin-left: 5%;
+    resize: none;
+}
+.questionText {
+    text-align: center;
+}
+.questionBox input {
+    margin-left:5%;
+    margin-top:2%
+}
+.answerBox{
+    display:flex;
+    flex-direction:column;
+}
+
+
