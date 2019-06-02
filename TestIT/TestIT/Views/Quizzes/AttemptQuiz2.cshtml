@@ -14,7 +14,10 @@
 
 <body onload="startUp(@quizData);">
     <div class="pageBox">
-        <h1>@Model.Name</h1>
+        <div class="titleDeo">
+            <h1>@Model.Name</h1>
+            <h2>Preostalo vreme : 10min 16sec</h2>
+        </div>
         <div id="outsideBox" class="outsideBox">
             <div id="leviDeo" class="leviDeo">
                 @{
@@ -52,7 +55,7 @@
                                                 if (Model.Questions[i].Answers.Count > 1)
                                                 {
                                                     <div>
-                                                        <input type="radio" name="Q@(i)" value="@(((TextAnswer)Model.Questions[i].Answers[j]).text)" />@(((TextAnswer)Model.Questions[i].Answers[j]).text)<br />
+                                                        <input type="radio" name="Q@(i)" value="@(((TextAnswer)Model.Questions[i].Answers[j]).text)" /><span>@(((TextAnswer)Model.Questions[i].Answers[j]).text) </span>
                                                     </div>
                                                 }
                                                 else
@@ -72,8 +75,12 @@
                         </div>
                     }
                 }
-                <input type='button' value='Submit' class="btn btn-primary" onclick='submitAnswers()' />
+                <input type='button' value='Sledece pitanje >>' class="btn btn-primary" onclick='' />
             </div>
+        </div>
+        <div class="controlDeo">
+            <input type='button' value='Odustani' class="btn btn-primary bg-danger" onclick='' />
+            <input type='button' value='Posalji odgovore' class="btn btn-primary" onclick='submitAnswers()' />
         </div>
     </div>  
 </body>

@@ -1,7 +1,15 @@
-﻿body h1 {
-    
-    color: #0d004f;
+﻿.titleDeo{
+    display:flex;
 }
+    .titleDeo h1 {
+        color: #0d004f;
+        flex: 1;
+    }
+    .titleDeo h2 {
+        text-align: right;
+        flex: 1;
+        font-size: medium;
+    }
 .pageBox{
     display:flex;
     flex-direction:column;
@@ -9,7 +17,7 @@
 }
 .outsideBox{
     display:flex;
-    margin-top:5%;
+    margin-top:2%;
     color:white;
 }
 .leviDeo {
@@ -31,25 +39,30 @@
 }
 .desniDeo input[type="button"] {
     width:20%;
-    margin-left:5%;
-
+    margin-left:50%;
+    
 }
 .questionBox {
-    margin: 5% 5% 2% 5%;
+    margin: 5% 5% 2% 20%;
     display: flex;
     flex-direction: column;
     background-color: #548daf;
     border-radius: 5px;
-    border-style: groove;
+    //border-style: groove;
     width:50%;
 }
 
 .questionBox textarea {
     margin-left: 5%;
     margin-right: 5%;
-    margin-bottom:1%;
-    margin-top:1%;
-    resize: none;
+    margin-bottom: 1%;
+    margin-top: 1%;
+    resize: vertical;
+    height: 200px;
+    border-radius:5px;
+}
+.questionBox span{
+    margin-left:3%
 }
 .questionText {
     text-align: center;
@@ -63,6 +76,9 @@
     display:flex;
     flex-direction:column;
     margin : 5% 1% 5% 1%;
+}
+.controlDeo {
+    margin-top : 2%;
 }
 
 
