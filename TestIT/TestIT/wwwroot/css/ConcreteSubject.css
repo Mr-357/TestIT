@@ -5,12 +5,30 @@
     justify-content: space-between;
 }
 
+@media(max-width:768px) {
+    .comments-quizzes {
+        flex-wrap: wrap;
+    }
+}
+
 .subject-comments{
+    margin-left:5px;
     width: 100%;
-    border: 1px solid black;
 }
 
 .subject-quizzes{
+    margin-right:5px;
     width:100%;
-    border: 1px solid black;
+}
+
+.left-container{
+    margin-right: 5px;
+}
+
+.right-container{
+    margin-left: 5px;
+}
+
+.profesori-asistenti-container{
+    display:flex;
 }
