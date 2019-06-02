@@ -210,23 +210,23 @@ namespace TestIT.Controllers
         }
 
         //POST:
-        [HttpPost]
-        public async Task<IActionResult> Results([FromForm]resultsViewModel result)
+       // [HttpPost]
+        public async Task<IActionResult> Results()//[FromForm]resultsViewModel result
         {
-            int id = result.ID;
-            if (id == null)//i ako mi kaze warning ovde da id nikad ne moze da bude null, mislim da ipak treda ba odtane ova provera
-            {
-                return NotFound();
-            }
-            var quiz = await _context.Quiz
-                .Include(q => q.Questions)
-                .ThenInclude(q => q.Answers)
-                .FirstOrDefaultAsync(e => e.ID == id);
-            if (quiz == null)
-            {
-                return NotFound();
-            }
-            validate(quiz, result); //tek treba da se implementira
+            //int id = result.ID;
+            //if (id == null)//i ako mi kaze warning ovde da id nikad ne moze da bude null, mislim da ipak treda ba odtane ova provera
+            //{
+            //    return NotFound();
+            //}
+            //var quiz = await _context.Quiz
+            //    .Include(q => q.Questions)
+            //    .ThenInclude(q => q.Answers)
+            //    .FirstOrDefaultAsync(e => e.ID == id);
+            //if (quiz == null)
+            //{
+            //    return NotFound();
+            //}
+            //validate(quiz, result); //tek treba da se implementira
 
             return View();
         }

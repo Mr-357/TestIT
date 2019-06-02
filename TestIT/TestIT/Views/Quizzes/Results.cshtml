@@ -3,6 +3,56 @@
     ViewData["Title"] = "Results";
 }
 
-<h1>Results</h1>
-<h2>AND IT WORKS!!!</h2>
+
+
+<link rel="stylesheet" type="text/css" href="~/css/AttemptQuiz.css">
+
+<body >
+    <div class="pageBox">
+        <div class="titleDeo">
+            <h1>Objektno orijentisani model programiranja</h1>
+            <h2>Broj poena: 4/5</h2>
+        </div>
+        <div id="outsideBox" class="outsideBox">
+            <div id="leviDeo" class="leviDeo">
+                @{
+                    for (int i = 0; i < 5; i++)
+                    {
+                        <button onclick="" class="btn" value="Q@i">Q@(i + 1)</button>
+                    }
+           
+                }
+            </div>
+            <div id="desniDeo" class="desniDeo">
+                
+                  
+                            <div id="question1" class="questionBox">
+                                <label class="questionText">Cetiri osnovna koncepta kod objektnog orijentisanog programiranja su? </label>
+
+                            
+
+                                    <div class="answerBox">
+                                      
+                                            <p style="">Vas odgovor: enkapsulacija, apstrakcija, nasledjivanje i polimorfizam ✅ </p>
+                                            <p>Tačan odgovor:Enkapsulacija, Apstrakcija, Nasledjivanje i Polimorfizam </p>
+                                     
+                                    </div>
+
+
+
+                                
+                            </div>
+                        
+
+                    
+                
+                <input type='button' value='Sledece pitanje >>' class="btn btn-primary" onclick='' />
+            </div>
+        </div>
+        <div class="controlDeo">
+            <input type='button' value='Kraj' class="btn btn-primary" onclick='' />
+        </div>
+    </div>
+</body>
+
 
