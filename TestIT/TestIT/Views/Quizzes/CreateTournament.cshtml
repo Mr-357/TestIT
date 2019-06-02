@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "CreateTournament";
+}
+
+<link rel="stylesheet" type="text/css" href="~/css/CreateTurnir.css">
+<script src="~/js/CreateTurnir.js" type="module"></script>
+<div class="outerDiv">
+    <h1>Novi turnir</h1>
+    <div class="middleDiv">
+        <div class="leviDeo">
+            <label>Naziv turnira</label>
+            <textarea></textarea>
+            <label>Sifra za pristup</label>
+            <input />
+            <label>Vidljivost turnira</label>
+            <select>
+                <option value="privatan">Privatan</option>
+                <option value="javan">Javan</option>
+            </select>
+            <label>Rok odrade</label>
+            <input type="datetime-local">
+        </div>
+        <div class="desniDeo">
+            <label>Nesto</label>
+        </div>
+    </div>
+    <div class="controlDiv">
+        <a href="/Home/Users" class="btn btn-danger">Povratak nazad</a>
+        <a class="btn btn-primary" style="color:white">Creiraj</a>
+    </div>
+
+</div>
+
+
+

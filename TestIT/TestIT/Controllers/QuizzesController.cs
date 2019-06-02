@@ -313,5 +313,11 @@ namespace TestIT.Controllers
         {
             Console.WriteLine("Ovo radi :"+viewModel.ID);
         }
+
+        [HttpGet]
+        public IActionResult CreateTournament()
+        {
+            return View();
+        }
     }
 }
