@@ -25,7 +25,17 @@ namespace TestIT.Controllers
             return View();
         }
 
+        public IActionResult Users()
+        {
+            return View();
+        }
+
         public IActionResult ConcreteSubject()
+        {
+            return View();
+        }
+
+        public IActionResult VS()
         {
             return View();
         }
