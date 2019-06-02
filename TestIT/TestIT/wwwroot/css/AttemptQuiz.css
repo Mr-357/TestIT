@@ -1,2 +1,23 @@
-﻿body {
+﻿body h1 {
+    text-align: center;
+    color: #0d004f;
+}
+
+.outsideBox{
+    display:flex;
+}
+.leviDeo {
+    border-right: groove;
+    display: flex;
+    flex-direction: column;
+    
+}
+.leviDeo button {
+    margin: 10px;
+    border-radius: 100%;
+    background-color: #5190b6;
+}
+.desniDeo {
+    display:flex;
+    flex-direction:column;
 }

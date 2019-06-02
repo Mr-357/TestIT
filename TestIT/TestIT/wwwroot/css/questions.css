@@ -60,3 +60,6 @@
     min-height: 50px;
     max-height: 250px;
 }
+body h1 {
+    color: #0d004f;
+}

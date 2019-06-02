@@ -38,4 +38,7 @@
 .subject-button:hover{
     text-decoration: underline;
 }
+body h1 {
+    color: #0d004f;
+}
 

@@ -4,6 +4,7 @@ import { Question } from "./Question.js";
 
 console.log("Attempt Quiz Hello");
 let quiz = null;
+let visibleQuestion = 0;
 
 window.jsonToQzit = function jsonToQzit(json) { //ova fja moze da se renameuje u crtajkviz ili tako nesto
     quiz = json;
@@ -15,7 +16,13 @@ window.submitAnswers = function submitAnswers() {
     console.log(result);
     jsFetch(result);
 }
-
+window.showQuestion = function showQuestion(index) {
+    let questionDiv = document.getElementById("question"+visibleQuestion);
+    questionDiv.hidden = "hidden";
+    questionDiv = document.getElementById("question"+index);
+    questionDiv.hidden = "";
+    visibleQuestion = index;
+}
 function getherAnswers() {
     let result = new Quiz();
     result.ID = quiz.ID;
@@ -90,3 +97,4 @@ function buildFormData(formData, data, parentKey) {
         formData.append(parentKey, value);
     }
 }
+

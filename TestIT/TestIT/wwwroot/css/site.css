@@ -187,3 +187,6 @@ img{
   font-weight:700;
   text-shadow: 0.5px 0.5px 30px #137282;
 }
+body h1 {
+    color: #0d004f;
+}

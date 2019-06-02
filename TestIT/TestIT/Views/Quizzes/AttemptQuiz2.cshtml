@@ -11,26 +11,27 @@
 }
 <script src="~/js/AttemptQuiz.js" type="module"></script>
 <link rel="stylesheet" type="text/css" href="~/css/AttemptQuiz.css">
+
 <body onload="jsonToQzit(@quizData);">
-    <h1>AttemptQuiz2</h1>
-    <div id="gornjiDeo">
-        <label>@Model.ID</label>
-        <label>@Model.Name</label>
-    </div>
-    <div id="donjiDeo">
-        <div id="leviDeo">
-            @{
-                foreach (Question question in Model.Questions)
-                {
-                    <button value="@question.QuestionText">@question.QuestionText</button>
-                }
-            }
-        </div>
-        <div id="desniDeo">
+    <h1>@Model.Name</h1>
+    <div id="outsideBox" class="outsideBox">
+        <div id="leviDeo" class="leviDeo">
             @{
                 for (int i = 0; i < Model.Questions.Count; i++)
                 {
-                    <div id="qustion@(i) ">
+                    <button onclick="showQuestion(@(i));" class="btn" value="Q@i">Q@(i+1)</button>
+                }
+                foreach (Question question in Model.Questions)
+                {
+
+                }
+            }
+        </div>
+        <div id="desniDeo" class="desniDeo">
+            @{
+                for (int i = 0; i < Model.Questions.Count; i++)
+                {
+                    <div id="question@(i)" hidden ="hidden">
                         <label>@Model.Questions[i].QuestionText</label>
                         @{
                             if (Model.Questions[i].Picture != null)
@@ -63,10 +64,10 @@
                     </div>
                 }
             }
-            <input type='button' value='Submit' class="btn btn-primary" onclick='submitAnswers()' />
+                    <input type='button' value='Submit' class="btn btn-primary" onclick='submitAnswers()' />
         </div>
-
     </div>
+    
 </body>
 
 
