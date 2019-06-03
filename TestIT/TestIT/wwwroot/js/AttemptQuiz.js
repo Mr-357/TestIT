@@ -42,12 +42,14 @@ function getherAnswers() {
         }
         else if (answerInput.length > 1) {
             for (let j = 0; j < answerInput.length; j++) {
+                console.log("doslo je do ovde");
                 if (answerInput[j].checked) {
                     tempAnswer = new Answer();
-                    tempAnswer.answerText = answerInput[i].value;
+                    tempAnswer.answerText = answerInput[j].value;
                     tempAnswer.type = "multyText";
                     tempQuestion.addAnswer(tempAnswer);
                 }
+                console.log("Zavrsilo je do ovde");
             }
         }
         result.addQuestion(tempQuestion);

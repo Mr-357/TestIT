@@ -33,7 +33,7 @@ namespace TestIT.Models
         }
         
         //copy constructor
-        public Quiz(CreateQuizViewModel model)
+        public Quiz(QuizViewModel model)
         {
             this.Name = model.Name;
             this.numberOfQustionsPerTry = model.NumberOdQuestionsPerTry;

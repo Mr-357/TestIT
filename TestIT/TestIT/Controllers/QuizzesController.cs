@@ -83,7 +83,7 @@ namespace TestIT.Controllers
         //ostatak objasnjena u site.js
         
         [HttpPost]
-        public async Task<IActionResult> FetchCreate([FromForm]CreateQuizViewModel model)
+        public async Task<IActionResult> FetchCreate([FromForm]QuizViewModel model)
         {
             string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             ApplicationUser current = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
@@ -187,9 +187,9 @@ namespace TestIT.Controllers
 
         //POST:
         [HttpPost]
-        public async Task<IActionResult> Results([FromForm]BaseQuizViewModel result)//[FromForm]resultsViewModel result
+        public async Task<IActionResult> Results([FromForm]QuizViewModel quizAttempt)
         {
-            int id = result.ID;
+            int id = quizAttempt.ID;
             if (id == null)//i ako mi kaze warning ovde da id nikad ne moze da bude null, mislim da ipak treda ba odtane ova provera
             {
                 return NotFound();
@@ -202,14 +202,22 @@ namespace TestIT.Controllers
             {
                 return NotFound();
             }
-            validate(quiz, result); //tek treba da se implementira
+            ResultsViewModel result = validate(quiz, quizAttempt); //tek treba da se implementira
 
             return View();
         }
 
-        private void validate(Quiz quiz, BaseQuizViewModel viewModel)
+        private ResultsViewModel validate(Quiz quiz, QuizViewModel viewModel)
         {
-            Console.WriteLine("Ovo radi :" + viewModel.ID);
+            ResultsViewModel results = new ResultsViewModel();
+            results.copyInfo(quiz);
+            for (int i = 0; i < quiz.Questions.Count; i++)
+            {
+                ResultQuestion resultQuestion = new ResultQuestion(quiz.Questions[i],viewModel.Questions[i]);
+                results.questions.Add(resultQuestion);
+            }
+            results.countRightAnswers();
+            return results;
         }
         /*[HttpGet]
         public IActionResult Results()

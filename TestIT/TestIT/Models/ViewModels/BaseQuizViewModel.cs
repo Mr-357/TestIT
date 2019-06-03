@@ -16,7 +16,7 @@ namespace TestIT.Models.ViewModels
     public class BaseQuestionModel
     {
         public string QuestionText { get; set; }
-        public int Points { get; set; }
+        public float Points { get; set; }
     }
 
     public class BaseAnswerModel

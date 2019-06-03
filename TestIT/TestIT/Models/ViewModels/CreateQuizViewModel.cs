@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace TestIT.Models.ViewModels
 {
-    public class CreateQuizViewModel : BaseQuizViewModel
+    public class QuizViewModel : BaseQuizViewModel
     {
         public List<QuestionModel> Questions { get; set; }
-        public CreateQuizViewModel()
+        public QuizViewModel()
         {
             this.Questions = new List<QuestionModel>();
         }
