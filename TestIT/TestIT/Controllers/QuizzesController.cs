@@ -94,31 +94,7 @@ namespace TestIT.Controllers
            // return Redirect("/Quizzes/Index");
             return Ok();
         }
-        //ok ovde sad imamo mali (a mozda i veliki) problem
-        //trnutno nasa Question klasa ima listu odgovora a odgovor u sebi ima bool da li je tacan
-        //to znaci da tehnicki front-end odmah vidi da li je nesto tacno (sto naravno nije dobro)
-        //how do we fix?
-        //moj predlog je da mozda nekako izmenimo kviz pre slanja da se to ne vidi
-        //ali kako bi to radili a da ne menjamo sam kviz? mozda da imamo novi model koji se salje korisniku gde su izbacene odredjene stvari, tako bi mozda i smanjili kolicinu podataka za slanje?
-        //izvrsio sam commit da bi ste ovo procitali i da zakazem sastanak sledece nedelje obavezno da vidimo sta radimo, kad radimo i kako radimo
-        [HttpPost]
-        public async Task<IActionResult> FetchAnswers([FromForm]AnswersViewModel model) //results model?
-        {
-            int i = 0;
-            foreach (Answer a in model.answers)//zbog gore navedenog razloga moze ovako da se proveri da li je tacno za select i slike, za string bi vec morala rucna provera
-            {
-                if (a.IsCorrect)
-                {
-                    i++;
-                }
-            }
-            if (i == model.answers.Count)//  VVVVVVVV
-            {
-                return Ok();   //            VVVVVVVV
-            }
-            
-            return Unauthorized(); //  ovo je za sada placeholder, treba ubaciti ili neki redirect ili mozda da se negde cuva ovaj attempt kako bi se generisao result page
-        }
+       
         // POST: Quizs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -210,25 +186,30 @@ namespace TestIT.Controllers
         }
 
         //POST:
-       // [HttpPost]
-        public async Task<IActionResult> Results()//[FromForm]resultsViewModel result
+        [HttpPost]
+        public async Task<IActionResult> Results([FromForm]BaseQuizViewModel result)//[FromForm]resultsViewModel result
         {
-            //int id = result.ID;
-            //if (id == null)//i ako mi kaze warning ovde da id nikad ne moze da bude null, mislim da ipak treda ba odtane ova provera
-            //{
-            //    return NotFound();
-            //}
-            //var quiz = await _context.Quiz
-            //    .Include(q => q.Questions)
-            //    .ThenInclude(q => q.Answers)
-            //    .FirstOrDefaultAsync(e => e.ID == id);
-            //if (quiz == null)
-            //{
-            //    return NotFound();
-            //}
-            //validate(quiz, result); //tek treba da se implementira
+            int id = result.ID;
+            if (id == null)//i ako mi kaze warning ovde da id nikad ne moze da bude null, mislim da ipak treda ba odtane ova provera
+            {
+                return NotFound();
+            }
+            var quiz = await _context.Quiz
+                .Include(q => q.Questions)
+                .ThenInclude(q => q.Answers)
+                .FirstOrDefaultAsync(e => e.ID == id);
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+            validate(quiz, result); //tek treba da se implementira
 
             return View();
+        }
+
+        private void validate(Quiz quiz, BaseQuizViewModel viewModel)
+        {
+            Console.WriteLine("Ovo radi :" + viewModel.ID);
         }
         /*[HttpGet]
         public IActionResult Results()
@@ -309,10 +290,7 @@ namespace TestIT.Controllers
             return _context.Quiz.Any(e => e.ID == id);
         }
 
-        private void validate(Quiz quiz,resultsViewModel viewModel)
-        {
-            Console.WriteLine("Ovo radi :"+viewModel.ID);
-        }
+
 
         [HttpGet]
         public IActionResult CreateTournament()

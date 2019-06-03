@@ -45,7 +45,7 @@ namespace TestIT.Models
                 Question tempQuestion = new Question();
                 tempQuestion.QuestionText = questionModel.QuestionText;
                 tempQuestion.Points = questionModel.Points;
-                foreach (AnswerModel answer in questionModel.Answers)
+                foreach (BaseAnswerModel answer in questionModel.Answers)
                 {
                     if(answer.type == "text")
                     {

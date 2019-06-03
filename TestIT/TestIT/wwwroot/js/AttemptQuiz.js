@@ -33,7 +33,7 @@ function getherAnswers() {
         let tempQuestion = new Question();
         let tempAnswer;
         let answerInput = document.getElementsByName("Q" + i);
-        i = i + 1;
+        i++;
         if (answerInput.length == 1) {
             tempAnswer = new Answer();
             tempAnswer.answerText = answerInput.item(0).value;
@@ -42,10 +42,10 @@ function getherAnswers() {
         }
         else if (answerInput.length > 1) {
             for (let j = 0; j < answerInput.length; j++) {
-                console.log("I do ovde");
                 if (answerInput[j].checked) {
                     tempAnswer = new Answer();
                     tempAnswer.answerText = answerInput[i].value;
+                    tempAnswer.type = "multyText";
                     tempQuestion.addAnswer(tempAnswer);
                 }
             }
