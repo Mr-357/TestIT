@@ -8,11 +8,11 @@ namespace TestIT.Models.ViewModels
     public class ResultsViewModel : BaseQuizViewModel
     {
         public float NumberOfRightAnswers { get; set; }
-        public List<ResultQuestion> questions { get; set; }
+        public List<ResultQuestion> Questions { get; set; }
 
         public ResultsViewModel()
         {
-            this.questions = new List<ResultQuestion>();
+            this.Questions = new List<ResultQuestion>();
         }
 
         public void copyInfo(Quiz quiz)
@@ -26,7 +26,7 @@ namespace TestIT.Models.ViewModels
         public void countRightAnswers()
         {
             float count = 0;
-            foreach (ResultQuestion question in this.questions)
+            foreach (ResultQuestion question in this.Questions)
             {
                 count += (question.AchievedPoints==0)?0:question.Points / question.AchievedPoints;
             }
@@ -34,7 +34,7 @@ namespace TestIT.Models.ViewModels
         }
     }
 
-    public class ResultQuestion :BaseQuestionModel
+    public class ResultQuestion : BaseQuestionModel
     {
         public List<ResultAnswer> Answers { get; set; }
         public float AchievedPoints { get; set; }
@@ -109,6 +109,7 @@ namespace TestIT.Models.ViewModels
             if(typeof(TextAnswer) == answer.GetType())
             {
                 this.answerText = ((TextAnswer)answer).text;
+                this.type = "Text";
             }
             else if(answer.GetType() == typeof(RegionAnswer))
             {
@@ -116,6 +117,7 @@ namespace TestIT.Models.ViewModels
                 this.x2 = ((RegionAnswer)answer).x2;
                 this.y1 = ((RegionAnswer)answer).y1;
                 this.y2 = ((RegionAnswer)answer).y2;
+                this.type = "Region";
             }
         }
         public ResultAnswer() { }

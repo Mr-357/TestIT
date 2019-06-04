@@ -1,51 +1,98 @@
-﻿
+﻿@model TestIT.Models.ViewModels.ResultsViewModel
 @{
     ViewData["Title"] = "Results";
+    string quizData = Newtonsoft.Json.JsonConvert.SerializeObject(Model, new Newtonsoft.Json.JsonSerializerSettings()
+    {
+        PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects,
+        Formatting = Newtonsoft.Json.Formatting.Indented,
+        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    });
 }
 
 
-
+<script src="~/js/AttemptQuiz.js" type="module"></script>
 <link rel="stylesheet" type="text/css" href="~/css/AttemptQuiz.css">
 
-<body >
-    <div class="pageBox">
+<body onload="startUp(@quizData);">
+    <div class="pageBox" >
         <div class="titleDeo">
-            <h1>Objektno orijentisani model programiranja</h1>
-            <h2>Broj poena: 4/5</h2>
+            <h1>@Model.Name</h1>
+            <h2>Broj tacnih pitanja: @Model.NumberOfRightAnswers/@Model.Questions.Count</h2>
         </div>
         <div id="outsideBox" class="outsideBox">
             <div id="leviDeo" class="leviDeo">
                 @{
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < Model.Questions.Count; i++)
                     {
-                        <button onclick="" class="btn" value="Q@i">Q@(i + 1)</button>
+                        <button onclick="showQuestion(@(i));" class="btn" value="Q@i">Q@(i + 1)</button>
                     }
-           
                 }
             </div>
             <div id="desniDeo" class="desniDeo">
-                
-                  
-                            <div id="question1" class="questionBox">
-                                <label class="questionText">Cetiri osnovna koncepta kod objektnog orijentisanog programiranja su? </label>
-
-                            
-
+                @{
+                    for (int i = 0; i < Model.Questions.Count; i++)
+                    {
+                        <div id="question@(i)" hidden="hidden" class="questionBox">
+                            <label class="questionText">@Model.Questions[i].QuestionText</label>
+                            @{
+                                if (Model.Questions[i].Picture != null)
+                                {
+                                    var base64 = Convert.ToBase64String(Model.Questions[i].Picture);
+                                    var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                                    <img id="imageQ@(i)" src=@imgSrc />
+                                }
+                            }
+                            @{
+                                if (Model.Questions[i].Answers[0].type.Contains("Text"))
+                                {
                                     <div class="answerBox">
-                                      
-                                            <p style="">Vas odgovor: enkapsulacija, apstrakcija, nasledjivanje i polimorfizam ✅ </p>
-                                            <p>Tačan odgovor:Enkapsulacija, Apstrakcija, Nasledjivanje i Polimorfizam </p>
-                                     
+                                        @{
+                                            for (int j = 0; j < Model.Questions[i].Answers.Count; j++)
+                                            {
+                                                if (Model.Questions[i].Answers.Count > 1)
+                                                {
+                                                    <div>
+                                                        <input type="radio" name="Q@(i)" value="@(Model.Questions[i].Answers[j].answerText)" /><span>@(Model.Questions[i].Answers[j].answerText)</span>
+                                                        @{
+                                                            bool userPick = Model.Questions[i].Answers[j].isUserPick;
+                                                            bool correct = Model.Questions[i].Answers[j].isCorrect;
+                                                            if (userPick)
+                                                            {
+                                                                if (correct)
+                                                                {
+                                                                    <span>✔</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="wrongSimbol">❌</span>
+                                                                }
+                                                            }
+                                                            else if (correct) {
+                                                                <span class="rightSimbol">🙀</span>
+                                                            }
+                                                        }
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                     String style = (Model.Questions[i].Answers[0].isCorrect) ? "rightAnswerText" : "wrongAnwserText";
+                                                    <textarea name="Q@(i)" class ="@(style)" >@(Model.Questions[i].Answers[0].answerText)</textarea>
+                                                    <label>Tacan Ogovor:</label>
+                                                    <p>@Model.Questions[i].Answers[0].RightAnswerText</p>
+                                                }
+                                            }
+                                        }
                                     </div>
 
-
-
-                                
-                            </div>
-                        
-
-                    
-                
+                                }
+                                else if (Model.Questions[i].Answers[0].type.Contains("Region"))
+                                {
+                                    <Label>Imate @Model.Questions[i].Answers.Count regiona da izaberete</Label>
+                                }
+                            }
+                        </div>
+                    }
+                }
                 <input type='button' value='Sledece pitanje >>' class="btn btn-primary" onclick='' />
             </div>
         </div>

@@ -52,21 +52,27 @@
     width:50%;
 }
 
-.questionBox textarea {
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-bottom: 1%;
-    margin-top: 1%;
-    resize: vertical;
-    height: 200px;
-    border-radius:5px;
-}
-.questionBox span{
-    margin-left:3%
-}
+    .questionBox textarea {
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-bottom: 1%;
+        margin-top: 1%;
+        resize: vertical;
+        height: 200px;
+        border-radius:5px;
+    }
+    .questionBox span{
+        margin-left:3%
+    }
+    .questionBox .rightAnswerText {
+        background-color: lightgreen;
+    }
+    .questionBox .wrongAnwserText {
+        background-color: red;
+    }
 .questionText {
     text-align: center;
-    margin-top:2%
+    margin-top: 2%
 }
 .questionBox input {
     margin-left:5%;
@@ -77,6 +83,18 @@
     flex-direction:column;
     margin : 5% 1% 5% 1%;
 }
+    .answerBox label {
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-bottom: 1%;
+        margin-top: 1%;
+    }
+    .answerBox p {
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-bottom: 1%;
+        margin-top: 1%;
+    }
 .controlDeo {
     margin-top : 2%;
 }

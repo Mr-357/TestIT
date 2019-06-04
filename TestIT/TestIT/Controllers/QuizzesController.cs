@@ -204,7 +204,7 @@ namespace TestIT.Controllers
             }
             ResultsViewModel result = validate(quiz, quizAttempt); //tek treba da se implementira
 
-            return View();
+            return View(result);
         }
 
         private ResultsViewModel validate(Quiz quiz, QuizViewModel viewModel)
@@ -214,7 +214,7 @@ namespace TestIT.Controllers
             for (int i = 0; i < quiz.Questions.Count; i++)
             {
                 ResultQuestion resultQuestion = new ResultQuestion(quiz.Questions[i],viewModel.Questions[i]);
-                results.questions.Add(resultQuestion);
+                results.Questions.Add(resultQuestion);
             }
             results.countRightAnswers();
             return results;

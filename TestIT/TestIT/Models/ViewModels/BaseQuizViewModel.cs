@@ -11,12 +11,12 @@ namespace TestIT.Models.ViewModels
         public string Name { get; set; }
         public int NumberOdQuestionsPerTry { get; set; }
         public int Time { get; set; }
-
     }
     public class BaseQuestionModel
     {
         public string QuestionText { get; set; }
         public float Points { get; set; }
+        public byte[] Picture { get; set; }
     }
 
     public class BaseAnswerModel
