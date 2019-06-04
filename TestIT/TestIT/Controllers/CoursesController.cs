@@ -54,7 +54,7 @@ namespace TestIT.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,SchoolYear,Name,Module")] Course course)
+        public async Task<IActionResult> Create([Bind("ID,SchoolYear,Name,Description,Short,Module")] Course course)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace TestIT.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,SchoolYear,Name,Module")] Course course)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,SchoolYear,Name,Description,Short,Module")] Course course)
         {
             if (id != course.ID)
             {
@@ -115,7 +115,7 @@ namespace TestIT.Controllers
             }
             return View(course);
         }
-
+ 
         // GET: Courses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

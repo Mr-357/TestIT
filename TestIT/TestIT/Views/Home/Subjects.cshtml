@@ -1,28 +1,16 @@
+@model TestIT.Models.ViewModels.CoursesViewModel
 @{
     ViewData["Title"] = "Predmeti";
-                                // modul            godina i lista predmeta
-    var predmeti = new Dictionary<string,Dictionary<int,List<string>>>();
-    var rii = new Dictionary<int,List<string>>(); 
 
-    <!-- Umesto ovakve inicijalizacije trebalo bi citanje iz baze a da baza ima sve ovo sto je dole i takodje i za ostale module -->
-    rii.Add(1,new List<string>(){"Uvod u racunarstvo","Algoritmi i programiranje"});
-    rii.Add(2,new List<string>(){"Diskretna matematika","Racunarski sistemi","Objektno orijentisano programiranje","Logicko projektovanje","Arhitektura i organizacija racunara","Programski jezici"
-                                                    ,"Strukture podataka","Baze podataka","Teorija grafova"});
-    rii.Add(3,new List<string>(){"Razvoj Web aplikacija","Distribuirani sistemi","Teorija igara","Osnovi analize signala i sistema","Sistemi baza podataka","Objektno-orijentisano projektovanje"
-                                                    ,"Operativni sistemi","Računarske mreže","Web programiranje","Projektovanje i analiza algoritama","Mikroračunarski sistemi","Informacioni sistemi"
-                                                    ,"Softversko inženjerstvo","Projekti - VI semestar","Interakcija čovek-računar"});
-    rii.Add(4,new List<string>(){"Algoritmi logičkih igara","Servisno-orijentisane arhitekture",
-                                            "Računarski vid", "Metodi i sistemi za obradu signala","Socijalni i pravni aspekti informatike",
-                                            "Projektovanje računarskih mreža","Stručna praksa","Internet tehnologije","Softversko inžinjerstvo II","Arhitektura i projektovanje softvera",
-                                            "Napredne baze podataka","Računarska grafika","Prepoznavanje uzoraka","Programski prevodioci","Zaštita informacija","Multimedijalni sistemi",
-                                            "Tehnologije za podršku učenju","Paralelni sistemi","Projektovanje računarskog hardvera","Skladištenje podataka i otkrivanje znanja",
-                                            "Veštačka inteligencija","Razvoj sistemskog softvera i sistemsko programiranje","Mobilni sistemi i servisi"});
-    predmeti.Add("RII",rii);
-    predmeti.Add("EEN",null);
-    predmeti.Add("EKM",null);
-    predmeti.Add("UPS",null);
-    predmeti.Add("EK",null);
-    predmeti.Add("TK",null);
+
+    /*£££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££*/
+    var predmeti = new Dictionary<string, Dictionary<int, List<string>>>();
+    predmeti.Add("RII", null);
+    predmeti.Add("EEN", null);
+    predmeti.Add("EKM", null);
+    predmeti.Add("UPS", null);
+    predmeti.Add("EK", null);
+    predmeti.Add("TK", null);
 
     string SelectedModule = "RII";
 }
@@ -44,48 +32,26 @@
 </div>
 
 <div>
-    <label class="year-label" onclick="HideSubjects('1');">I godina &#9660; </label>
-    <div hidden="hidden" class="1st-year subjects">
-        @{
-            foreach (var el in predmeti[SelectedModule][1])
-            {
-                <div>
-                    <a href = '/Home/ConcreteSubject/' class="subject-button" style="color:#5190b6">@el</a>
-                </div>
-            }
+    @{
+        int i = 0;
+        foreach(var god in Model.getYears())
+        {
+         
+        <label class="year-label" onclick="HideSubjects(@i);">@god &#9660; </label>
+        <div hidden="hidden" class="year">
+            @{ 
+                foreach (var el in Model.getCourses())
+                {
+                    if(el.SchoolYear==god)
+                    { 
+                    <div>
+                        <a href='/Home/ConcreteSubject/' class="subject-button" style="color:#5190b6">@el.Name</a>
+                    </div>
+                    }
+                }
+                i++;
         }
         </div>
-    <label class="year-label" onclick="HideSubjects('2');">II godina &#9660; </label>
-    <div hidden="hidden" class="2nd-year subjects">
-        @{
-            foreach (var el in predmeti[SelectedModule][2])
-            {
-                <div>
-                    <a href = '/Home/ConcreteSubject/' class="subject-button" style="color:#5190b6">@el</a>
-                </div>
-            }
-        }
+                }
+     }
     </div>
-    <label class="year-label" onclick="HideSubjects('3');">III godina &#9660; </label>
-    <div hidden="hidden" class="3rd-year subjects">
-        @{
-            foreach (var el in predmeti[SelectedModule][3])
-            {
-                <div>
-                    <a href = '/Home/ConcreteSubject/' class="subject-button" style="color:#5190b6">@el</a>
-                </div>
-            }
-        }
-    </div>
-    <label class="year-label" onclick="HideSubjects('4');">IV godina &#9660; </label>
-    <div hidden="hidden" class="4th-year subjects">
-        @{
-            foreach (var el in predmeti[SelectedModule][4])
-            {
-                <div>
-                    <a href = '/Home/ConcreteSubject/' class="subject-button" style="color:#5190b6">@el</a>
-                </div>
-            }
-        }
-    </div>
-</div>

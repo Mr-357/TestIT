@@ -1,10 +1,10 @@
 //AddSubjectsPerYear();
 
 // Po defaultu su sakriveni a ovime i otkrivamo cim se loaduje stranica
-Hide('1');
-Hide('2')
-Hide('3')
-Hide('4')
+//Hide('1');
+//Hide('2')
+//Hide('3')
+//Hide('4')
 
 
 function AddSubjectsPerYear(){
@@ -45,24 +45,8 @@ function GoToSubjectPage(){
 function Hide(num){
     
     let div;
-    switch(num){
-        case '1':
-            div = document.getElementsByClassName("1st-year");
-            div[0].hidden = !div[0].hidden;
-        break;
-        case '2':
-            div = document.getElementsByClassName("2nd-year");
-            div[0].hidden = !div[0].hidden;
-        break;
-        case '3':
-            div = document.getElementsByClassName("3rd-year");
-            div[0].hidden = !div[0].hidden;
-        break;
-        case '4':
-            div = document.getElementsByClassName("4th-year");
-            div[0].hidden = !div[0].hidden;
-        break;
-    }
+    div = document.getElementsByClassName("year");
+    div[num].hidden = !div[num].hidden;
 }
 
 

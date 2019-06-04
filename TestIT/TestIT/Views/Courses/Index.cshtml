@@ -22,6 +22,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Module)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Short)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -38,9 +44,15 @@
                 @Html.DisplayFor(modelItem => item.Module)
             </td>
             <td>
-                <a class="table-button"asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a class="table-button"asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a class="table-button"asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                @Html.DisplayFor(modelItem =>item.Description )
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Short)
+            </td>
+            <td>
+                <a class="table-button" asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a class="table-button" asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a class="table-button" asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>
 }
