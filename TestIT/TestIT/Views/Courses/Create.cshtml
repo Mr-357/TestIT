@@ -14,7 +14,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="SchoolYear" class="control-label"></label>
-                <input asp-for="SchoolYear" class="form-control" />
+                <select asp-for="SchoolYear" class="form-control">
+                    <option value="Prva">Prva godina</option>
+                    <option value="Druga">Druga godina</option>
+                    <option value="Treca">Treca godina</option>
+                    <option value="Cetvrta">Cetvrta godina</option>
+                    <option value="Master">Master</option>
+                    <option value="Doktorske">Doktorske studije</option>
+                </select>
                 <span asp-validation-for="SchoolYear" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -24,7 +31,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Module" class="control-label"></label>
-                <input asp-for="Module" class="form-control" />
+                <select asp-for="Module" class="form-control" >
+                    <option value="RII">Racunarstvo i informatika</option>
+                    <option value="EEN">EEN</option>
+                    <option value="UPS">UPS</option>
+                    <option value="EK">EK</option>
+                    <option value="">nzm</option>
+                    <option value="">nzm</option>
+                </select>
                 <span asp-validation-for="Module" class="text-danger"></span>
             </div>
             <div class="form-group">

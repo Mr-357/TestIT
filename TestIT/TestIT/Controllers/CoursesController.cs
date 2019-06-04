@@ -144,7 +144,40 @@ namespace TestIT.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+        [HttpGet]
+        public List<String> getCourses(String year)
+        {
+            IList<Course> courses = _context.Courses
+                .Where(x => x.SchoolYear == year && x.Module == "RII")
+                .ToList();
+            List<String> names = new List<string>();
+            if (courses != null)
+            {
+                foreach (Course course in courses)
+                {
+                    names.Add(course.Name);
+                }
+            }
+            return names;
+        }
+        [HttpGet]
+        public List<String> getYears()
+        {
+            IList<Course> courses = _context.Courses
+                .GroupBy(x => x.SchoolYear)
+                .Select(x=> x.FirstOrDefault())
+                .ToList();
+            List<String> names = new List<string>();
+            if (courses != null)
+            {
+                foreach (Course course in courses)
+                {
+                    names.Add(course.SchoolYear);
+                }
+            }
+            names.Reverse();
+            return names;
+        }
         private bool CourseExists(int id)
         {
             return _context.Courses.Any(e => e.ID == id);

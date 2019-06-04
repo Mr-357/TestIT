@@ -54,8 +54,84 @@ function buildFormData(formData, data, parentKey) {
         formData.append(parentKey, value);
     }
 }
+window.fetchCourses = function fetchCourses()
+{
+    let godina = document.getElementById("godina")
+    if (godina.options[0].value == "")
+    {
+        godina.remove(0);
+    }
+    
+    
+    const fetchData =
+    {
+        method: "GET",
+        redirect: 'follow',
+        credentials: 'include' //ovo se dodaje da salje cookie odnosno podatke o korisniku, postoji sansa da vrati error 500 ako se ne posalje ovo
+    }
+    fetch("/Courses/getCourses?year=" + godina.value)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            else
+            {
+                let lista = document.getElementById("predmeti");
+                for (let i = lista.options.length - 1; i >= 0; i--)
+                {
+                    lista.remove(i);
+                }
+                return response.json();
+            }
+            return;
+        })
+        .then(data =>
+        {
+            console.log(data);
+            let lista = document.getElementById("predmeti");
+            data.forEach(x =>
+            {
+                console.log(x);
+                let opcija = document.createElement("option");
+                opcija.innerHTML = x;
+                lista.add(opcija);
+            });
+        })
+        .catch(error => console.log(error));
 
+}
+window.fetchYears = function fetchYears() {
+    console.log("uslo ovde");
+    const fetchData =
+    {
+        method: "GET",
+        redirect: 'follow',
+        credentials: 'include' //ovo se dodaje da salje cookie odnosno podatke o korisniku, postoji sansa da vrati error 500 ako se ne posalje ovo
+    }
+    fetch("/Courses/getYears")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            else {
+        
+                return response.json();
+            }
+            return;
+        })
+        .then(data => {
+            console.log(data);
+            let lista = document.getElementById("godina");
+            data.forEach(x => {
+                console.log(x);
+                let opcija = document.createElement("option");
+                opcija.innerHTML = x;
+                lista.add(opcija);
+            });
+        })
+        .catch(error => console.log(error));
 
+}
 window.addQuestion = function addQuestion() {
     //kreiranj pitanja
     console.log("Radi ADD");
