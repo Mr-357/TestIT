@@ -24,7 +24,6 @@ namespace TestIT.Models
         [DisplayName("Tip")]
         public quizVisibility Visibility { get; set; }
 
-
         public IList<Question> Questions { get; set; }
 
         public Quiz()

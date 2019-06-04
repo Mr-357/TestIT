@@ -14,12 +14,17 @@ namespace TestIT.Data
         {
         }
         public DbSet<TestIT.Models.Quiz> Quiz { get; set; }
+        public DbSet<TestIT.Models.Course> Courses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<TextAnswer>();
             builder.Entity<PictureAnswer>();
             builder.Entity<RegionAnswer>();
+            builder.Entity<Course>()
+                .HasMany(c => c.Quizzes)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Answer>()
                 .HasOne(a => a.Question)
