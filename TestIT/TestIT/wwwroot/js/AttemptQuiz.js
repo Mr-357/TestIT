@@ -35,15 +35,15 @@ displayTimer = function displayTime() {
     sec = timeRemaining % 60;
     str.innerHTML = min + ":" + sec;
     if (timeRemaining == 0) {
-        clearInterval(displayTimer);
+        clearInterval(timerInterval);
     }
 }
 timer = function timeOut() {
     submitAnswers();
 }
 window.submitAnswers = function submitAnswers() {
-    clearInterval(displayTimer);
-    clearTimeout(timer);
+    clearInterval(timerInterval);
+    clearTimeout(timeO);
     let result = getherAnswers();
     console.log(result);
     jsFetch(result);

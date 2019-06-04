@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -73,6 +74,27 @@ namespace TestIT.Controllers
         public IActionResult AdminUser()
         {
             return View();
+        }
+
+        [HttpGet]//ovo je primer za povezivanje kursa sas coveka,i ne treba koristiti ovu akciju direktno
+        public async Task<IActionResult> testRun()
+        {
+            Course course = _context.Courses
+                .Where(x => x.ID == 1)
+                .FirstOrDefault();
+            string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ApplicationUser currentUser = _context.Users.Include(user => user.Quizzes).FirstOrDefault(x => x.Id == currentUserId);
+
+            onCours onCours = new onCours();
+            onCours.User = currentUser;
+            onCours.Course = course;
+
+            currentUser.OnCours.Add(onCours);
+            course.Users.Add(onCours);
+
+            _context.SaveChanges();
+
+            return View("Index");
         }
     }
 }

@@ -25,7 +25,12 @@ namespace TestIT.Data
                 .HasMany(c => c.Quizzes)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
-
+            builder.Entity<onCours>()
+                .HasOne(x => x.User)
+                .WithMany(s => s.OnCours);
+            builder.Entity<onCours>()
+                .HasOne(x => x.Course)
+                .WithMany(c => c.Users);
             builder.Entity<Answer>()
                 .HasOne(a => a.Question)
                 .WithMany(q => q.Answers)

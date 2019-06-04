@@ -148,7 +148,7 @@ window.addQuestion = function addQuestion() {
             QuestionTemplate.QuestionText = questionText;
             QuestionTemplate.Points = points;
             let tempAnswer = new Answer(true);
-            tempAnswer.answerText = document.getElementById("answerTextArea").value;
+            tempAnswer.answerText = document.getElementById("answer-Text").value;
             tempAnswer.type = "text";
             QuestionTemplate.addAnswer(tempAnswer);
             QuizTemplate.addQuestion(QuestionTemplate);
@@ -209,10 +209,10 @@ window.createAnswerTextArea = function createAnswerTextArea() {
     closeAnswerSelectionArea();
     let div = document.createElement('div');
     div.id = "answerTextArea";
-
     let label = document.createElement('label');
     label.innerHTML = "Unesite tacan odgovor:";
     let textArea = document.createElement('textarea');
+    textArea.id = "answer-Text";
     textArea.className = "answer-text-area";
     div.appendChild(label);
     div.appendChild(textArea);

@@ -16,10 +16,11 @@ namespace TestIT.Models
         public String Description { get; set; }
         public String Short  { get; set; }
         public List<Quiz> Quizzes { get; set; }
-
+        public List<onCours> Users { get; set; }
         public Course()
         {
             this.Quizzes = new List<Quiz>();
+            this.Users = new List<onCours>();
         }
     }
 }
