@@ -5,23 +5,53 @@ import { Question } from "./Question.js";
 console.log("Attempt Quiz Hello");
 let quiz = null;
 let visibleQuestion = 0;
-
+let timeRemaining;
+let displayTimer;
+let timer;
+let timerInterval;
+let timeO;
 window.startUp = function startUp(json) { //ova fja moze da se renameuje u crtajkviz ili tako nesto
     quiz = json;
     console.log(quiz);
     let questionDiv = document.getElementById("question" + visibleQuestion);
     questionDiv.hidden = "";
-}
+    console.log(quiz.time);
+    if (quiz.time > 0) {
 
+        timeRemaining = quiz.time * 60;
+        timerInterval = setInterval(displayTimer, 1000);
+        let h = document.getElementById("time");
+        h.style.display = "initial";
+        timeO = setTimeout(timer, timeRemaining * 1000);
+    }
+
+}
+displayTimer = function displayTime() {
+    let str = document.getElementById("timer");
+    let min = 0;
+    let sec = 0;
+    timeRemaining--;
+    min = Math.floor(timeRemaining / 60);
+    sec = timeRemaining % 60;
+    str.innerHTML = min + ":" + sec;
+    if (timeRemaining == 0) {
+        clearInterval(displayTimer);
+    }
+}
+timer = function timeOut() {
+    submitAnswers();
+}
 window.submitAnswers = function submitAnswers() {
+    clearInterval(displayTimer);
+    clearTimeout(timer);
     let result = getherAnswers();
     console.log(result);
     jsFetch(result);
 }
 window.showQuestion = function showQuestion(index) {
-    let questionDiv = document.getElementById("question"+visibleQuestion);
+    let questionDiv = document.getElementById("question" + visibleQuestion);
     questionDiv.hidden = "hidden";
-    questionDiv = document.getElementById("question"+index);
+    questionDiv = document.getElementById("question" + index);
     questionDiv.hidden = "";
     visibleQuestion = index;
 }
@@ -59,7 +89,7 @@ function getherAnswers() {
 
 function jsFetch(result) {
     //console.log(result);
-    const formData = new FormData();    
+    const formData = new FormData();
     buildFormData(formData, result);
     const fetchData =
     {
@@ -79,7 +109,7 @@ function jsFetch(result) {
             return;
         })
         .catch(error => console.log(error));*/
-    fetch("/Quizzes/Results",fetchData)
+    fetch("/Quizzes/Results", fetchData)
         .then(response => {
             console.log(response);
             return response.text();

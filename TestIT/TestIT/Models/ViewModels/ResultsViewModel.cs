@@ -66,6 +66,8 @@ namespace TestIT.Models.ViewModels
 
         private Boolean compareAnswers(String rightAnswer,String attemptAnswer)
         {
+            if (attemptAnswer == null || rightAnswer == null)
+                return false;
             return rightAnswer.ToLower().Equals(attemptAnswer.ToLower());
         }
         private void calculatePoint()
