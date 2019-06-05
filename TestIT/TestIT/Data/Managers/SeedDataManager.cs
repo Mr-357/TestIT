@@ -12,34 +12,29 @@ namespace TestIT.Data.Managers
         public static List<Course> getCoursSeedData()
         {
             List<Course> predmeti = new List<Course>();
-            using (var sr = new StreamReader("Data.txt"))
+            using (var sr = new StreamReader("Data/Managers/CourseSeedData.tsd"))
             {
+                int i = 1;
                 while (!sr.EndOfStream)
                 {
                     string tmpNaziv = sr.ReadLine();
                     string tmpGodina = sr.ReadLine();
+                    string tmpModule = sr.ReadLine();
                     string tmpSkracenica = sr.ReadLine();
 
-                    // Ovo radi ali me mrzi da ubacujem opis sada, inace ovako izgleda fajl za svaki predmet
-                    // naziv
-                    // godina
-                    // skracenica
-                    // opis opis opis
-                    // opis opis opis
-                    // ###
+                    string tmp = sr.ReadLine();
+                    string tmpOpis = "";
+                    do
+                    {
+                        tmpOpis += tmp;
+                        tmp = sr.ReadLine();
+                    }
+                    while (tmp != "###");
 
-                    // string tmp = sr.ReadLine();
-                    // string tmpOpis = "";
-
-                    // do
-                    // {
-                    //     tmpOpis += tmp;
-                    //     tmp = sr.ReadLine();
-                    // }
-                    // while(tmp != "###");
-
-                    predmeti.Add(new Course() { SchoolYear = tmpGodina, Short = tmpSkracenica, Name = tmpNaziv, Description = "Not Today", Module = "RII" });
+                    predmeti.Add(new Course() { ID = i++, SchoolYear = tmpGodina, Short = tmpSkracenica, Name = tmpNaziv, Description = tmpOpis , Module = tmpModule });
                 }
+
+                
             }
             return predmeti;
         }
