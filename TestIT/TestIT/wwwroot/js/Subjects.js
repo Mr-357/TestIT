@@ -1,22 +1,11 @@
 //AddSubjectsPerYear();
 
 // Po defaultu su sakriveni a ovime i otkrivamo cim se loaduje stranica
-//Hide('1');
-//Hide('2')
-//Hide('3')
-//Hide('4')
-
-
-function AddSubjectsPerYear(){
-    let div = document.getElementsByClassName("1st-year");
-    AppendSubjects(div[0]);
-    div = document.getElementsByClassName("2nd-year");
-    AppendSubjects(div[0]);
-    div = document.getElementsByClassName("3rd-year");
-    AppendSubjects(div[0]);
-    div = document.getElementsByClassName("4th-year");
-    AppendSubjects(div[0]);
-}
+Hide(0);
+Hide(1);
+Hide(2);
+Hide(3);
+Hide(4);
 
 function AppendSubjects(container){
     let button;
@@ -35,9 +24,7 @@ function AppendSubjects(container){
 }
 
 function GoToSubjectPage(){
-    console.log(this.value); // Stampa value dugmeta tj predmeta koji je kliknut i to bi se prosledjivalo pri prikazivanju stranice za taj konkretan kviz
-
-    // window.location.href = '/Home/ConcreteSubject/' + this.value;
+    console.log(this.value); 
     
     window.location.href = '/Home/ConcreteSubject/';
 }
@@ -46,7 +33,8 @@ function Hide(num){
     
     let div;
     div = document.getElementsByClassName("year");
-    div[num].hidden = !div[num].hidden;
+    if(div!=null)
+        div[num].hidden = !div[num].hidden;
 }
 
 
