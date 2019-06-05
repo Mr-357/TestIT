@@ -43,22 +43,30 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" style="color:white; font-weight:bold">Privatnost</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Subjects" style="color:white; font-weight:bold">Predmeti</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Courses" style="color:white; font-weight:bold">Predmeti</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="AdminUser" style="color:white; font-weight:bold">Admin User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Quizzes" asp-action="CreateTournament" style="color:white; font-weight:bold">Kreiraj Turnir</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Index" style="color:white; font-weight:bold">Kursevi</a>
-                        </li>
+
                         @if (SignInManager.IsSignedIn(User))
                         {
+                            if (User.IsInRole("Profesor"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Quizzes" asp-action="CreateTournament" style="color:white; font-weight:bold">Kreiraj Turnir</a>
+                                </li>
+                            }
+                            else if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="AdminUser" style="color:white; font-weight:bold">Admin User</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Index" style="color:white; font-weight:bold">Kursevi</a>
+                                </li>
+                            }
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Users" style="color:white; font-weight:bold">Korisnici</a>
                             </li>
+
                         }
                     </ul>
                 </div>

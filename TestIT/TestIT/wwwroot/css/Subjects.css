@@ -3,14 +3,19 @@
     margin-bottom: 10px;
     flex-wrap:wrap;
 }
-.year-label{
-    border-radius:7px;
+.year-label {
+    border-radius: 7px;
     background-color: #5190b6;
     width: 75%;
     margin-left: 11.5%;
-    align-self:center;
+    align-self: center;
     text-align: center;
     color: whitesmoke;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .subjects{

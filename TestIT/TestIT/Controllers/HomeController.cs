@@ -34,12 +34,13 @@ namespace TestIT.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Subjects()
+        public async Task<IActionResult> Courses()
         {
            CoursesViewModel c = new CoursesViewModel(await _context.Courses.ToListAsync());
             IList<Course> courses = _context.Courses
                .GroupBy(x => x.SchoolYear)
                .Select(x => x.FirstOrDefault())
+               .OrderBy(x=>x.ID)
                .ToList();
             List<String> names = new List<string>();
             if (courses != null)
@@ -49,7 +50,7 @@ namespace TestIT.Controllers
                     names.Add(course.SchoolYear);
                 }
             }
-            names.Reverse();
+           // names.Reverse();
             c.addYears(names);
             return View(c);
         }
@@ -59,7 +60,7 @@ namespace TestIT.Controllers
             return View();
         }
 
-        public IActionResult ConcreteSubject()
+        public IActionResult Course(int id)
         {
             return View();
         }
