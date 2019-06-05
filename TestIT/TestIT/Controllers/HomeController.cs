@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestIT.Data;
@@ -15,9 +16,13 @@ namespace TestIT.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public HomeController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+        public HomeController(ApplicationDbContext context,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
         }
         public IActionResult Index()
         {
@@ -93,6 +98,22 @@ namespace TestIT.Controllers
             course.Users.Add(onCours);
 
             _context.SaveChanges();
+
+            return View("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> roleTestRun()
+        {
+            //kreiranje role-a
+            IdentityRole newRole = new IdentityRole("Student");
+            await roleManager.CreateAsync(newRole);
+            //privavljane trenutno ulogovanog korisnika
+            string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ApplicationUser currentUser = _context.Users.Include(user => user.Quizzes).FirstOrDefault(x => x.Id == currentUserId);
+
+            //dodavanje role korisniku, ovo je glavni deo
+            await userManager.AddToRoleAsync(currentUser, "Student");
 
             return View("Index");
         }

@@ -17,7 +17,6 @@ namespace TestIT.Controllers
     public class QuizzesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private Quiz tempQuiz;
 
         public QuizzesController(ApplicationDbContext context)
         {
@@ -87,6 +86,7 @@ namespace TestIT.Controllers
         {
             string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             ApplicationUser current = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
+
             Quiz temp = new Quiz(model);
             current.addQuiz(new Quiz(model));
             await _context.SaveChangesAsync();

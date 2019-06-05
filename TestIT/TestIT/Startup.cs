@@ -40,6 +40,7 @@ namespace TestIT
                 options.UseMySql(
                     Configuration.GetConnectionString("LocalConnection")));
             services.AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
