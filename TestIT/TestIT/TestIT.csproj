@@ -11,10 +11,6 @@
     <Compile Remove="Data\Migrations\20190605152522_RoleSeedDataUpdate.Designer.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Remove="wwwroot\Data\Managers\CourseSeedData.tsd" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -26,7 +22,7 @@
 
 
   <ItemGroup>
-    <None Include="wwwroot\Data\Managers\CourseSeedData.tsd" />
+    <None Include="wwwroot\Courses.txt" />
   </ItemGroup>
 
 

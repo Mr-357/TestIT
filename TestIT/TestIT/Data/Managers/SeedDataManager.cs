@@ -12,7 +12,7 @@ namespace TestIT.Data.Managers
         public static List<Course> getCoursSeedData()
         {
             List<Course> predmeti = new List<Course>();
-            using (var sr = new StreamReader("Data/Managers/CourseSeedData.tsd"))
+            using (var sr = new StreamReader("wwwroot/Courses.txt"))
             {
                 int i = 1;
                 while (!sr.EndOfStream)
