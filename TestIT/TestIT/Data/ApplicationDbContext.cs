@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TestIT.Models;
+using TestIT.Data.Managers;
 
 namespace TestIT.Data
 {
@@ -35,11 +37,16 @@ namespace TestIT.Data
                 .HasOne(a => a.Question)
                 .WithMany(q => q.Answers)
                 .OnDelete(DeleteBehavior.Cascade);
-
             builder.Entity<Question>()
                 .HasOne(q => q.Quiz)
                 .WithMany(quiz => quiz.Questions)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //seed Data
+            builder.Entity<IdentityRole>()
+                .HasData(
+                    SeedDataManager.getRoleSeedData()
+                );
 
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.

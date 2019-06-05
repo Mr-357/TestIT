@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestIT.Data;
 
 namespace TestIT.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190605145242_RoleSeedData")]
+    partial class RoleSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,31 +44,15 @@ namespace TestIT.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a5569518-fe56-4631-a66d-bd1b01b4ceda",
-                            ConcurrencyStamp = "826cc343-fc58-4294-a378-43e14d0c5f98",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            Id = "955601ae-b578-4638-9e15-a4652797713b",
+                            ConcurrencyStamp = "73da4e3e-bc04-4574-b96c-efb92c72ca3a",
+                            Name = "Student"
                         },
                         new
                         {
-                            Id = "9a9319eb-9060-4624-978f-9efedcf9dfb8",
-                            ConcurrencyStamp = "83ed0043-e378-4d1b-9203-35feb584b46e",
-                            Name = "Moderator",
-                            NormalizedName = "MODERATOR"
-                        },
-                        new
-                        {
-                            Id = "33218622-37d8-4f3e-8ac0-bd34b4acfa0f",
-                            ConcurrencyStamp = "a44c8e9c-9d89-4fa9-bcf8-6308b8c4eaac",
-                            Name = "Student",
-                            NormalizedName = "STUDENT"
-                        },
-                        new
-                        {
-                            Id = "8faf6aa6-8c29-460e-8882-37bfcc693147",
-                            ConcurrencyStamp = "27569c96-afde-4663-9a5e-29fb829c5f4c",
-                            Name = "Profesor",
-                            NormalizedName = "PROFESOR"
+                            Id = "f5f0979c-c080-4010-923c-0d217820a4f2",
+                            ConcurrencyStamp = "ca37b4a3-ced3-4939-8386-32dfdba0dbac",
+                            Name = "Profesor"
                         });
                 });
 
