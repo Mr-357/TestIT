@@ -107,14 +107,14 @@ namespace TestIT.Controllers
         public async Task<IActionResult> roleTestRun()
         {
             //kreiranje role-a
-            IdentityRole newRole = new IdentityRole("Student");
+            IdentityRole newRole = new IdentityRole("Admin");
             await roleManager.CreateAsync(newRole);
             //privavljane trenutno ulogovanog korisnika
             string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             ApplicationUser currentUser = _context.Users.Include(user => user.Quizzes).FirstOrDefault(x => x.Id == currentUserId);
 
             //dodavanje role korisniku, ovo je glavni deo
-            await userManager.AddToRoleAsync(currentUser, "Student");
+            await userManager.AddToRoleAsync(currentUser, "Admin");
 
             return View("Index");
         }
