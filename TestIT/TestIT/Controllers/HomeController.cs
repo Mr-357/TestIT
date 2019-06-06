@@ -60,9 +60,24 @@ namespace TestIT.Controllers
             return View();
         }
 
-        public IActionResult Course(int id)
+        public async Task<IActionResult> Course(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Courses
+                .Include(c => c.Users)
+                .ThenInclude(c => c.User)
+               // .Where(c => c.Users.Where( u =>userManager.GetRolesAsync(u.User).ToAsyncEnumerable().ElementAt(0).Equals("Profesor"))
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            var t = await userManager.GetRolesAsync(course.Users[0].User);
+            return View(course);
         }
 
         public IActionResult VS()
@@ -115,6 +130,31 @@ namespace TestIT.Controllers
 
             //dodavanje role korisniku, ovo je glavni deo
             await userManager.AddToRoleAsync(currentUser, "Admin");
+
+            return View("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> roleProf()
+        {
+
+            //privavljane trenutno ulogovanog korisnika
+            string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ApplicationUser currentUser = _context.Users.Include(user => user.Quizzes).FirstOrDefault(x => x.Id == currentUserId);
+
+            //dodavanje role korisniku, ovo je glavni deo
+            await userManager.AddToRoleAsync(currentUser, "Profesor");
+            Course course = _context.Courses
+               .Where(x => x.ID == 1)
+               .FirstOrDefault();
+
+            onCours onCours = new onCours();
+            onCours.User = currentUser;
+            onCours.Course = course;
+
+            currentUser.OnCours.Add(onCours);
+            course.Users.Add(onCours);
+
+            _context.SaveChanges();
 
             return View("Index");
         }
