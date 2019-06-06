@@ -64,37 +64,62 @@
         </div>
 
         <div class="RightSide">
-            <form asp-action="Create">
-                <div class="QuestionCreation">
-                    <div class="add-question-container">
-                        <input type="button" name="command" value="Dodaj pitanje" class="btn btn-primary add-question-button" onclick="addQuestion();" />
+            <div class="QuestionCreation">
+                <div class="add-question-container">
+                    <input type="button" name="command" value="Dodaj pitanje" class="btn btn-primary add-question-button" onclick="addQuestion();" />
+                    <br />
+                    <br />
+                </div>
+                <div class="new-question-form">
+                    <label>Pitanje </label>
+                    <br />
+                    <textarea id="questionText" class="form-control" style="resize: height"></textarea>
+                    <div>
                         <br />
-                        <br />
+                        <label>Broj poena: </label>
+                        <input type="number" name="questionPoints" id="questionPoints" value="" />
                     </div>
-                    <div class="new-question-form">
-                        <label>Pitanje </label>
-                        <br />
-                        <textarea id="questionText" class="form-control" style="resize: height"></textarea>
-                        <div>
-                            <br />
-                            <label>Broj poena: </label>
-                            <input type="number" name="questionPoints" id="questionPoints" value="" />
+                    <div class="answerOptionsDiv" id="answer-options">
+                        <div class="options leftOptions">
+                            <label>Izaberite Kolicinu odgoovra </label>
+                            <div>
+                                <input type="radio" checked ="checked" onchange="setAnswerCuantity('single');" value="Text" name="leftOptions" /> Jedan Odgovor
+                            </div>
+                            <div>
+                                <input type="radio" onchange="setAnswerCuantity('multy');" value="Text" name="leftOptions" /> Vise Odgovora <br />
+                            </div>
                         </div>
-
-                        <label>Odgovor </label>
-                        <div id="answer-options">
-                            <label>Izaberite tip odgovora </label>
-                            <br />
-                            <input type="radio" onchange="createAnswerTextArea();" value="Text" name="AnswerType" /> Tekst
-                            <br />
-                            <input type="radio" onchange="createAnswerSelectionArea();" value="Select" name="AnswerType" /> Izbor
-                            <br />
-                            <input type="radio" onchange="createAnswerImageArea();" value="Image" name="AnswerType" /> Slika
-                            <br />
+                        <div class="options rightOptions">
+                            <label>Izaberite tipOdgovora </label>
+                            <div>
+                                <input checked ="checked" type="radio" onchange="createTextAnswerArea();" value="Text" name="rightOptions" /> Tekst <br />
+                            </div>
+                            <div>
+                                <input type="radio" onchange="createRegionAnswerArea();" value="Select" name="rightOptions" /> Region Na slici <br />
+                            </div>
                         </div>
+                    </div>
+                    <div class="textAnserDiv">
+                        <label>Unesite Odgovor</label>
+                        <textarea class="textAnswerArea" id="AnswerTextArea"></textarea>
+                        <input type="button" hidden="hidden" id="addAnswerButton" value="Dodaj Odgovor" class="btn btn-primary" onclick="addAnswer();" />
+                    </div>
+                    <div class="multyAnswerArea" id="multyAnswerArea" hidden="hidden">
+                        <table class="table custom-table">
+                            <thead>
+                                <tr>
+                                    <td>Odgovor</td>
+                                    <td>tacan</td>
+                                    <td>brisanje</td>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </form>
+            </div>
             <div class="AnswersDiv" hidden="hidden">
             </div>
         </div>

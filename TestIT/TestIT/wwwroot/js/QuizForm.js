@@ -7,10 +7,155 @@ import { Question } from "./Question.js";
 
 let QuizTemplate = new Quiz();  // pokusao sam da nazovem samo quiz al ne da mi jer postoji klasa koja se zove Quiz, pokusao sam i malo slovo na pocetku nece ni to
 let QuestionTemplate = new Question();
-console.log("Ucitava se skripta za kreiranje kviza");
+let answerQuantity = "single";
+let answerType = "text";
+let AnswerTextArea = document.getElementById("AnswerTextArea");
+let textAnserDiv = document.getElementsByClassName("textAnserDiv")[0];
+let multyAnswerArea = document.getElementById("multyAnswerArea");
+let addAnswerButton = document.getElementById("addAnswerButton");
+let tableBody = document.getElementById("tableBody");
 
-//DIV koji sadrzi sve opcije za kreiranje odgovora
-const answerOptions = document.getElementById("answer-options");
+window.addQuestion = function addQuestion() {
+
+    QuestionTemplate.QuestionText = document.getElementById("questionText").value;
+    QuestionTemplate.Points = document.getElementById("questionPoints").value;
+
+    if (answerQuantity == "single") {
+        if (answerType == "text") {  
+            let tempAnswer = new Answer(true);
+            tempAnswer.answerText = AnswerTextArea.value;
+            tempAnswer.type = answerQuantity +"-"+answerType;
+            QuestionTemplate.addAnswer(tempAnswer); 
+        } else if ("region") {
+            console.log("TODO");
+        }
+    }
+    else if (answerQuantity == "multy") {
+
+    }
+    QuizTemplate.addQuestion(QuestionTemplate);
+    addQuestionToLeftSide(QuestionTemplate);
+    QuestionTemplate = new Question();
+    console.log(QuizTemplate);
+}
+function addQuestionToLeftSide(question) {
+
+    let questions = document.getElementById('questions');
+
+    let p = document.createElement('p');
+    p.className = "question"
+    p.innerHTML = question.QuestionText;
+    questions.appendChild(p);
+}
+
+window.showQuestions = function showQuestions() {
+    let questions = document.getElementById('questions');
+    questions.hidden = !questions.hidden;
+}
+
+
+window.createQuestion = function createQuestion(elements) {
+    const tmp = elements[0].hidden;
+    for (let i = 0; i < elements.length; i++)
+        elements[i].hidden = !tmp;
+}
+
+window.addAnswer = function addAnswer() {
+    let tempAnswer = new Answer(false);
+    tempAnswer.answerText = AnswerTextArea.value;
+    tempAnswer.type = answerQuantity + "-" + answerType;
+    QuestionTemplate.addAnswer(tempAnswer);
+    showAnswers();
+}
+
+//Display stuff
+window.setAnswerCuantity = function setAnswerCuantity(quantity) {
+    answerQuantity = quantity;
+    QuestionTemplate.Answers = [];
+    toggleButton();
+    toggleMultyAnserArea()
+}
+window.createTextAnswerArea = function createTextAnswerArea() {
+    textAnserDiv.hidden = "";
+    answerType = "single";
+    QuestionTemplate.Answers = [];
+    showAnswers();
+    toggleButton();
+}
+window.createRegionAnswerArea = function createRegionAnswerArea() {
+    textAnserDiv.hidden = "hidden";
+    QuestionTemplate.Answers = [];
+    answerType = "multy";
+    showAnswers();
+}
+
+function toggleButton() {
+    if (answerQuantity == "single") {
+        addAnswerButton.hidden = "hidden";
+    }
+    else
+        addAnswerButton.hidden = "";
+}
+function toggleMultyAnserArea() {
+    if (answerQuantity == "single")
+        multyAnswerArea.hidden = "hidden";
+    else
+        showAnswers();
+}
+function showAnswers() {
+    multyAnswerArea.hidden = "";
+    tableBody.innerHTML = "";
+    let i = 0;
+    QuestionTemplate.Answers.forEach(a => {
+        showAnswer(a, i++);       
+    })
+}
+
+function showAnswer(answer,index) {
+    let tr = document.createElement("tr");
+    let tempLabel = document.createElement("label");
+    if (answer.type.includes("text")) {
+        tempLabel.innerHTML = answer.answerText;
+    }
+    else if (answer.type.includes("region")) {
+        tempLabel.innerHTML = "neki region";
+    }
+    let checkBox = document.createElement("input");
+    checkBox.type = "checkbox"
+    checkBox.onclick = function () { togleCorrect(index); };
+    let button = document.createElement("input");
+    button.type = "button"; 
+    button.value = "x";
+    button.className = "btn btn-danger"
+    button.onclick = function () { removeAnswer(index); };
+
+    let td;
+    td = document.createElement("td");
+    td.appendChild(tempLabel);
+    tr.appendChild(td);
+
+    td = document.createElement("td");
+    td.appendChild(checkBox);
+    tr.appendChild(td);
+
+    td = document.createElement("td");
+    td.appendChild(button);
+    tr.appendChild(td);
+    tableBody.appendChild(tr);
+}
+function togleCorrect(index) {
+    QuestionTemplate.Answers[index].isCorrect = !QuestionTemplate.Answers[index].isCorrect
+    console.log(QuestionTemplate.Answers[index]);
+}
+
+function removeAnswer(index) {
+    QuestionTemplate.Answers.splice(index, 1);
+    showAnswers();
+}
+
+
+//fetch stuff
+
 
 
 window.jsFetch = function jsFetch() {
@@ -28,15 +173,15 @@ window.jsFetch = function jsFetch() {
         redirect: 'follow',
         credentials: 'include' //ovo se dodaje da salje cookie odnosno podatke o korisniku, postoji sansa da vrati error 500 ako se ne posalje ovo
     }
-   fetch("/Quizzes/FetchCreate", fetchData)
+    fetch("/Quizzes/FetchCreate", fetchData)
         .then(response => {
             if (!response.ok) {
                 throw new Error(response.statusText);
             }
             else
                 window.location.replace("/Quizzes/Index"); //ovde sam hteo da me redirektuje nazad na index stranicu ali mora da se refreshuje index pre nego sto se pojavi novi kviz
-                //mozda proradi ako se iskoristi neki tajmer ili tako nesto? u svakom slucaju mi cemo fetch koristiti za in-page a ovo pravljenje kviza moze preko submit-a
-                return;
+            //mozda proradi ako se iskoristi neki tajmer ili tako nesto? u svakom slucaju mi cemo fetch koristiti za in-page a ovo pravljenje kviza moze preko submit-a
+            return;
         })
         .catch(error => console.log(error));
 
@@ -54,15 +199,11 @@ function buildFormData(formData, data, parentKey) {
         formData.append(parentKey, value);
     }
 }
-window.fetchCourses = function fetchCourses()
-{
+window.fetchCourses = function fetchCourses() {
     let godina = document.getElementById("godina")
-    if (godina.options[0].value == "")
-    {
+    if (godina.options[0].value == "") {
         godina.remove(0);
     }
-    
-    
     const fetchData =
     {
         method: "GET",
@@ -74,23 +215,19 @@ window.fetchCourses = function fetchCourses()
             if (!response.ok) {
                 throw new Error(response.statusText);
             }
-            else
-            {
+            else {
                 let lista = document.getElementById("predmeti");
-                for (let i = lista.options.length - 1; i >= 0; i--)
-                {
+                for (let i = lista.options.length - 1; i >= 0; i--) {
                     lista.remove(i);
                 }
                 return response.json();
             }
             return;
         })
-        .then(data =>
-        {
+        .then(data => {
             console.log(data);
             let lista = document.getElementById("predmeti");
-            data.forEach(x =>
-            {
+            data.forEach(x => {
                 console.log(x);
                 let opcija = document.createElement("option");
                 opcija.innerHTML = x;
@@ -114,7 +251,7 @@ window.fetchYears = function fetchYears() {
                 throw new Error(response.statusText);
             }
             else {
-        
+
                 return response.json();
             }
             return;
@@ -131,201 +268,4 @@ window.fetchYears = function fetchYears() {
         })
         .catch(error => console.log(error));
 
-}
-window.addQuestion = function addQuestion() {
-    //kreiranj pitanja
-    console.log("Radi ADD");
-    let selectedValue = "notSelected";
-    let radios = document.getElementsByName("AnswerType");
-    radios.forEach(radio => {
-        if (radio.checked)
-            selectedValue = radio.value;
-    })
-    let questionText = document.getElementById("questionText").value;
-    let points = document.getElementById("questionPoints").value;
-    switch (selectedValue) {
-        case "Text":
-            QuestionTemplate.QuestionText = questionText;
-            QuestionTemplate.Points = points;
-            let tempAnswer = new Answer(true);
-            tempAnswer.answerText = document.getElementById("answer-Text").value;
-            tempAnswer.type = "text";
-            QuestionTemplate.addAnswer(tempAnswer);
-            QuizTemplate.addQuestion(QuestionTemplate);
-            addQuestionToLeftSide(QuestionTemplate);
-            QuestionTemplate = new Question();
-            console.log(QuizTemplate);
-            break;
-        case "Select":
-            QuestionTemplate.QuestionText = questionText;
-            QuestionTemplate.Points = points;
-            QuizTemplate.addQuestion(QuestionTemplate);
-            addQuestionToLeftSide(QuestionTemplate);
-            QuestionTemplate = new Question();
-            console.log(QuizTemplate);
-            console.log("radi Sel");
-            break;
-        case "image":
-            console.log("radi Img");
-            break;
-        default:
-            alert("Niste dodali odgovor");
-            break;
-    }
-
-    QuestionTemplate = new Question();
-    let answersDiv = document.getElementsByClassName('AnswersDiv');
-    answersDiv[0].innerHTML = "";
-    //#################
-}
-
-
-function addQuestionToLeftSide(question) {
-
-    let questions = document.getElementById('questions');
-
-    let p = document.createElement('p');
-    p.className = "question"
-    p.innerHTML = question.QuestionText;
-    questions.appendChild(p);
-}
-
-window.showQuestions = function showQuestions() {
-    let questions = document.getElementById('questions');
-    questions.hidden = !questions.hidden;
-}
-
-
-window.createQuestion = function createQuestion(elements) {
-    const tmp = elements[0].hidden;
-    for (let i = 0; i < elements.length; i++)
-        elements[i].hidden = !tmp;
-}
-
-// Obican tekstualni tip odgovora
-window.createAnswerTextArea = function createAnswerTextArea() {
-    // Close previous selected options
-    closeAnswerImageArea();
-    closeAnswerSelectionArea();
-    let div = document.createElement('div');
-    div.id = "answerTextArea";
-    let label = document.createElement('label');
-    label.innerHTML = "Unesite tacan odgovor:";
-    let textArea = document.createElement('textarea');
-    textArea.id = "answer-Text";
-    textArea.className = "answer-text-area";
-    div.appendChild(label);
-    div.appendChild(textArea);
-    answerOptions.appendChild(div);
-}
-
-// Odgovor koji moze da se selektuje od ponudjenih stavki
-window.createAnswerSelectionArea = function createAnswerSelectionArea() {
-
-    let a = document.getElementsByClassName("AnswersDiv");
-    a[0].hidden = !a[0].hidden;
-
-    console.log("TODO: createAnswerSelectionArea()");
-    // Close previous selected options
-    closeAnswerTextArea();
-    closeAnswerImageArea();
-
-    let divMain = document.createElement('div');
-    divMain.id = "selectAnswerDiv";
-
-    let divUpper = document.createElement('div');
-    let divLower = document.createElement('div');
-
-    let label = document.createElement('label');
-    label.innerHTML = "Broj tacnih odgovora:  ";
-    divLower.appendChild(label);
-    let numberOfCorrectAnswers = document.createElement('input');
-    numberOfCorrectAnswers.type = "number";
-    divLower.appendChild(numberOfCorrectAnswers);
-
-    let innerDiv = document.createElement('div');
-
-    let textArea = document.createElement('textarea');
-    textArea.className ="answer-text-area";
-    textArea.id = "SelectAnswerTextArea";
-
-    label = document.createElement('label');
-    label.innerHTML = "Odgovor";
-
-    let div = document.createElement('div');
-    div.appendChild(label);
-
-    let input = document.createElement('input');
-    input.type = "button";
-    input.className = "btn btn-primary addAnswerButton";
-    input.value = "Dodaj odgovor";
-    input.onclick = addAnswer;
-
-    innerDiv.appendChild(div);
-    innerDiv.appendChild(textArea);
-    innerDiv.appendChild(input);
-
-    divLower.appendChild(innerDiv);
-
-    divMain.appendChild(divUpper);
-    divMain.appendChild(divLower);
-
-    answerOptions.appendChild(divMain);
-    /* 
-     * TODO:
-     * Tekst boxevi za svaki od ponudjenih odgovora
-    */
-}
-
-// Odgovor preko slike
-window.createAnswerImageArea = function createAnswerImageArea() {
-    console.log("TODO: createAnswerImageArea()");
-    // Close previously selected options
-    closeAnswerTextArea();
-    closeAnswerSelectionArea();
-    /*
-     * TODO:
-     * Implement
-    */
-}
-
-// Gasenje opcija za tekstualni odgovor ukoliko se promeni izbor tipa odgovora
-window.closeAnswerTextArea = function closeAnswerTextArea() {
-    const answerTextArea = document.getElementById("answerTextArea");
-    if (answerTextArea != null)
-        answerOptions.removeChild(answerTextArea);
-}
-
-// Gasenje opcija za selekciju ukoliko se promeni izbor tipa odgovora
-window.closeAnswerSelectionArea =  function closeAnswerSelectionArea(container) {
-    // TODO: nije skroz implementirano
-    let a = document.getElementsByClassName("AnswersDiv");
-    a[0].hidden = "hidden";
-    const selectAnswerDiv = document.getElementById("selectAnswerDiv");
-    if (selectAnswerDiv != null)
-        answerOptions.removeChild(selectAnswerDiv);
-    console.log("TODO: closeAnswerSelectionArea()")
-}
-
-// Gasenje opcija za odgovor preko slike ukoliko se promeni izbor tipa odgovora
-window.closeAnswerImageArea = function closeAnswerImageArea(container) {
-    const imageAnswer = document.getElementById("codeSnippet");
-    if (imageAnswer != null)
-        answerOptions.removeChild(imageAnswer);
-    // TODO
-    console.log("TODO: closeAnswerImageArea()")
-}
-
-window.addAnswer = function addAnswer() {
-    let answerText = document.getElementById("SelectAnswerTextArea").value;
-    let tempAnswer = new Answer(true);
-    tempAnswer.setAnswerText(answerText);
-    QuestionTemplate.addAnswer(tempAnswer);
-
-
-    let p = document.createElement('p');
-    p.innerHTML = tempAnswer.answerText;
-    p.className = "question"
-    let answersDiv = document.getElementsByClassName('AnswersDiv');
-    answersDiv[0].appendChild(p);
 }

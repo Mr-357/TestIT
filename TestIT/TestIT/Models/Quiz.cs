@@ -46,11 +46,11 @@ namespace TestIT.Models
                 tempQuestion.Points = questionModel.Points;
                 foreach (BaseAnswerModel answer in questionModel.Answers)
                 {
-                    if(answer.type == "text")
+                    if(answer.type.Contains("text"))
                     {
                         tempQuestion.Answers.Add(new TextAnswer(answer.answerText, answer.isCorrect));
                     }
-                    else if (answer.type=="range")
+                    else if (answer.type.Contains("range"))
                     {
                         tempQuestion.Answers.Add(new RegionAnswer(answer.x1, answer.x2, answer.y1, answer.y1, answer.isCorrect));
                     }
