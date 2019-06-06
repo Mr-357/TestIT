@@ -9,6 +9,8 @@ namespace TestIT.Models
     public class ApplicationUser : IdentityUser
     {
         public String Modul { get; set; }
+        public String Name { get; set; }
+        public String Surname { get; set; }
         public IList<onCours> OnCours { get; set; }
         public IList<Quiz> Quizzes { get; set; }
         public ApplicationUser() : base()

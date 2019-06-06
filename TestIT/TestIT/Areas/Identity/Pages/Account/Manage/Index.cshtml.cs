@@ -27,8 +27,6 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
             _emailSender = emailSender;
         }
 
-        public string Username { get; set; }
-
         public bool IsEmailConfirmed { get; set; }
 
         [TempData]
@@ -40,8 +38,17 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
+            public string UserName { get; set; }
+
+            [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+            [Required]
+            public string Name { get; set; }
+
+            [Required]
+            public string Surname { get; set; }
 
             [Phone]
             [Display(Name = "Phone number")]
@@ -56,16 +63,13 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var userName = await _userManager.GetUserNameAsync(user);
-            var email = await _userManager.GetEmailAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
-
             Input = new InputModel
             {
-                Email = email,
-                PhoneNumber = phoneNumber
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Name = user.Name,
+                Surname = user.Surname
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
