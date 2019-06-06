@@ -1,3 +1,6 @@
+@model TestIT.Models.ApplicationUser
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "1 na 1";
 }
@@ -5,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="~/css/Users.css">
 <script src="~/js/Users.js" type="module"></script>
 
-<h3>Izazivate korisnika: Korisnik11</h3>
+<h3>Izazivate korisnika: @Model.UserName</h3>
 <hr />
 
 <div class="container">

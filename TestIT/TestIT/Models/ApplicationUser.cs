@@ -28,6 +28,9 @@ namespace TestIT.Models
         {
             this.OnCours.Add(course);
         }
-
+        public String FullName()
+        {
+            return this.Name + " " + this.Surname;
+        }
     }
 }

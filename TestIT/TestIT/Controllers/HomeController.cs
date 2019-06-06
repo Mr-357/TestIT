@@ -55,18 +55,37 @@ namespace TestIT.Controllers
             return View(c);
         }
 
-        public IActionResult Users()
+        public async Task<IActionResult> Users()
         {
-            return View();
+            var uvm = new UsersViewModel(await _context.Users.ToListAsync());
+            List<ApplicationUser> users = _context.Users.ToList();
+            uvm.AddUsers(users);
+            return View(uvm);
+        }
+
+        public async Task<IActionResult> VS(string id)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+    public async Task<IActionResult> UserInfo(string id)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
         }
 
         public async Task<IActionResult> Course(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var course = await _context.Courses
                 .Include(c => c.Users)
                 .ThenInclude(c => c.User)
@@ -77,11 +96,6 @@ namespace TestIT.Controllers
                 return NotFound();
             }
             return View(course);
-        }
-
-        public IActionResult VS()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

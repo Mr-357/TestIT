@@ -17,7 +17,7 @@ namespace TestIT.Models.ViewModels
         {
             return courses;
         }
-        public void addYears(List<String>years)
+        public void addYears(List<String> years)
         {
             this.years = years;
         }
