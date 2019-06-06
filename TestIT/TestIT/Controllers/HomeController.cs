@@ -76,7 +76,6 @@ namespace TestIT.Controllers
             {
                 return NotFound();
             }
-            var t = await userManager.GetRolesAsync(course.Users[0].User);
             return View(course);
         }
 
