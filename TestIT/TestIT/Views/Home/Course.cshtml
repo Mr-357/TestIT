@@ -1,52 +1,42 @@
+@model TestIT.Models.Course
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Predmet";
 }
 
-<link rel="stylesheet" type="text/css" href="~/css/ConcreteSubject.css"/>
+<link rel="stylesheet" type="text/css" href="~/css/ConcreteSubject.css" />
 
-<p>Strukture podataka</p>
-<p> Osnovni tipovi podataka. Jednostavne i složene strukture podataka. Statičke i dinamičke strukture podataka.
-    Liste: jednostruko povezane, dvostruko povezane, ciklične. Redovi, magacini, tablice, skupovi. 
-    Stabla: binarna, uravnotežena, ulančana,  stabla traženja, gomila. Složenost i ocena složenosti algoritama. 
-    Datoteke: sekvencijalne, direktne, indeks-sekvencijalne, indeks-nesekvencijalne, datoteke sa više ključeva. Rasuto adresiranje. Sortiranje. 
-    Praktični rad: realizacija karakterističnih struktura i algoritama u programskom jeziku C++.</p>
+<p>@Model.Name</p>
+<p>@Model.Description</p>
 <div class="profesori-asistenti-container">
     <div class="left-container">
         <table class="table custom-table profesori-asistenti">
-                <thead>
-                    <tr>
-                        <p style="text-align: center">Profesori</p>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Leonid Stoimenov</td>
-                    </tr>
-                </tbody>
+            <thead>
+                <tr>
+                    <p style="text-align: center">Profesori</p>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var p in Model.Users)
+                    {
+                        var t = await UserManager.GetRolesAsync(p.User);
+                        if (t.Contains("Profesor"))
+                        {
+                            <tr>
+                                <td>@p.User.Name @p.User.Surname</td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
         </table>
     </div>
-    <div class="right-container">
-        <table class="table custom-table profesori-asistenti">
-                <thead>
-                    <tr>
-                        <p style="text-align: center">Asistenti</p>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Nikola Davidovic</td>
-                    </tr>
-                    <tr>
-                        <td>Aleksandar Dimitrijevic</td>
-                    </tr>
-                    <tr>
-                        <td>Vladan Mihajlovic</td>
-                    </tr>
-                </tbody>
-        </table>
-    </div>
+
 </div>
-<hr/>
+</div>
+<hr />
 <div class="comments-quizzes">
     <div class="subject-quizzes">
         <table class="table custom-table">
@@ -69,8 +59,10 @@
                     <td> <a href="https://www.google.com" class="table-button">Pokusaj</a> <a href="https://www.google.com" class="table-button-danger text-danger">Prijavi</a></td>
                 </tr>
                 <tr>
-                    <td>Staticke strukture podataka</td
-                    ><td> <a href="https://www.google.com" class="table-button">Pokusaj</a> <a href="https://www.google.com" class="table-button-danger text-danger">Prijavi</a></td>
+                    <td>
+                        Staticke strukture podataka
+                    </td>
+                    <td> <a href="https://www.google.com" class="table-button">Pokusaj</a> <a href="https://www.google.com" class="table-button-danger text-danger">Prijavi</a></td>
                 </tr>
             </tbody>
         </table>

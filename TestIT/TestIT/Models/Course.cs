@@ -15,8 +15,8 @@ namespace TestIT.Models
         public String Module { get; set; }
         public String Description { get; set; }
         public String Short  { get; set; }
-        public List<Quiz> Quizzes { get; set; }
-        public List<onCours> Users { get; set; }
+        public IList<Quiz> Quizzes { get; set; }
+        public IList<onCours> Users { get; set; }
         public Course()
         {
             this.Quizzes = new List<Quiz>();

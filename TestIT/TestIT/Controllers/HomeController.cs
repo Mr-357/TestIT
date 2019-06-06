@@ -55,19 +55,47 @@ namespace TestIT.Controllers
             return View(c);
         }
 
-        public IActionResult Users()
+        public async Task<IActionResult> Users()
         {
-            return View();
+            var uvm = new UsersViewModel(await _context.Users.ToListAsync());
+            List<ApplicationUser> users = _context.Users.ToList();
+            uvm.AddUsers(users);
+            return View(uvm);
         }
 
-        public IActionResult Course(int id)
+        public async Task<IActionResult> VS(string id)
         {
-            return View();
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+    public async Task<IActionResult> UserInfo(string id)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
         }
 
-        public IActionResult VS()
+        public async Task<IActionResult> Course(int id)
         {
-            return View();
+            var course = await _context.Courses
+                .Include(c => c.Users)
+                .ThenInclude(c => c.User)
+               // .Where(c => c.Users.Where( u =>userManager.GetRolesAsync(u.User).ToAsyncEnumerable().ElementAt(0).Equals("Profesor"))
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            return View(course);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -115,6 +143,31 @@ namespace TestIT.Controllers
 
             //dodavanje role korisniku, ovo je glavni deo
             await userManager.AddToRoleAsync(currentUser, "Admin");
+
+            return View("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> roleProf()
+        {
+
+            //privavljane trenutno ulogovanog korisnika
+            string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ApplicationUser currentUser = _context.Users.Include(user => user.Quizzes).FirstOrDefault(x => x.Id == currentUserId);
+
+            //dodavanje role korisniku, ovo je glavni deo
+            await userManager.AddToRoleAsync(currentUser, "Profesor");
+            Course course = _context.Courses
+               .Where(x => x.ID == 1)
+               .FirstOrDefault();
+
+            onCours onCours = new onCours();
+            onCours.User = currentUser;
+            onCours.Course = course;
+
+            currentUser.OnCours.Add(onCours);
+            course.Users.Add(onCours);
+
+            _context.SaveChanges();
 
             return View("Index");
         }
