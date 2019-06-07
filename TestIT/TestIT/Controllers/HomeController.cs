@@ -18,11 +18,13 @@ namespace TestIT.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        public HomeController(ApplicationDbContext context,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly SignInManager<ApplicationUser> signInManager;
+        public HomeController(ApplicationDbContext context,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.signInManager = signInManager;
         }
         public IActionResult Index()
         {
@@ -35,23 +37,37 @@ namespace TestIT.Controllers
         }
         public async Task<IActionResult> Enroll(string module)
         {
+            var tmp = module;
             if (module != null)
             {
-                ApplicationUser user = await userManager.GetUserAsync(User);
-                user.Modul = module;
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Courses");
+                if(signInManager.IsSignedIn(User))
+                {
+                    ApplicationUser user = await userManager.GetUserAsync(User);
+                    user.Modul = module;
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Courses");
+                }
+                return RedirectToAction("Courses", new { module = tmp});
             }
             return Error();
         }
-        public async Task<IActionResult> Courses()
+        public async Task<IActionResult> Courses(string module)
         {
-            var module = (await userManager.GetUserAsync(User)).Modul;
-           // if (module == null)
-              //  module = "";
-            CoursesViewModel c = new CoursesViewModel(await _context.Courses.Where(x=>x.Module.Contains(module)).ToListAsync());
+            ApplicationUser user = null;
+            String selectedmodule = null;
+            if (signInManager.IsSignedIn(User))
+            {
+                user = await userManager.GetUserAsync(User);
+                selectedmodule = (user).Modul;
+            }
+            else
+            {
+                selectedmodule = module;
+            }
+
+            CoursesViewModel c = new CoursesViewModel(await _context.Courses.Where(x=>x.Module.Contains(selectedmodule)).ToListAsync());
             List<String> names = c.getCourses()
-                .Where(x=> x.Module.Contains(module))
+                .Where(x=> x.Module.Contains(selectedmodule))
                .GroupBy(x => x.SchoolYear)
                .Select(x=> x.FirstOrDefault())
                .OrderBy(x=>x.ID)
@@ -77,6 +93,16 @@ namespace TestIT.Controllers
             c.addModules(modules);
             return View(c);
         }
+        [HttpGet]
+        public List<String> GetModules()
+        {
+            List<String> modules = _context.Courses
+                .GroupBy(x => x.Module)
+                .Select(x => x.FirstOrDefault())
+                .Select(x => x.Module)
+                .ToList();
+            return modules;
+        } 
 
         public async Task<IActionResult> Users()
         {
@@ -96,7 +122,7 @@ namespace TestIT.Controllers
             }
             return View(user);
         }
-    public async Task<IActionResult> UserInfo(string id)
+        public async Task<IActionResult> UserInfo(string id)
         {
             var user = await _context.Users
                 .FirstOrDefaultAsync(x => x.Id == id);
