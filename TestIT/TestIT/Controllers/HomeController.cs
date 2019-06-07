@@ -33,25 +33,38 @@ namespace TestIT.Controllers
         {
             return View();
         }
-
+        
         public async Task<IActionResult> Courses()
         {
-           CoursesViewModel c = new CoursesViewModel(await _context.Courses.ToListAsync());
-            IList<Course> courses = _context.Courses
+            if (module == null)
+                module = "";
+            module += " ";
+           CoursesViewModel c = new CoursesViewModel(await _context.Courses.Where(x=>x.Module.Contains(module)).ToListAsync());
+            List<String> names = c.getCourses()
+                .Where(x=> x.Module.Contains(module))
                .GroupBy(x => x.SchoolYear)
-               .Select(x => x.FirstOrDefault())
+               .Select(x=> x.FirstOrDefault())
                .OrderBy(x=>x.ID)
+               .Select(x=>x.SchoolYear)
                .ToList();
-            List<String> names = new List<string>();
-            if (courses != null)
-            {
-                foreach (Course course in courses)
-                {
-                    names.Add(course.SchoolYear);
-                }
-            }
+            List<String> modules = c.getCourses()
+                .GroupBy(x => x.Module)
+                .Select(x => x.FirstOrDefault())
+                .Select(x => x.Module)
+                .ToList();
+                
+                
+                //List<String> names = new List<string>();
+            //if (courses != null)
+            //{
+            //    foreach (Course course in courses)
+            //    {
+            //        names.Add(course.SchoolYear);
+            //    }
+            //}
            // names.Reverse();
             c.addYears(names);
+            c.addModules(modules);
             return View(c);
         }
 

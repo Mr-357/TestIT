@@ -22,13 +22,12 @@
     e ali to bi zahtevalo da nekako u ovom onClick podesimo ovu SelectedModule promenljivu sa odgovarajucim stringom -->
 
 <div class="modules">
-    <input type='button' onClick='window.location.reload();' value='RII' class="custom-button" style="color:white"/>
-    <input type='button' onClick='window.location.reload();' value='EEN' class="custom-button" style="color:white"/>
-    <!-- Elektronske komponente i mikrosistemi -->
-    <input type='button' onClick='window.location.reload();' value='EKM' class="custom-button" style="color:white"/> 
-    <input type='button' onClick='window.location.reload();' value='UPS' class="custom-button" style="color:white"/>
-    <input type='button' onClick='window.location.reload();' value='EK' class="custom-button" style="color:white"/>
-    <input type='button' onClick='window.location.reload();' value='TK' class="custom-button" style="color:white"/>
+    @{
+        foreach (var module in Model.getModules())
+        {
+            <a class="nav-link" asp-route-module="@module" asp-controller="Home" asp-action="Courses" style="color:white; font-weight:bold">@module</a>
+        }
+    }
 </div>
 
 <div>

@@ -29,7 +29,7 @@ namespace TestIT.Data.Managers
                         tmpOpis += tmp;
                         tmp = sr.ReadLine();
                     }
-                    while (tmp != "################################################################################");
+                    while (tmp != "################################################################################################################################################################");
 
                     predmeti.Add(new Course() { ID = i++, SchoolYear = tmpGodina, Short = tmpSkracenica, Name = tmpNaziv, Description = tmpOpis , Module = tmpModule });
                 }

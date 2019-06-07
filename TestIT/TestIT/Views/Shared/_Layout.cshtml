@@ -42,11 +42,12 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" style="color:white; font-weight:bold">Privatnost</a>
                         </li>
+                        @{ ApplicationUser u = await UserManager.GetUserAsync(User);
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Courses" style="color:white; font-weight:bold">Predmeti</a>
+                            <a class="nav-link"  asp-controller="Home" asp-action="Courses" style="color:white; font-weight:bold">Predmeti</a>
                         </li>
 
-
+                        }
                         @if (SignInManager.IsSignedIn(User))
                         {
                             if (User.IsInRole("Profesor"))

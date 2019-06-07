@@ -9,6 +9,7 @@ namespace TestIT.Models.ViewModels
     {
         private List<Course> courses = new List<Course>();
         private List<String> years;
+        private List<String> modules;
         public List<String> getYears()
         {
             return years;
@@ -24,6 +25,14 @@ namespace TestIT.Models.ViewModels
         public CoursesViewModel(List<Course> courses)
         {
             this.courses = courses;
+        }
+        public void addModules(List<String> modules)
+        {
+            this.modules = modules;
+        }
+        public List<String> getModules()
+        {
+            return this.modules;
         }
     }
 }
