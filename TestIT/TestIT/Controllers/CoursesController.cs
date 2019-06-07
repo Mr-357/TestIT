@@ -186,19 +186,14 @@ namespace TestIT.Controllers
         [HttpGet]
         public List<String> getYears()
         {
-            IList<Course> courses = _context.Courses
-                .GroupBy(x => x.SchoolYear)
-                .Select(x=> x.FirstOrDefault())
-                .ToList();
-            List<String> names = new List<string>();
-            if (courses != null)
-            {
-                foreach (Course course in courses)
-                {
-                    names.Add(course.SchoolYear);
-                }
-            }
-            names.Reverse();
+            List<String> names = _context.Courses
+                     .GroupBy(x => x.SchoolYear)
+               .Select(x => x.FirstOrDefault())
+               .OrderBy(x => x.ID)
+               .Select(x => x.SchoolYear)
+               .ToList();
+     
+   
             return names;
         }
         private bool CourseExists(int id)

@@ -33,25 +33,48 @@ namespace TestIT.Controllers
         {
             return View();
         }
-
+        public async Task<IActionResult> Enroll(string module)
+        {
+            if (module != null)
+            {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                user.Modul = module;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Courses");
+            }
+            return Error();
+        }
         public async Task<IActionResult> Courses()
         {
-           CoursesViewModel c = new CoursesViewModel(await _context.Courses.ToListAsync());
-            IList<Course> courses = _context.Courses
+            var module = (await userManager.GetUserAsync(User)).Modul;
+           // if (module == null)
+              //  module = "";
+            CoursesViewModel c = new CoursesViewModel(await _context.Courses.Where(x=>x.Module.Contains(module)).ToListAsync());
+            List<String> names = c.getCourses()
+                .Where(x=> x.Module.Contains(module))
                .GroupBy(x => x.SchoolYear)
-               .Select(x => x.FirstOrDefault())
+               .Select(x=> x.FirstOrDefault())
                .OrderBy(x=>x.ID)
+               .Select(x=>x.SchoolYear)
                .ToList();
-            List<String> names = new List<string>();
-            if (courses != null)
-            {
-                foreach (Course course in courses)
-                {
-                    names.Add(course.SchoolYear);
-                }
-            }
+            List<String> modules = _context.Courses
+                .GroupBy(x => x.Module)
+                .Select(x => x.FirstOrDefault())
+                .Select(x => x.Module)
+                .ToList();
+                
+                
+                //List<String> names = new List<string>();
+            //if (courses != null)
+            //{
+            //    foreach (Course course in courses)
+            //    {
+            //        names.Add(course.SchoolYear);
+            //    }
+            //}
            // names.Reverse();
             c.addYears(names);
+            c.addModules(modules);
             return View(c);
         }
 

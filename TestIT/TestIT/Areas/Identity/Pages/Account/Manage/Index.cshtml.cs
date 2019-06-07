@@ -53,6 +53,8 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+            [Required]
+            public string Modul { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -69,7 +71,8 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Name = user.Name,
-                Surname = user.Surname
+                Surname = user.Surname,
+                Modul = user.Modul
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -87,7 +90,7 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Greška ID: '{_userManager.GetUserId(User)}'.");
             }
 
             var email = await _userManager.GetEmailAsync(user);
@@ -97,7 +100,7 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
                 if (!setEmailResult.Succeeded)
                 {
                     var userId = await _userManager.GetUserIdAsync(user);
-                    throw new InvalidOperationException($"Unexpected error occurred setting email for user with ID '{userId}'.");
+                    throw new InvalidOperationException($"Greška prilikom promene E-Mail-a za korisnika sa ID: '{userId}'.");
                 }
             }
 
@@ -111,9 +114,19 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
-
+            var modul = user.Modul;
+            if (Input.Modul != modul)
+            {
+                user.Modul = Input.Modul;
+                var setModulResult = await _userManager.UpdateAsync(user);
+                if (!setModulResult.Succeeded)
+                {
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    throw new InvalidOperationException($"Greška prilikom promene modula za korisnika sa ID: '{userId}'.");
+                }
+            }
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Uspešna promena profila";
             return RedirectToPage();
         }
 
