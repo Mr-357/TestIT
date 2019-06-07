@@ -138,8 +138,17 @@ namespace TestIT.Controllers
             var course = await _context.Courses
                 .Include(c => c.Users)
                 .ThenInclude(c => c.User)
+                .Include(y => y.Quizzes)
+                .Include(z => z.Comments)
+                .ThenInclude(w=>w.ApplicationUser)
                // .Where(c => c.Users.Where( u =>userManager.GetRolesAsync(u.User).ToAsyncEnumerable().ElementAt(0).Equals("Profesor"))
                 .FirstOrDefaultAsync(m => m.ID == id);
+                
+            course.Quizzes = course.Quizzes
+                        .Where(x=>x.Visibility == quizVisibility.Javni)
+                        .ToList();
+
+
             if (course == null)
             {
                 return NotFound();

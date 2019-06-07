@@ -42,6 +42,18 @@ namespace TestIT.Data
                 .WithMany(quiz => quiz.Questions)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Course>()
+                .HasMany(c => c.Comments)
+                .WithOne(x => x.Course)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Comment>()
+                .HasOne(q => q.ApplicationUser);
+            builder.Entity<Comment>()
+                .HasOne(q => q.Course)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
+
             //seed Data
             builder.Entity<IdentityRole>()
                 .HasData(

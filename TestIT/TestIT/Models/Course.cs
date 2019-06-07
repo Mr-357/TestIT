@@ -17,8 +17,10 @@ namespace TestIT.Models
         public String Short  { get; set; }
         public IList<Quiz> Quizzes { get; set; }
         public IList<onCours> Users { get; set; }
+        public IList<Comment> Comments {get; set;}
         public Course()
         {
+            this.Comments = new List<Comment>();
             this.Quizzes = new List<Quiz>();
             this.Users = new List<onCours>();
         }

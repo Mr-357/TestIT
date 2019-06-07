@@ -7,6 +7,7 @@
 }
 
 <link rel="stylesheet" type="text/css" href="~/css/ConcreteSubject.css" />
+<script src="~/js/Course.js" type="module"></script>
 
 <p>@Model.Name</p>
 <p>@Model.Description</p>
@@ -49,7 +50,7 @@
                             {
                                 if (!User.IsInRole("Student"))
                                 {
-                                    <a href='/Courses/Validate/@Model.ID' class="btn btn-primary">Ceka na validaciju: </a>
+                                    <a href='/Courses/Validate/@Model.ID' class="table-button">Ceka na validaciju</a>
                                 }
                             }
                          }
@@ -57,24 +58,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Binarna stabla</td>
-                    <td> <a href="https://www.google.com" class="table-button">Pokusaj</a> <a href="https://www.google.com" class="table-button-danger text-danger">Prijavi</a></td>
-                </tr>
-                <tr>
-                    <td>Redovi</td>
-                    <td> <a href="https://www.google.com" class="table-button">Pokusaj</a> <a href="https://www.google.com" class="table-button-danger text-danger">Prijavi</a></td>
-                </tr>
-                <tr>
-                    <td>Sortiranje</td>
-                    <td> <a href="https://www.google.com" class="table-button">Pokusaj</a> <a href="https://www.google.com" class="table-button-danger text-danger">Prijavi</a></td>
-                </tr>
-                <tr>
-                    <td>
-                        Staticke strukture podataka
-                    </td>
-                    <td> <a href="https://www.google.com" class="table-button">Pokusaj</a> <a href="https://www.google.com" class="table-button-danger text-danger">Prijavi</a></td>
-                </tr>
+                @{
+                    foreach(var p in Model.Quizzes)
+                    {
+                        <tr>
+                            <td>
+                                @p.Name
+                            </td>
+                            <td>
+                                <a href="https://www.google.com" class="table-button">Pokusaj</a> <a href="https://www.google.com" class="table-button-danger text-danger">Prijavi</a>
+                            </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
     </div>
@@ -87,24 +83,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Odlican predmet</td>
-                    <td>Korisnik1</td>
-                </tr>
-                <tr>
-                    <td>Vrlo obimano ali dobro odrajeno gradivo</td>
-                    <td>Korisnik2</td>
-                </tr>
-                <tr>
-                    <td>Treci komentar, ne znam sta da napisem</td>
-                    <td>Korisnik3</td>
-                </tr>
-                <tr>
-                    <td>I dalje mi nije jasna Hash tablica</td>
-                    <td>Korisnik4</td>
-                </tr>
+                @{
+                    foreach(var p in Model.Comments)
+                    {
+                        <tr>
+                            <td>
+                                @p.Content
+                                <td>@p.ApplicationUser.Name</td>
+                            </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
+        <div class="comment-section">
+            <div class="comment-section-left">
+                <textarea class="comment-content" class="form-control" style="resize: height"></textarea>
+            </div>
+            <div class="comment-section-right">
+                <button onclick="SubmitComment();" class="btn btn-primary">Postavi</button>
+            </div>
+        </div>
     </div>
 </div>
-

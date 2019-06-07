@@ -32,3 +32,20 @@
 .profesori-asistenti-container{
     display:flex;
 }
+
+.comment-section{
+    display:flex;
+    flex-direction: row;
+}
+
+.comment-content{
+    width:95%;
+}
+
+.comment-section-left{
+    flex:4 1 auto;
+}
+
+.comment-section-right{
+    flex: 1 1 auto;
+}
