@@ -19,15 +19,13 @@ window.addQuestion = function addQuestion() {
 
     QuestionTemplate.QuestionText = document.getElementById("questionText").value;
     QuestionTemplate.Points = document.getElementById("questionPoints").value;
-
+    QuestionTemplate.Picture = 
     if (answerQuantity == "single") {
         if (answerType == "text") {  
             let tempAnswer = new Answer(true);
             tempAnswer.answerText = AnswerTextArea.value;
             tempAnswer.type = answerQuantity +"-"+answerType;
             QuestionTemplate.addAnswer(tempAnswer); 
-        } else if ("region") {
-            console.log("TODO");
         }
     }
     else if (answerQuantity == "multy") {
@@ -68,7 +66,59 @@ window.addAnswer = function addAnswer() {
     showAnswers();
 }
 
+function addRegionAnswer(x1,y1,x2,y2) {
+    let tempAnswer = new Answer(false);
+    tempAnswer.x1 = x1;
+    tempAnswer.x2 = x2;
+    tempAnswer.y1 = y1;
+    tempAnswer.y2 = y2;
+    tempAnswer.type = answerQuantity + "-" + answerType;
+    if (answerQuantity == "single")
+        QuestionTemplate.Answers = [];
+    QuestionTemplate.addAnswer(tempAnswer);
+    console.log(tempAnswer);
+    showAnswers();
+}
+
+window.imageClick = function imageClick() {
+    if (answerType == "region") {
+        console.log("does this");
+        var img = document.getElementById("questionImageArea");
+        var x = event.pageX;
+        var y = event.pageY;
+        x = x - img.offsetLeft;
+        y = y - img.offsetTop
+        var recWidth = 100;
+        var recdepth = 50;
+        addRegionAnswer(x, y,x + recWidth,y + recdepth);
+        drowOnImage();
+    } 
+}
+
 //Display stuff
+function drowOnImage() {
+    var img = document.getElementById("questionImageArea");
+    var cnvs = document.getElementById("myCanvas");
+    cnvs.style.position = "absolute";
+    cnvs.style.left = img.offsetLeft + "px";
+    cnvs.style.top = img.offsetTop + "px";
+    cnvs.widht = img.widht;;
+    cnvs.height = img.height;
+    cnvs.hidden = "";
+    var ctx = cnvs.getContext("2d");
+    ctx.beginPath();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#00ff00';
+    QuestionTemplate.Answers.forEach(a => {
+        var x = a.x1;
+        var y = a.y1;
+        var widht = a.x2 - a.x1;
+        var depth = a.y2 - a.y1;
+        ctx.rect(x, y, widht, depth);
+        console.log("crtano na slici");
+    })
+    ctx.stroke();
+}
 window.setAnswerCuantity = function setAnswerCuantity(quantity) {
     answerQuantity = quantity;
     QuestionTemplate.Answers = [];
@@ -85,7 +135,7 @@ window.createTextAnswerArea = function createTextAnswerArea() {
 window.createRegionAnswerArea = function createRegionAnswerArea() {
     textAnserDiv.hidden = "hidden";
     QuestionTemplate.Answers = [];
-    answerType = "multy";
+    answerType = "region";
     showAnswers();
 }
 
@@ -97,10 +147,9 @@ function toggleButton() {
         addAnswerButton.hidden = "";
 }
 function toggleMultyAnserArea() {
+    showAnswers();
     if (answerQuantity == "single")
         multyAnswerArea.hidden = "hidden";
-    else
-        showAnswers();
 }
 function showAnswers() {
     multyAnswerArea.hidden = "";
@@ -109,6 +158,7 @@ function showAnswers() {
     QuestionTemplate.Answers.forEach(a => {
         showAnswer(a, i++);       
     })
+    drowOnImage();
 }
 
 function showAnswer(answer,index) {
@@ -118,7 +168,7 @@ function showAnswer(answer,index) {
         tempLabel.innerHTML = answer.answerText;
     }
     else if (answer.type.includes("region")) {
-        tempLabel.innerHTML = "neki region";
+        tempLabel.innerHTML = answer.x1+ " " + answer.y1 + " " + answer.x1 + " " + answer.y2;
     }
     let checkBox = document.createElement("input");
     checkBox.type = "checkbox"
@@ -152,7 +202,25 @@ function removeAnswer(index) {
     QuestionTemplate.Answers.splice(index, 1);
     showAnswers();
 }
+window.previewFile = function previewFile() {
 
+    console.log("stiglo to previewFile");
+    var preview = document.getElementById("questionImageArea"); //selects the query named img
+    preview.hidden = "";
+    var file = document.querySelector('input[type=file]').files[0]; //sames as here
+    var reader = new FileReader();
+
+    reader.onloadend = function () {
+        preview.src = reader.result;
+    }
+
+    if (file) {
+        reader.readAsDataURL(file); //reads the data as a URL
+    } else {
+        preview.src = "";
+    }
+}
+//previewFile();
 
 //fetch stuff
 

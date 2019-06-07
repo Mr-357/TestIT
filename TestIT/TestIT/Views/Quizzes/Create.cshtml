@@ -79,6 +79,11 @@
                         <label>Broj poena: </label>
                         <input type="number" name="questionPoints" id="questionPoints" value="" />
                     </div>
+                    <div class="imageArea">
+                        <input type="file" onchange="previewFile()"><br>
+                        <img id="questionImageArea" onclick="imageClick()" hidden="hidden" src="" height="200" alt="Image preview...">
+                        <canvas hidden="hidden" onclick="imageClick()" id='myCanvas' width='536px' height='536px'></canvas>
+                    </div>
                     <div class="answerOptionsDiv" id="answer-options">
                         <div class="options leftOptions">
                             <label>Izaberite Kolicinu odgoovra </label>
@@ -123,7 +128,7 @@
             <div class="AnswersDiv" hidden="hidden">
             </div>
         </div>
-
+    </div>
 
 
 </body>
