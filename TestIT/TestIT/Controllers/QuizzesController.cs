@@ -63,6 +63,7 @@ namespace TestIT.Controllers
             return View(quiz);
         }
 
+
         // GET: Quizs/Create
         public IActionResult Create()
         {
@@ -276,6 +277,21 @@ namespace TestIT.Controllers
             }
 
             return View(quiz);
+        }
+
+        // GET: Quizs/Publish/5
+        public async Task<IActionResult> Publish(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var tmp = _context.Quiz
+                        .FirstOrDefault(x => x.ID == id);
+
+            tmp.Visibility = quizVisibility.Ceka;
+            _context.SaveChanges();
+            return RedirectToAction("Index","Quizzes");
         }
 
         // POST: Quizs/Delete/5
