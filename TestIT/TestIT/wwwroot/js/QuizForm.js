@@ -1,5 +1,5 @@
 ﻿import { Quiz } from "./Quiz.js";
-import { Answer }from "./Answer.js";
+import { Answer } from "./Answer.js";
 import { RegionAnswer } from "./Answer.js";
 import { TextAnswer } from "./Answer.js";
 import { Question } from "./Question.js";
@@ -19,13 +19,13 @@ window.addQuestion = function addQuestion() {
 
     QuestionTemplate.QuestionText = document.getElementById("questionText").value;
     QuestionTemplate.Points = document.getElementById("questionPoints").value;
-    QuestionTemplate.Picture = 
+
     if (answerQuantity == "single") {
-        if (answerType == "text") {  
+        if (answerType == "text") {
             let tempAnswer = new Answer(true);
             tempAnswer.answerText = AnswerTextArea.value;
-            tempAnswer.type = answerQuantity +"-"+answerType;
-            QuestionTemplate.addAnswer(tempAnswer); 
+            tempAnswer.type = answerQuantity + "-" + answerType;
+            QuestionTemplate.addAnswer(tempAnswer);
         }
     }
     else if (answerQuantity == "multy") {
@@ -36,6 +36,21 @@ window.addQuestion = function addQuestion() {
     QuestionTemplate = new Question();
     console.log(QuizTemplate);
 }
+
+function saveImageFetch() {
+    let file = document.querySelector('[type=file]').files[0];
+    const formData = new FormData();
+
+    formData.append('image', file);
+
+    fetch("/Quizzes/FetchImagePost", {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        console.log(response)
+    });
+}
+
 function addQuestionToLeftSide(question) {
 
     let questions = document.getElementById('questions');
@@ -66,7 +81,7 @@ window.addAnswer = function addAnswer() {
     showAnswers();
 }
 
-function addRegionAnswer(x1,y1,x2,y2) {
+function addRegionAnswer(x1, y1, x2, y2) {
     let tempAnswer = new Answer(false);
     tempAnswer.x1 = x1;
     tempAnswer.x2 = x2;
@@ -90,9 +105,9 @@ window.imageClick = function imageClick() {
         y = y - img.offsetTop
         var recWidth = 100;
         var recdepth = 50;
-        addRegionAnswer(x, y,x + recWidth,y + recdepth);
+        addRegionAnswer(x, y, x + recWidth, y + recdepth);
         drowOnImage();
-    } 
+    }
 }
 
 //Display stuff
@@ -156,25 +171,25 @@ function showAnswers() {
     tableBody.innerHTML = "";
     let i = 0;
     QuestionTemplate.Answers.forEach(a => {
-        showAnswer(a, i++);       
+        showAnswer(a, i++);
     })
     drowOnImage();
 }
 
-function showAnswer(answer,index) {
+function showAnswer(answer, index) {
     let tr = document.createElement("tr");
     let tempLabel = document.createElement("label");
     if (answer.type.includes("text")) {
         tempLabel.innerHTML = answer.answerText;
     }
     else if (answer.type.includes("region")) {
-        tempLabel.innerHTML = answer.x1+ " " + answer.y1 + " " + answer.x1 + " " + answer.y2;
+        tempLabel.innerHTML = answer.x1 + " " + answer.y1 + " " + answer.x1 + " " + answer.y2;
     }
     let checkBox = document.createElement("input");
     checkBox.type = "checkbox"
     checkBox.onclick = function () { togleCorrect(index); };
     let button = document.createElement("input");
-    button.type = "button"; 
+    button.type = "button";
     button.value = "x";
     button.className = "btn btn-danger"
     button.onclick = function () { removeAnswer(index); };
@@ -252,7 +267,6 @@ window.jsFetch = function jsFetch() {
             return;
         })
         .catch(error => console.log(error));
-
 }
 
 //rekurzivno kreiranje formData iz kompleksnog objekta trebalo bi da radi za sve vrste objekata

@@ -11,6 +11,7 @@ using TestIT.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace TestIT.Controllers
 {
@@ -95,38 +96,54 @@ namespace TestIT.Controllers
            // return Redirect("/Quizzes/Index");
             return Ok();
         }
-       
+
+        [HttpPost]
+        public async Task<IActionResult> FetchImagePost([FromForm]IFormFile image)
+        {
+            String filePath = Path.GetTempFileName();
+            filePath = filePath.Replace(".tmp", ".jpg");
+            if (image.Length > 0)
+            {
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await image.CopyToAsync(stream);
+                }
+            }
+
+            return Ok(new { filePath });
+        }
+
         // POST: Quizs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-       /* [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateQuizViewModel model, string command)
-        {
-            if(command.Equals("Napravi"))
-            {
-                if (ModelState.IsValid)
-                {
-                    string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                    ApplicationUser currentUser = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
-                    currentUser.addQuiz(model.Quiz);
-                    _context.Add(model.Quiz);
-                    await _context.SaveChangesAsync();
-                    this.tempQuiz = null;
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(model);
-            }
-            if(command.Equals("Dodaj pitanje"))
-            {
-                if (ModelState.IsValid)
-                {
-                    model.Quiz.Questions.Add(model.TempQuestion);
-                    return View(model);
-                }
-            }
-            return View(model);
-        }*/
+        /* [HttpPost]
+         [ValidateAntiForgeryToken]
+         public async Task<IActionResult> Create(CreateQuizViewModel model, string command)
+         {
+             if(command.Equals("Napravi"))
+             {
+                 if (ModelState.IsValid)
+                 {
+                     string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                     ApplicationUser currentUser = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
+                     currentUser.addQuiz(model.Quiz);
+                     _context.Add(model.Quiz);
+                     await _context.SaveChangesAsync();
+                     this.tempQuiz = null;
+                     return RedirectToAction(nameof(Index));
+                 }
+                 return View(model);
+             }
+             if(command.Equals("Dodaj pitanje"))
+             {
+                 if (ModelState.IsValid)
+                 {
+                     model.Quiz.Questions.Add(model.TempQuestion);
+                     return View(model);
+                 }
+             }
+             return View(model);
+         }*/
 
         // GET: Quizs/Edit/5
         public async Task<IActionResult> Edit(int? id)
