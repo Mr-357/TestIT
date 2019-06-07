@@ -189,7 +189,7 @@ namespace TestIT.Controllers
         [HttpPost]
         public async Task<IActionResult> Results([FromForm]QuizViewModel quizAttempt)
         {
-            int id = quizAttempt.ID;
+            int? id = quizAttempt.ID;
             if (id == null)//i ako mi kaze warning ovde da id nikad ne moze da bude null, mislim da ipak treda ba odtane ova provera
             {
                 return NotFound();

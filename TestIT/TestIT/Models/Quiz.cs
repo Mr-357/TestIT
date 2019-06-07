@@ -62,6 +62,6 @@ namespace TestIT.Models
 
     public enum quizVisibility
     {
-        Privatni, Javni
+        Privatni, Javni, Ceka
     }
 }

@@ -1,5 +1,6 @@
 @model TestIT.Models.Course
 @using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Predmet";
@@ -36,13 +37,23 @@
 
 </div>
 </div>
-<hr />
 <div class="comments-quizzes">
     <div class="subject-quizzes">
         <table class="table custom-table">
             <thead>
                 <tr>
-                    <p style="text-align: center">Kvizovi</p>
+                    <td>Kvizovi</td>
+                    <td>
+                        @{
+                            if (SignInManager.IsSignedIn(User))
+                            {
+                                if (!User.IsInRole("Student"))
+                                {
+                                    <a href='/Courses/Validate/@Model.ID' class="btn btn-primary">Ceka na validaciju: </a>
+                                }
+                            }
+                         }
+                    </td>
                 </tr>
             </thead>
             <tbody>
@@ -71,7 +82,8 @@
         <table class="table custom-table">
             <thead>
                 <tr>
-                    <p style="text-align: center">Komentari</p>
+                    <td>Komentari</td>
+                    <td>Korisnik</td>
                 </tr>
             </thead>
             <tbody>

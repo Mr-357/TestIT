@@ -43,6 +43,29 @@ namespace TestIT.Controllers
             return View(course);
         }
 
+        // GET: Courses/Validate/ID
+        public async Task<IActionResult> Validate(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            // Optimizacija
+            var course = await _context.Courses
+                                .Include(x => x.Quizzes)
+                                .FirstOrDefaultAsync(x => x.ID == id);
+
+            IList<Quiz> tmp = course.Quizzes
+                                .Where(x => x.Visibility == quizVisibility.Ceka).ToList();
+
+            if (tmp == null)
+            {
+                return NotFound();
+            }
+
+            return View(tmp);
+        }
+
         // GET: Courses/Create
         public IActionResult Create()
         {
