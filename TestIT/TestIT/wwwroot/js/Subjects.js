@@ -1,11 +1,12 @@
 //AddSubjectsPerYear();
 
 // Po defaultu su sakriveni a ovime i otkrivamo cim se loaduje stranica
-Hide(0);
-Hide(1);
-Hide(2);
-Hide(3);
-Hide(4);
+window.unhide = function unhide() {
+    let div;
+    div = document.getElementsByClassName("year");
+    for (let i = 0; i < div.length; i++)
+        Hide(i);
+}
 
 function AppendSubjects(container){
     let button;

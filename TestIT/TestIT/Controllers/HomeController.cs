@@ -33,13 +33,23 @@ namespace TestIT.Controllers
         {
             return View();
         }
-        
+        public async Task<IActionResult> Enroll(string module)
+        {
+            if (module != null)
+            {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                user.Modul = module;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Courses");
+            }
+            return Error();
+        }
         public async Task<IActionResult> Courses()
         {
-            if (module == null)
-                module = "";
-            module += " ";
-           CoursesViewModel c = new CoursesViewModel(await _context.Courses.Where(x=>x.Module.Contains(module)).ToListAsync());
+            var module = (await userManager.GetUserAsync(User)).Modul;
+           // if (module == null)
+              //  module = "";
+            CoursesViewModel c = new CoursesViewModel(await _context.Courses.Where(x=>x.Module.Contains(module)).ToListAsync());
             List<String> names = c.getCourses()
                 .Where(x=> x.Module.Contains(module))
                .GroupBy(x => x.SchoolYear)
@@ -47,7 +57,7 @@ namespace TestIT.Controllers
                .OrderBy(x=>x.ID)
                .Select(x=>x.SchoolYear)
                .ToList();
-            List<String> modules = c.getCourses()
+            List<String> modules = _context.Courses
                 .GroupBy(x => x.Module)
                 .Select(x => x.FirstOrDefault())
                 .Select(x => x.Module)

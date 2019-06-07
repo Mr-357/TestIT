@@ -1,56 +1,48 @@
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
 @model TestIT.Models.ViewModels.CoursesViewModel
+
 @{
     ViewData["Title"] = "Predmeti";
-
-
-    /*£££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££*/
-    var predmeti = new Dictionary<string, Dictionary<int, List<string>>>();
-    predmeti.Add("RII", null);
-    predmeti.Add("EEN", null);
-    predmeti.Add("EKM", null);
-    predmeti.Add("UPS", null);
-    predmeti.Add("EK", null);
-    predmeti.Add("TK", null);
-
-    string SelectedModule = "RII";
 }
 <script src="~/js/Subjects.js" type="module"></script>
 <link rel="stylesheet" type="text/css" href="~/css/Subjects.css">
 
-<!-- TODO -->
-<!-- Ok ovde sam mislio da ne idemo preko Fetch-a nego da jednostavno kad se klikne neko od ovih dole dugmica da se refresuje stranica sa novim predmetima
-    e ali to bi zahtevalo da nekako u ovom onClick podesimo ovu SelectedModule promenljivu sa odgovarajucim stringom -->
-
-<div class="modules">
-    @{
-        foreach (var module in Model.getModules())
-        {
-            <a class="nav-link" asp-route-module="@module" asp-controller="Home" asp-action="Courses" style="color:white; font-weight:bold">@module</a>
-        }
-    }
-</div>
-
-<div>
-    @{
-        int i = 0;
-        foreach(var god in Model.getYears())
-        {
-         
-        <label class="year-label" onclick="HideSubjects(@i);">@god &#9660; </label>
-        <div hidden="hidden" class="year">
-            @{ 
-                foreach (var el in Model.getCourses())
+<body onload="unhide()">
+    <div class="modules">
+        @{
+            if ((await UserManager.GetUserAsync(User)).Modul == null)
+            {
+                foreach (var module in Model.getModules())
                 {
-                    if(el.SchoolYear==god)
-                    { 
-                    <div>
-                        <a href='/Home/Course/@el.ID' class="subject-button" style="color:#5190b6">@el.Name</a>
-                    </div>
-                    }
+                    <a class="btn btn-primary" asp-route-module="@module" asp-controller="Home" asp-action="Enroll" style="color:white; font-weight:bold">@module</a>
                 }
-                i++;
             }
-        </div>
         }
-     }
-</div>
+    </div>
+
+    <div>
+        @{
+            int i = 0;
+            foreach (var god in Model.getYears())
+            {
+
+                <label class="year-label" onclick="HideSubjects(@i);">@god &#9660; </label>
+                <div hidden="hidden" class="year">
+                    @{
+                        foreach (var el in Model.getCourses())
+                        {
+                            if (el.SchoolYear == god)
+                            {
+                                <div>
+                                    <a href='/Home/Course/@el.ID' class="subject-button" style="color:#5190b6">@el.Name</a>
+                                </div>
+                            }
+                        }
+                        i++;
+                    }
+                </div>
+            }
+        }
+    </div>
+</body>
