@@ -19,7 +19,7 @@ namespace TestIT.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        public HomeController(ApplicationDbContext context,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
+        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             this.userManager = userManager;
@@ -40,14 +40,14 @@ namespace TestIT.Controllers
             var tmp = module;
             if (module != null)
             {
-                if(signInManager.IsSignedIn(User))
+                if (signInManager.IsSignedIn(User))
                 {
                     ApplicationUser user = await userManager.GetUserAsync(User);
                     user.Modul = module;
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Courses");
                 }
-                return RedirectToAction("Courses", new { module = tmp});
+                return RedirectToAction("Courses", new { module = tmp });
             }
             return Error();
         }
@@ -65,22 +65,22 @@ namespace TestIT.Controllers
                 selectedmodule = module;
             }
 
-            CoursesViewModel c = new CoursesViewModel(await _context.Courses.Where(x=>x.Module.Contains(selectedmodule)).ToListAsync());
+            CoursesViewModel c = new CoursesViewModel(await _context.Courses.Where(x => x.Module.Contains(selectedmodule)).ToListAsync());
             List<String> names = c.getCourses()
-                .Where(x=> x.Module.Contains(selectedmodule))
+                .Where(x => x.Module.Contains(selectedmodule))
                .GroupBy(x => x.SchoolYear)
-               .Select(x=> x.FirstOrDefault())
-               .OrderBy(x=>x.ID)
-               .Select(x=>x.SchoolYear)
+               .Select(x => x.FirstOrDefault())
+               .OrderBy(x => x.ID)
+               .Select(x => x.SchoolYear)
                .ToList();
             List<String> modules = _context.Courses
                 .GroupBy(x => x.Module)
                 .Select(x => x.FirstOrDefault())
                 .Select(x => x.Module)
                 .ToList();
-                
-                
-                //List<String> names = new List<string>();
+
+
+            //List<String> names = new List<string>();
             //if (courses != null)
             //{
             //    foreach (Course course in courses)
@@ -88,7 +88,7 @@ namespace TestIT.Controllers
             //        names.Add(course.SchoolYear);
             //    }
             //}
-           // names.Reverse();
+            // names.Reverse();
             c.addYears(names);
             c.addModules(modules);
             return View(c);
@@ -102,7 +102,7 @@ namespace TestIT.Controllers
                 .Select(x => x.Module)
                 .ToList();
             return modules;
-        } 
+        }
 
         public async Task<IActionResult> Users()
         {
@@ -115,7 +115,26 @@ namespace TestIT.Controllers
         public async Task<IActionResult> VS(string id)
         {
             var user = await _context.Users
+                .Include(x => x.OnCours)
+                .ThenInclude(x => x.Course)
                 .FirstOrDefaultAsync(x => x.Id == id);
+
+            var loggedInUserId = userManager.GetUserId(User);
+
+            var loggedInUser = await _context.Users
+                                .Include(x => x.OnCours)
+                                .ThenInclude(x => x.Course)
+                                .FirstOrDefaultAsync(x => x.Id == loggedInUserId);
+
+            var zajednicki = new List<Course>();
+            for (int i = 0; i < loggedInUser.OnCours.Count; i++)
+                for (int j = 0; j < user.OnCours.Count; j++)
+                    if (user.OnCours[j].Course.Name == loggedInUser.OnCours[i].Course.Name)
+                        zajednicki.Add(user.OnCours[j].Course);
+
+            if (zajednicki.Count != 0)
+                ViewBag.Message = zajednicki;
+
             if (user == null)
             {
                 return NotFound();
@@ -143,19 +162,28 @@ namespace TestIT.Controllers
                 .ThenInclude(c => c.User)
                 .Include(y => y.Quizzes)
                 .Include(z => z.Comments)
-                .ThenInclude(w=>w.ApplicationUser)
-               // .Where(c => c.Users.Where( u =>userManager.GetRolesAsync(u.User).ToAsyncEnumerable().ElementAt(0).Equals("Profesor"))
+                .ThenInclude(w => w.ApplicationUser)
+                // .Where(c => c.Users.Where( u =>userManager.GetRolesAsync(u.User).ToAsyncEnumerable().ElementAt(0).Equals("Profesor"))
                 .FirstOrDefaultAsync(m => m.ID == id);
-                
+
             course.Quizzes = course.Quizzes
-                        .Where(x=>x.Visibility == quizVisibility.Javni)
+                        .Where(x => x.Visibility == quizVisibility.Javni)
                         .ToList();
 
+            var user = await userManager.GetUserAsync(User);
+            foreach (var p in user.OnCours)
+            {
+                if (p.Course.ID == course.ID)
+                    ViewBag.Message = "prijavljen";
+                else
+                    ViewBag.Message = "nije";
+            }
 
             if (course == null)
             {
                 return NotFound();
             }
+
             return View(course);
         }
 
@@ -192,7 +220,7 @@ namespace TestIT.Controllers
             return View("Index");
         }
 
-     
+
 
         [HttpGet]
         public async Task<IActionResult> roleTestRun()

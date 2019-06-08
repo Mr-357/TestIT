@@ -218,7 +218,6 @@ namespace TestIT.Controllers
             return Ok();
         }
         [HttpPost]
-        // [ValidateAntiForgeryToken]
         public async Task<IActionResult> Subscribe(int course, string user)
         {
             ApplicationUser u = await _context.Users.FirstOrDefaultAsync(x => x.Id == user);
@@ -229,6 +228,22 @@ namespace TestIT.Controllers
             sub.Course = crs;
 
             crs.Users.Add(sub);
+
+            _context.SaveChanges();
+            int idc = course;
+            return RedirectToAction("Course", "Home", new { id = idc  });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Unsubscribe(int course, string user)
+        {
+            ApplicationUser u = await _context.Users.FirstOrDefaultAsync(x => x.Id == user);
+            Course crs = await _context.Courses
+                                .FirstOrDefaultAsync(m => m.ID == course);
+
+            for(int i = 0;i<crs.Users.Count;i++)
+                if(crs.Users[i].User.Name == u.Name)
+                    crs.Users.RemoveAt(i);
 
             _context.SaveChanges();
             int idc = course;
