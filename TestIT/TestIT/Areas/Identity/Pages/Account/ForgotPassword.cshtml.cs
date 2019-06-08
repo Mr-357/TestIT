@@ -28,8 +28,8 @@ namespace TestIT.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email polje mora biti popunjeno")]
+            [EmailAddress(ErrorMessage = "Email nije validan")]
             public string Email { get; set; }
         }
 
