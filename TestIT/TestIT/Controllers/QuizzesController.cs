@@ -98,19 +98,31 @@ namespace TestIT.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> FetchImagePost([FromForm]IFormFile image)
+        public async Task<IActionResult> FetchImagePost([FromForm]List<IFormFile> images)
         {
-            String filePath = Path.GetTempFileName();
-            filePath = filePath.Replace(".tmp", ".jpg");
-            if (image.Length > 0)
+            long size = images.Sum(f => f.Length);
+
+            // full path to file in temp location
+            List<String> filePaths = new List<string>();
+
+            foreach (var formFile in images)
             {
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                var filePath = Path.GetTempFileName();
+                filePath = filePath.Replace(".tmp", ".jpg");
+                if (formFile.Length > 0)
                 {
-                    await image.CopyToAsync(stream);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
                 }
+                filePaths.Add(filePath);
             }
 
-            return Ok(new { filePath });
+            // process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+            return Ok( Json(new { count = images.Count, size, filePaths }));
+            return Ok(new { count = images.Count, size, filePaths });
         }
 
         // POST: Quizs/Create

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace TestIT.Models.ViewModels
     {
         public string QuestionText { get; set; }
         public float Points { get; set; }
-        public byte[] Picture { get; set; }
+        public String PicturePath { get; set; }
     }
 
     public class BaseAnswerModel

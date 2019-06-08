@@ -19,7 +19,7 @@ window.addQuestion = function addQuestion() {
 
     QuestionTemplate.QuestionText = document.getElementById("questionText").value;
     QuestionTemplate.Points = document.getElementById("questionPoints").value;
-
+    QuestionTemplate.Picture = document.querySelector('[type=file]').files[0];
     if (answerQuantity == "single") {
         if (answerType == "text") {
             let tempAnswer = new Answer(true);
@@ -36,11 +36,53 @@ window.addQuestion = function addQuestion() {
     QuestionTemplate = new Question();
     console.log(QuizTemplate);
 }
+function fillPictureFilePaths() {
+    let files = [];
+    for (let i = 0; i < QuizTemplate.questions.length; i++) {
+        if (QuizTemplate.questions[i].Picture) {
+            files.push(QuizTemplate.questions[i].Picture);
+        }
+    }
+    saveImagesFetch(files); 
+}
+
+function saveImagesFetch(files) {
+    const formData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+        let file = files[i];
+        formData.append('images', file);
+    }
+    formData.append('images', files);
+    let ret;
+    fetch("/Quizzes/FetchImagePost", {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        return response.json();
+        }).then(r => {
+            replaceImageWithPath(r.value.filePaths);
+            createFetch();
+        });
+}
+
+function replaceImageWithPath(paths) {
+    let j = 0;
+    for (let i = 0; i < QuizTemplate.questions.length; i++) {
+        if (QuizTemplate.questions[i].Picture) {
+            QuizTemplate.questions[i].Picture = null;
+            QuizTemplate.questions[i].PicturePath = paths[j];
+            j++;
+            console.log("promenejna slika");
+            console.log(QuizTemplate);
+        }
+    }
+
+}
 
 function saveImageFetch() {
     let file = document.querySelector('[type=file]').files[0];
     const formData = new FormData();
-
     formData.append('image', file);
 
     fetch("/Quizzes/FetchImagePost", {
@@ -130,7 +172,6 @@ function drowOnImage() {
         var widht = a.x2 - a.x1;
         var depth = a.y2 - a.y1;
         ctx.rect(x, y, widht, depth);
-        console.log("crtano na slici");
     })
     ctx.stroke();
 }
@@ -239,16 +280,52 @@ window.previewFile = function previewFile() {
 
 //fetch stuff
 
+window.createQuez = function createQuez() {
+    let files = [];
+    for (let i = 0; i < QuizTemplate.questions.length; i++) {
+        if (QuizTemplate.questions[i].Picture) {
+            files.push(QuizTemplate.questions[i].Picture);
+        }
+    }
+    saveImagesFetch(files); //ovde se i salje kviz 
+} 
 
-
-window.jsFetch = function jsFetch() {
-    //ovo je klasicno kao iz web prog
+function createFetch() {
+    console.log(QuizTemplate);
     const formData = new FormData();
     QuizTemplate.Name = document.getElementById("quizName").value;
     QuizTemplate.numberOfQustionsPerTry = document.getElementById("questionPerTry").value;
     QuizTemplate.time = document.getElementById("timeForQuiz").value;
     buildFormData(formData, QuizTemplate);
-    console.log(formData);
+    const fetchData =
+    {
+        method: "POST",
+        body: formData,
+        redirect: 'follow',
+        credentials: 'include' //ovo se dodaje da salje cookie odnosno podatke o korisniku, postoji sansa da vrati error 500 ako se ne posalje ovo
+    }
+    fetch("/Quizzes/FetchCreate", fetchData)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            else
+                window.location.replace("/Quizzes/Index"); //ovde sam hteo da me redirektuje nazad na index stranicu ali mora da se refreshuje index pre nego sto se pojavi novi kviz
+            //mozda proradi ako se iskoristi neki tajmer ili tako nesto? u svakom slucaju mi cemo fetch koristiti za in-page a ovo pravljenje kviza moze preko submit-a
+            return;
+        })
+        .catch(error => console.log(error));
+}
+
+window.jsFetch = function jsFetch() {
+
+     fillPictureFilePaths();
+    console.log(QuizTemplate);
+    const formData = new FormData();
+    QuizTemplate.Name = document.getElementById("quizName").value;
+    QuizTemplate.numberOfQustionsPerTry = document.getElementById("questionPerTry").value;
+    QuizTemplate.time = document.getElementById("timeForQuiz").value;
+    buildFormData(formData, QuizTemplate);
     const fetchData =
     {
         method: "POST",
@@ -276,6 +353,11 @@ function buildFormData(formData, data, parentKey) {
             buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
         });
     } else {
+        if (data instanceof File) {
+            console.log("uraido sam ovo za File");
+            console.log(data);
+        }
+            
         const value = data == null ? '' : data;
 
         formData.append(parentKey, value);
