@@ -5,6 +5,7 @@ import { Question } from "./Question.js";
 console.log("Attempt Quiz Hello");
 let quiz = null;
 let visibleQuestion = 0;
+let tempQuestions = [];
 let timeRemaining;
 let displayTimer;
 let timer;
@@ -12,6 +13,8 @@ let timerInterval;
 let timeO;
 window.startUp = function startUp(json) { //ova fja moze da se renameuje u crtajkviz ili tako nesto
     quiz = json;
+    tempQuestions = quiz.Questions;
+    tempQuestions.forEach(x => x.Answers = [new Answer()]);
     console.log(quiz);
     let questionDiv = document.getElementById("question" + visibleQuestion);
     questionDiv.hidden = "";
@@ -58,34 +61,108 @@ window.showQuestion = function showQuestion(index) {
 function getherAnswers() {
     let result = new Quiz();
     result.ID = quiz.ID;
-    let i = 0;
-    quiz.Questions.forEach(question => {
-        let tempQuestion = new Question();
-        let tempAnswer;
-        let answerInput = document.getElementsByName("Q" + i);
-        i++;
-        if (answerInput.length == 1) {
-            tempAnswer = new Answer();
-            tempAnswer.answerText = answerInput.item(0).value;
-            tempAnswer.type = "singleText";
-            tempQuestion.addAnswer(tempAnswer);
-        }
-        else if (answerInput.length > 1) {
-            for (let j = 0; j < answerInput.length; j++) {
-                console.log("doslo je do ovde");
-                if (answerInput[j].checked) {
-                    tempAnswer = new Answer();
-                    tempAnswer.answerText = answerInput[j].value;
-                    tempAnswer.type = "multyText";
-                    tempQuestion.addAnswer(tempAnswer);
-                }
-                console.log("Zavrsilo je do ovde");
+    //let i = 0;
+    console.log(quiz.Questions);
+    for (var i = 0; i < quiz.Questions.length; i++) {
+        //console.log("se desava ovo uopste ??");
+        if (document.getElementById("regionLabel" + i) == null) {
+            let tempQuestion = new Question();
+            let tempAnswer;
+            let answerInput = document.getElementsByName("Q" + i);
+
+            if (answerInput.length == 1) {
+                tempAnswer = new Answer();
+                tempAnswer.answerText = answerInput.item(0).value;
+                tempAnswer.type = "singleText";
+                tempQuestion.addAnswer(tempAnswer);
             }
-        }
-        result.addQuestion(tempQuestion);
+            else if (answerInput.length > 1) {
+                for (let j = 0; j < answerInput.length; j++) {
+                    if (answerInput[j].checked) {
+                        tempAnswer = new Answer();
+                        tempAnswer.answerText = answerInput[j].value;
+                        tempAnswer.type = "multyText";
+                        tempQuestion.addAnswer(tempAnswer);
+                    }
+                }
+            }
+            result.questions[i] = tempQuestion;
+        } else {
+            result.addQuestion(tempQuestions[i]);
+        }  
+    }
+    quiz.Questions.forEach(question => {
+        
     })
     return result;
 }
+
+window.imageClick = function imageClick(questionIndex) {
+    var img = document.getElementById("imageQ"+questionIndex);
+    var x = event.pageX;
+    var y = event.pageY;
+    x = x - img.offsetLeft;
+    y = y - img.offsetTop
+    let answer = new Answer();
+    answer.x1 = x;
+    answer.y1 = y;
+    answer.x2 = x;
+    answer.y2 = y;
+
+    if (quiz.Questions[questionIndex].Answers.length == 1) {
+        answer.type = "singleRegion";
+        tempQuestions[questionIndex].Answers[0] = answer;
+    }
+    else if (tempQuestions[questionIndex].Answers.length < quiz.Questions[questionIndex].Answers.length) {
+        answer.type = "multyRegion";
+        tempQuestions[questionIndex].Answers.push(answer);
+    }
+    showAnswers(questionIndex);
+}
+
+function showAnswers(index) {
+    drowPoints(index);
+    let tBody = document.getElementById("tableBody" + index);
+    tBody.innerHTML = "";
+    for (var i = 0; i < tempQuestions[index].Answers.length; i++) {
+        let answer = tempQuestions[index].Answers[i];
+        let tr = document.createElement("tr");
+        let pointTD = document.createElement("td");
+        let buttonTD = document.createElement("td");
+        pointTD.innerHTML = "(" + answer.x1 + "," + answer.y1 + ")";
+        let button = document.createElement("input");
+        button.type = "button";
+        button.className = "btn btn-danger";
+        button.innerHTML = "X";
+        buttonTD.appendChild(button);
+        tr.append(pointTD);
+        tr.append(buttonTD);
+        tBody.appendChild(tr);
+    }
+}
+
+function drowPoints(questionIndex) {
+    var img = document.getElementById("imageQ" + questionIndex);
+    var cnvs = document.getElementById("myCanvas" + questionIndex);
+    cnvs.style.position = "absolute";
+    cnvs.style.left = img.offsetLeft + "px";
+    cnvs.style.top = img.offsetTop + "px";
+    cnvs.widht = img.widht;;
+    cnvs.height = img.height;
+    cnvs.hidden = "";
+    var ctx = cnvs.getContext("2d");
+    ctx.beginPath();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#00ff00';
+    tempQuestions[questionIndex].Answers.forEach(a => {
+        var x = a.x1;
+        var y = a.y1;
+        ctx.arc(x, y, 5, 0, 2 * Math.PI, true);
+        ctx.fill();
+    })
+    ctx.stroke();
+}
+
 
 function jsFetch(result) {
     //console.log(result);

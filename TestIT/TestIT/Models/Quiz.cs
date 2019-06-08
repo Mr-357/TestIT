@@ -51,7 +51,7 @@ namespace TestIT.Models
                     {
                         tempQuestion.Answers.Add(new TextAnswer(answer.answerText, answer.isCorrect));
                     }
-                    else if (answer.type.Contains("range"))
+                    else if (answer.type.Contains("region"))
                     {
                         tempQuestion.Answers.Add(new RegionAnswer(answer.x1, answer.x2, answer.y1, answer.y1, answer.isCorrect));
                     }

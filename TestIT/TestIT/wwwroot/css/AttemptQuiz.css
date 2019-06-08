@@ -42,6 +42,12 @@
     margin-left:50%;
     
 }
+    .desniDeo .imageDiv {
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-bottom: 1%;
+        margin-top: 1%;
+    }
 .questionBox {
     margin: 5% 5% 2% 20%;
     display: flex;
@@ -70,10 +76,11 @@
     .questionBox .wrongAnwserText {
         background-color: red;
     }
-.questionText {
-    text-align: center;
-    margin-top: 2%
-}
+    
+    .questionText {
+        text-align: center;
+        margin-top: 2%
+    }
 .questionBox input {
     margin-left:5%;
     margin-top:2%
