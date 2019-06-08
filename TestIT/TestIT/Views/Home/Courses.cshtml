@@ -13,17 +13,17 @@
     <div class="modules">
         @{
             if(SignInManager.IsSignedIn(User) && (await UserManager.GetUserAsync(User)).Modul == null)
-                {
-                    <h3>
-                        Izaberite vas modul
-                    </h3>
-                    <div>
-                        Izborom modula bice vam prikazani svi predmeti za izabrani modul, i vas izbor ce biti zapamcen za svaki sledeci pristup ovoj stranici.
-                    </div>
-                    <div>
-                        Predmete na drugim modulima necete moci da vidite. Ukoliko zelite da promenite vas modul, to mozete uraditi u podesavanjima svog profila.
-                    </div>
-                }
+            {
+                <h3>
+                    Izaberite vas modul
+                </h3>
+                <div>
+                    Izborom modula bice vam prikazani svi predmeti za izabrani modul, i vas izbor ce biti zapamcen za svaki sledeci pristup ovoj stranici.
+                </div>
+                <div>
+                    Predmete na drugim modulima necete moci da vidite. Ukoliko zelite da promenite vas modul, to mozete uraditi u podesavanjima svog profila.
+                </div>
+            }
         }
 
         @{

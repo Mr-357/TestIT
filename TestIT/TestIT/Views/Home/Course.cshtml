@@ -1,5 +1,6 @@
 @model TestIT.Models.Course
 @using Microsoft.AspNetCore.Identity;
+@using System.Security.Claims
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
@@ -8,8 +9,18 @@
 
 <link rel="stylesheet" type="text/css" href="~/css/ConcreteSubject.css" />
 <script src="~/js/Course.js" type="module"></script>
+<div class="course-container">
+    <p class="name">@Model.Name</p>
 
-<p>@Model.Name</p>
+    <!-- Eo je forma ovo lepo radi, znaci tacan CourseID uzima i tacan LoggedInUser.ID takodje -->
+    <form action ="Subscribe" method="post">
+        <input type="text" name="predmetId" value="@Model.ID" hidden >
+        <input type="text" name="korisnikId" value="@UserManager.GetUserId(User)" hidden >
+        <input type = "submit" value="Prijavi me na kurs" class="btn btn-primary subscribe-button">
+    </form>
+
+
+</div>
 <p>@Model.Description</p>
 <div class="profesori-asistenti-container">
     <div class="left-container">
@@ -89,7 +100,7 @@
                         <tr>
                             <td>
                                 @p.Content
-                                <td>@p.ApplicationUser.Name</td>
+                                <td> <a href='/Home/UserInfo/@p.ApplicationUser.Id' class="table-button" style="color:#5190b6" >@p.ApplicationUser.UserName</a> </td>
                             </td>
                         </tr>
                     }

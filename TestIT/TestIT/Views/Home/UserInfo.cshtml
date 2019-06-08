@@ -30,10 +30,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <tr><td class="courses">Test Data</td></tr>
-                            <tr><td class="courses">Test Data</td></tr>
-                            <tr><td class="courses">Test Data</td></tr>
-                            <tr><td class="courses">Test Data</td></tr>
+                             @{
+                                foreach(var k in Model.OnCours)
+                                {
+                                    <tr><td class="courses">@k.Course.Name</td></tr>
+                                }
+                            }
                         </tr>
                     </tbody>
             </table>
@@ -53,17 +55,12 @@
             </thead>
             <tbody>
                 <tr>
-                    <tr><td class="courses">Test Data</td></tr>
-                    <tr><td class="courses">Test Data</td></tr>
-                    <tr><td class="courses">Test Data</td></tr>
-                    <tr><td class="courses">Test Data</td></tr>
-                    <tr><td class="courses">Test Data</td></tr>
-                    <tr><td class="courses">Test Data</td></tr>
-                    <tr><td class="courses">Test Data</td></tr>
-                    <tr><td class="courses">Test Data</td></tr>
-                    <tr><td class="courses">Test Data</td></tr>
-                    <tr><td class="courses">Test Data</td></tr>
-                    <tr><td class="courses">Test Data</td></tr>
+                    @{
+                        foreach(var k in Model.Quizzes)
+                        {
+                            <tr><td class="courses">@k.Name</td></tr>
+                        }
+                    }
                 </tr>
             </tbody>
         </table>
