@@ -34,7 +34,9 @@ window.addQuestion = function addQuestion() {
     QuizTemplate.addQuestion(QuestionTemplate);
     addQuestionToLeftSide(QuestionTemplate);
     QuestionTemplate = new Question();
-    console.log(QuizTemplate);
+    let fileInput = document.querySelector('[type=file]');
+    fileInput.value = "";
+    previewFile();
 }
 function fillPictureFilePaths() {
     let files = [];
@@ -260,7 +262,6 @@ function removeAnswer(index) {
 }
 window.previewFile = function previewFile() {
 
-    console.log("stiglo to previewFile");
     var preview = document.getElementById("questionImageArea"); //selects the query named img
     preview.hidden = "";
     var file = document.querySelector('input[type=file]').files[0]; //sames as here

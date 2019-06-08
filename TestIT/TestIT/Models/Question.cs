@@ -12,7 +12,7 @@ namespace TestIT.Models
         public int ID { get; set; }
         public String QuestionText { get; set; }
         public float Points { get; set; }
-        public byte[] Picture { get; set; }
+        public String Picture { get; set; }
         public IList<Answer> Answers { get; set; }
         public Quiz Quiz { get; set; }
 

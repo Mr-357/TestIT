@@ -44,6 +44,7 @@ namespace TestIT.Models
                 Question tempQuestion = new Question();
                 tempQuestion.QuestionText = questionModel.QuestionText;
                 tempQuestion.Points = questionModel.Points;
+                tempQuestion.Picture = questionModel.PicturePath;
                 foreach (BaseAnswerModel answer in questionModel.Answers)
                 {
                     if(answer.type.Contains("text"))

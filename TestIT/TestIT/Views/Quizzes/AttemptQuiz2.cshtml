@@ -40,9 +40,9 @@
                             @{
                                 if (Model.Questions[i].Picture != null)
                                 {
-                                    var base64 = Convert.ToBase64String(Model.Questions[i].Picture);
-                                    var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
-                                    <img id="imageQ@(i)" src=@imgSrc />
+                                    //var base64 = Convert.ToBase64String(Model.Questions[i].Picture);
+                                    //var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                                    <img id="imageQ@(i)" src="@Model.Questions[i].Picture" />
                                 }
                             }
                             @{
