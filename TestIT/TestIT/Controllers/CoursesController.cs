@@ -2,21 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestIT.Data;
 using TestIT.Models;
+using TestIT.Models.ViewModels;
 
 namespace TestIT.Controllers
 {
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CoursesController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public CoursesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Courses
@@ -199,6 +202,19 @@ namespace TestIT.Controllers
         private bool CourseExists(int id)
         {
             return _context.Courses.Any(e => e.ID == id);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Comment([FromForm] CreateCommentViewModel comment)
+        {
+            CreateCommentViewModel com = comment;
+            Comment save = com.Create();
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            save.ApplicationUser = user;
+          
+             Course course = _context.Courses.Include(x=>x.Comments).FirstOrDefault(x => x.ID == com.CourseID);
+            course.Comments.Add(save);
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }

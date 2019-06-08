@@ -48,9 +48,9 @@ namespace TestIT.Data
                 .OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Comment>()
                 .HasOne(q => q.ApplicationUser);
-            builder.Entity<Comment>()
+           builder.Entity<Comment>()
                 .HasOne(q => q.Course)
-                .WithOne()
+                .WithMany(c => c.Comments)
                 .OnDelete(DeleteBehavior.Cascade);
 
 
