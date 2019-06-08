@@ -192,23 +192,7 @@ namespace TestIT.Controllers
             return View("Index");
         }
 
-        [HttpPost, ActionName("Subscribe")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubscribeToCourse(int predmetId, ClaimsPrincipal korisnikId)
-        {
-            ApplicationUser user = await userManager.GetUserAsync(korisnikId);
-            Course crs = await _context.Courses
-                                .FirstOrDefaultAsync(m => m.ID == predmetId);
-            onCours sub = new onCours();
-            sub.User = user;
-            sub.Course = crs;
-
-            crs.Users.Add(sub);
-
-            _context.SaveChanges();
-            int id = predmetId;
-            return RedirectToAction("Course","Home",id);
-        }
+     
 
         [HttpGet]
         public async Task<IActionResult> roleTestRun()

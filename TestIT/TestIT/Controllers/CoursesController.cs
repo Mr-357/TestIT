@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -215,6 +216,23 @@ namespace TestIT.Controllers
             course.Comments.Add(save);
             _context.SaveChanges();
             return Ok();
+        }
+        [HttpPost]
+        // [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Subscribe(int course, string user)
+        {
+            ApplicationUser u = await _context.Users.FirstOrDefaultAsync(x => x.Id == user);
+            Course crs = await _context.Courses
+                                .FirstOrDefaultAsync(m => m.ID == course);
+            onCours sub = new onCours();
+            sub.User = u;
+            sub.Course = crs;
+
+            crs.Users.Add(sub);
+
+            _context.SaveChanges();
+            int idc = course;
+            return RedirectToAction("Course", "Home", new { id = idc  });
         }
     }
 }

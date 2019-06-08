@@ -13,10 +13,10 @@
     <p class="name">@Model.Name</p>
 
     <!-- Eo je forma ovo lepo radi, znaci tacan CourseID uzima i tacan LoggedInUser.ID takodje -->
-    <form action ="Subscribe" method="post">
-        <input type="text" name="predmetId" value="@Model.ID" hidden >
-        <input type="text" name="korisnikId" value="@UserManager.GetUserId(User)" hidden >
-        <input type = "submit" value="Prijavi me na kurs" class="btn btn-primary subscribe-button">
+    <form asp-action="Subscribe" asp-controller="Courses"  method="post" >
+        <input type="text" name="course" value="@Model.ID" hidden >
+        <input type="text" name="user" value="@UserManager.GetUserId(User)" hidden >
+        <input type="submit" value="Prijava" />
     </form>
 
 
