@@ -48,7 +48,7 @@ namespace TestIT.Models.ViewModels
             ResultAnswer tempAnswer;
             if (question.Answers.Count == 1)
             {
-                tempAnswer = new ResultAnswer(attemptQuestion.Answers[0]);
+                tempAnswer = (attemptQuestion.Answers.Count>0)? new ResultAnswer(attemptQuestion.Answers[0]) : new ResultAnswer() ;
                 if(question.Answers[0].GetType() == typeof(TextAnswer))
                 {
                     tempAnswer.RightAnswerText = ((TextAnswer)question.Answers[0]).text;
@@ -59,6 +59,7 @@ namespace TestIT.Models.ViewModels
                     tempAnswer.RightY1 = ((RegionAnswer)question.Answers[0]).y1;
                     tempAnswer.RightX2 = ((RegionAnswer)question.Answers[0]).x2;
                     tempAnswer.RightY2 = ((RegionAnswer)question.Answers[0]).y2;
+                    tempAnswer.type = "singleRegion";
                 }
                 tempAnswer.validateSingleAnswer();
                 
@@ -68,16 +69,17 @@ namespace TestIT.Models.ViewModels
             {
                 for (int j = 0; j < question.Answers.Count; j++)
                 {
-                    tempAnswer = new ResultAnswer(question.Answers[j]);
+                    tempAnswer =  new ResultAnswer(question.Answers[j]);
                     if (question.Answers[j].GetType() == typeof(TextAnswer))
                     {
-                        if (attemptQuestion.Answers[0].answerText != null)
+                        if (attemptQuestion.Answers.Count > 0 && attemptQuestion.Answers[0].answerText != null)
                             tempAnswer.isUserPick = (tempAnswer.answerText.Equals(attemptQuestion.Answers[0].answerText)) ? true : false;
                         else tempAnswer.isUserPick = false;
                     }
                     else if(question.Answers[j].GetType() == typeof(RegionAnswer))
                     {
                         tempAnswer.isUserPick = tempAnswer.hasPoint(attemptQuestion.Answers);
+                        tempAnswer.type = "multyRegion";
                         //if (attemptQuestion.Answers[j].x1 == 0 || attemptQuestion.Answers[j].y1 == 0)
                         //    tempAnswer.isUserPick = false;
                         //else
@@ -159,13 +161,14 @@ namespace TestIT.Models.ViewModels
 
         public void validateSingleAnswer()
         {
-            if (this.type.ToLower().Contains("text"))
+            if (this.type != null && this.type.ToLower().Contains("text"))
             {
                 if (this.answerText == null || this.RightAnswerText== null)
                     this.isCorrect = false;
-                this.isCorrect = this.RightAnswerText.ToLower().Equals(this.answerText.ToLower());
+                else
+                    this.isCorrect = this.RightAnswerText.ToLower().Equals(this.answerText.ToLower());
             }
-            else if (this.type.ToLower().Contains("region"))
+            else if (this.type != null && this.type.ToLower().Contains("region"))
             {
                 if (x1 == 0 || RightX1 == 0 || RightX2 == 0 || y1 == 0 || RightY1 == 0 || RightY2 == 0)
                     this.isCorrect = false;
@@ -173,10 +176,15 @@ namespace TestIT.Models.ViewModels
                     this.isCorrect = true;
                 else
                     this.isCorrect = false;
+            }else if(this.type == null)
+            {
+                this.isCorrect = false;
             }
         }
         public Boolean hasPoint(List<BaseAnswerModel> answers)
         {
+            if (answers == null)
+                return false;
             foreach (BaseAnswerModel answer in answers)
             {
                 this.x1 = this.x2 = answer.x1;
