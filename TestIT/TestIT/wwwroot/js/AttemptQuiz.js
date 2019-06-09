@@ -12,13 +12,13 @@ let timer;
 let timerInterval;
 let timeO;
 window.startUp = function startUp(json) { //ova fja moze da se renameuje u crtajkviz ili tako nesto
+    console.log(json);
     quiz = json;
-    tempQuestions = quiz.Questions;
-    tempQuestions.forEach(x => x.Answers = [new Answer()]);
-    console.log(quiz);
+    tempQuestions = bestCopyEver(quiz.Questions);
+    tempQuestions.forEach(x => x.Answers = []);
+    console.log(tempQuestions);
     let questionDiv = document.getElementById("question" + visibleQuestion);
     questionDiv.hidden = "";
-    console.log(quiz.time);
     if (quiz.time > 0) {
 
         timeRemaining = quiz.time * 60;
@@ -28,6 +28,10 @@ window.startUp = function startUp(json) { //ova fja moze da se renameuje u crtaj
         timeO = setTimeout(timer, timeRemaining * 1000);
     }
 
+}
+
+function bestCopyEver(src) {
+    return JSON.parse(JSON.stringify(src));
 }
 displayTimer = function displayTime() {
     let str = document.getElementById("timer");
@@ -108,7 +112,7 @@ window.imageClick = function imageClick(questionIndex) {
     answer.y1 = y;
     answer.x2 = x;
     answer.y2 = y;
-
+    //console.log(quiz);
     if (quiz.Questions[questionIndex].Answers.length == 1) {
         answer.type = "singleRegion";
         tempQuestions[questionIndex].Answers[0] = answer;
@@ -120,25 +124,33 @@ window.imageClick = function imageClick(questionIndex) {
     showAnswers(questionIndex);
 }
 
-function showAnswers(index) {
-    drowPoints(index);
-    let tBody = document.getElementById("tableBody" + index);
+function showAnswers(questionIndex) {
+    drowPoints(questionIndex);
+    let tBody = document.getElementById("tableBody" + questionIndex);
     tBody.innerHTML = "";
-    for (var i = 0; i < tempQuestions[index].Answers.length; i++) {
-        let answer = tempQuestions[index].Answers[i];
+    for (let i = 0; i < tempQuestions[questionIndex].Answers.length; i++) {
+        let answer = tempQuestions[questionIndex].Answers[i];
         let tr = document.createElement("tr");
         let pointTD = document.createElement("td");
         let buttonTD = document.createElement("td");
-        pointTD.innerHTML = "(" + answer.x1 + "," + answer.y1 + ")";
+        pointTD.innerHTML = "T" + (i+1);
         let button = document.createElement("input");
         button.type = "button";
         button.className = "btn btn-danger";
-        button.innerHTML = "X";
+        button.value = "X";
+        button.onclick = function () { removeAnswer(questionIndex, i) };
         buttonTD.appendChild(button);
         tr.append(pointTD);
         tr.append(buttonTD);
         tBody.appendChild(tr);
     }
+}
+
+
+function removeAnswer(questionIndex, answerIndex) {
+    console.log("ratatui");
+    tempQuestions[questionIndex].Answers.splice(answerIndex, 1);
+    showAnswers(questionIndex);
 }
 
 function drowPoints(questionIndex) {
@@ -154,15 +166,26 @@ function drowPoints(questionIndex) {
     ctx.beginPath();
     ctx.lineWidth = 3;
     ctx.strokeStyle = '#00ff00';
+    let i = 0;
     tempQuestions[questionIndex].Answers.forEach(a => {
         var x = a.x1;
         var y = a.y1;
-        ctx.arc(x, y, 5, 0, 2 * Math.PI, true);
+        drowText(x, y, "T" + (i+1),ctx);
+        ctx.rect(x, y, 10, 10);
+        //ctx.arc(x, y, 5, 0, 2 * Math.PI, false); //ovo se ponasa retardirano
         ctx.fill();
+        i++;
     })
     ctx.stroke();
 }
 
+function drowText(x, y, text, ctx) {
+    let tempSytyle = ctx.fillStyle;
+    ctx.fillStyle = "red";
+    ctx.font = "13px Arial";
+    ctx.fillText(text, x - 4, y - 4);
+    ctx.fillStyle = tempSytyle;
+}
 
 function jsFetch(result) {
     //console.log(result);

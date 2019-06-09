@@ -168,14 +168,25 @@ function drowOnImage() {
     ctx.beginPath();
     ctx.lineWidth = 3;
     ctx.strokeStyle = '#00ff00';
+    let i = 0;
     QuestionTemplate.Answers.forEach(a => {
         var x = a.x1;
         var y = a.y1;
         var widht = a.x2 - a.x1;
         var depth = a.y2 - a.y1;
+        drowText(x, y, "T" + (i + 1), ctx);
         ctx.rect(x, y, widht, depth);
+        i++;
     })
     ctx.stroke();
+}
+function drowText(x, y, text, ctx) {
+    let tempSytyle = ctx.fillStyle;
+    ctx.fillStyle = "red";
+    console.log("crta se text");
+    ctx.font = "15px Arial";
+    ctx.fillText(text, x - 4, y - 4);
+    ctx.fillStyle = tempSytyle;
 }
 window.setAnswerCuantity = function setAnswerCuantity(quantity) {
     answerQuantity = quantity;
@@ -226,7 +237,7 @@ function showAnswer(answer, index) {
         tempLabel.innerHTML = answer.answerText;
     }
     else if (answer.type.includes("region")) {
-        tempLabel.innerHTML = answer.x1 + " " + answer.y1 + " " + answer.x1 + " " + answer.y2;
+        tempLabel.innerHTML = "T"+(index+1) +": " + answer.x1 + " " + answer.y1 + " " + answer.x1 + " " + answer.y2;
     }
     let checkBox = document.createElement("input");
     checkBox.type = "checkbox"
