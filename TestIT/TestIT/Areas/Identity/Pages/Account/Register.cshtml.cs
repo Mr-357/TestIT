@@ -100,7 +100,12 @@ namespace TestIT.Areas.Identity.Pages.Account
                 }
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    if(error.Description == "User name '"+ Input.UserName +"' is already taken.")
+                        ModelState.AddModelError(string.Empty, "Korisnicko ime '"+ Input.UserName +"' vec postoji");
+                    else if(error.Description == "Email '"+ Input.Email +"' is already taken.")
+                        ModelState.AddModelError(string.Empty, "Email '"+ Input.Email +"' vec postoji");
+                    else
+                        ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 
