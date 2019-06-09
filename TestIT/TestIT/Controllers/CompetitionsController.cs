@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +14,25 @@ namespace TestIT.Controllers
     public class CompetitionsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CompetitionsController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public CompetitionsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
-
+        [HttpGet]
+        public async Task<List<string>> GetCourses()
+        {
+            onCours search = new onCours();
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            search.User = user;
+            
+            List<String> courses = _context.Courses
+                .Where(x=>x.Users.Any(y=>y.User.Id==user.Id))
+                .Select(x=>x.Name)
+                .ToList();
+            return courses;
+        }
         // GET: Competitions
         public async Task<IActionResult> Index()
         {
