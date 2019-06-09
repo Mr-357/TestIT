@@ -23,10 +23,10 @@ namespace TestIT.Models.ViewModels
     public class BaseAnswerModel
     {
         public bool isCorrect { get; set; }
-        public float x1 { get; set; }
-        public float x2 { get; set; }
-        public float y1 { get; set; }
-        public float y2 { get; set; }
+        public double x1 { get; set; }
+        public double x2 { get; set; }
+        public double y1 { get; set; }
+        public double y2 { get; set; }
         public string answerText { get; set; }
         public string type { get; set; }
     }

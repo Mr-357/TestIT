@@ -11,6 +11,7 @@ let displayTimer;
 let timer;
 let timerInterval;
 let timeO;
+let isResultPage = false;
 window.startUp = function startUp(json) { //ova fja moze da se renameuje u crtajkviz ili tako nesto
     //console.log(json);
     quiz = json;
@@ -60,6 +61,12 @@ window.showQuestion = function showQuestion(index) {
     questionDiv.hidden = "";
     visibleQuestion = index;
 }
+
+window.resultShowQuestion = function resultShowQuestion(input, index) {
+    showQuestion(index);
+    onImageLoad(input, index);
+}
+
 function getherAnswers() {
     let result = new JSQuiz();
     result.ID = quiz.ID;   
@@ -100,8 +107,8 @@ window.imageClick = function imageClick(questionIndex) {
     let img = document.getElementById("imageQ"+questionIndex);
     let x = event.pageX;
     let y = event.pageY;
-    x = x - img.offsetLeft;
-    y = y - img.offsetTop
+    x = (x - img.offsetLeft) / img.width;
+    y = (y - img.offsetTop) / img.height;
     let answer = new JSAnswer();
     answer.x1 = x;
     answer.y1 = y;
@@ -148,6 +155,15 @@ function removeAnswer(questionIndex, answerIndex) {
     showAnswers(questionIndex);
 }
 
+window.onresize = function() {
+    if (isResultPage == false)
+        showAnswers(visibleQuestion);
+};
+
+window.reDraw = function reDraw(input) {
+    onImageLoad(input, visibleQuestion);
+}
+
 function drowPoints(questionIndex) {
     let img = document.getElementById("imageQ" + questionIndex);
     let cnvs = document.getElementById("myCanvas" + questionIndex);
@@ -163,8 +179,8 @@ function drowPoints(questionIndex) {
     ctx.strokeStyle = '#00ff00';
     let i = 0;
     tempQuestions[questionIndex].Answers.forEach(a => {
-        let x = a.x1;
-        let y = a.y1;
+        let x = a.x1  * img.width;
+        let y = a.y1 * img.height;
         drowText(x, y, "T" + (i+1),ctx);
         ctx.rect(x, y, 10, 10);
         //ctx.arc(x, y, 5, 0, 2 * Math.PI, false); //ovo se ponasa retardirano
@@ -183,7 +199,7 @@ function drowText(x, y, text, ctx) {
 }
 
 window.onImageLoad = function onImageLoad(input, index) {
-    console.log(input[index]);
+    isResultPage = true;
     let img = document.getElementById("imageQ" + index);
     let cnvs = document.getElementById("myCanvas" + index);
     cnvs.style.position = "absolute";
@@ -198,12 +214,12 @@ window.onImageLoad = function onImageLoad(input, index) {
     ctx.strokeStyle = '#00ff00';
     let i = 0;
     input[index].Answers.forEach(a => {
-        drowText(a.RightX1, a.RightY1, "T" + (i + 1), ctx);
+        drowText(a.RightX1 * img.width, a.RightY1 * img.width, "T" + (i + 1), ctx);
         if (a.isUserPick == true)
             ctx.strokeStyle = '#00ff00';
         else
             ctx.strokeStyle = '#ff0000';
-        ctx.rect(a.RightX1, a.RightY1, a.RightX2 - a.RightX1, a.RightY2 - a.RightY1);
+        ctx.rect(a.RightX1 * img.width, a.RightY1 * img.height, (a.RightX2 * img.width) - (a.RightX1 * img.width), (a.RightY2 * img.height) - (a.RightY1*img.height));
         i++;
     })
     ctx.stroke();

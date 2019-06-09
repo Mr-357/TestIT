@@ -135,47 +135,47 @@ function addRegionAnswer(x1, y1, x2, y2) {
     if (answerQuantity == "single")
         QuestionTemplate.Answers = [];
     QuestionTemplate.addAnswer(tempAnswer);
-    console.log(tempAnswer);
     showAnswers();
 }
 
 window.imageClick = function imageClick() {
     if (answerType == "region") {
         console.log("does this");
-        var img = document.getElementById("questionImageArea");
-        var x = event.pageX;
-        var y = event.pageY;
-        x = x - img.offsetLeft;
-        y = y - img.offsetTop
-        var recWidth = 100;
-        var recdepth = 50;
-        addRegionAnswer(x, y, x + recWidth, y + recdepth);
+        let img = document.getElementById("questionImageArea");
+        let x = event.pageX;
+        let y = event.pageY;
+        x = (x - img.offsetLeft) / img.width;
+        y = (y - img.offsetTop) / img.height;
+        let recWidth = 100;
+        let recdepth = 50;
+        addRegionAnswer(x, y, x + (recWidth / img.width), y + (recdepth / img.height ));
         drowOnImage();
     }
 }
 
 //Display stuff
+window.onresize = drowOnImage;
 function drowOnImage() {
-    var img = document.getElementById("questionImageArea");
-    var cnvs = document.getElementById("myCanvas");
+    let img = document.getElementById("questionImageArea");
+    let cnvs = document.getElementById("myCanvas");
     cnvs.style.position = "absolute";
     cnvs.style.left = img.offsetLeft + "px";
     cnvs.style.top = img.offsetTop + "px";
-    cnvs.widht = img.widht;;
+    cnvs.width = img.width;;
     cnvs.height = img.height;
     cnvs.hidden = "";
-    var ctx = cnvs.getContext("2d");
+    let ctx = cnvs.getContext("2d");
     ctx.beginPath();
     ctx.lineWidth = 3;
     ctx.strokeStyle = '#00ff00';
     let i = 0;
     QuestionTemplate.Answers.forEach(a => {
-        var x = a.x1;
-        var y = a.y1;
-        var widht = a.x2 - a.x1;
-        var depth = a.y2 - a.y1;
+        let x = a.x1 * img.width;
+        let y = a.y1 * img.height;
+        let width = (a.x2 * img.width) - x;
+        let depth = (a.y2 * img.height) - y;
         drowText(x, y, "T" + (i + 1), ctx);
-        ctx.rect(x, y, widht, depth);
+        ctx.rect(x, y, width, depth);
         i++;
     })
     ctx.stroke();
@@ -273,10 +273,10 @@ function removeAnswer(index) {
 }
 window.previewFile = function previewFile() {
 
-    var preview = document.getElementById("questionImageArea"); //selects the query named img
+    let preview = document.getElementById("questionImageArea"); //selects the query named img
     preview.hidden = "";
-    var file = document.querySelector('input[type=file]').files[0]; //sames as here
-    var reader = new FileReader();
+    let file = document.querySelector('input[type=file]').files[0]; //sames as here
+    let reader = new FileReader();
 
     reader.onloadend = function () {
         preview.src = reader.result;
@@ -334,12 +334,13 @@ function createFetch() {
 window.jsFetch = function jsFetch() {
 
      fillPictureFilePaths();
-    console.log(QuizTemplate);
+   
     const formData = new FormData();
     QuizTemplate.Name = document.getElementById("quizName").value;
     QuizTemplate.numberOfQustionsPerTry = document.getElementById("questionPerTry").value;
     QuizTemplate.time = document.getElementById("timeForQuiz").value;
     buildFormData(formData, QuizTemplate);
+    formData = JSON.stringify(formData);
     const fetchData =
     {
         method: "POST",

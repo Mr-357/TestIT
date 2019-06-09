@@ -19,7 +19,7 @@
 <script src="~/js/AttemptQuiz.js" type="module"></script>
 <link rel="stylesheet" type="text/css" href="~/css/AttemptQuiz.css">
 
-<body onload="startUp(@quizData);">
+<body onresize="reDraw(@questionsData)" onload="startUp(@quizData);">
     <div class="pageBox" >
         <div class="titleDeo">
             <h1>@Model.Name</h1>
@@ -30,7 +30,7 @@
                 @{
                     for (int i = 0; i < Model.Questions.Count; i++)
                     {
-                        <button onclick="showQuestion(@(i));" class="btn" value="Q@i">Q@(i + 1)</button>
+                        <button  onclick="resultShowQuestion(@questionsData,@(i));" class="btn" value="Q@i">Q@(i + 1)</button>
                     }
                 }
             </div>
@@ -45,7 +45,7 @@
                         {
                             var base64 = Convert.ToBase64String(Model.Images[i]);
                             var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
-                            <img id="imageQ@(i)" onload="onImageLoad(@questionsData,@i)"  src="@imgSrc" />
+                            <img id="imageQ@(i)" onreset="" onload="onImageLoad(@questionsData,@i)"  src="@imgSrc" />
                             <canvas hidden="hidden" id='myCanvas@(i)' width='536px' height='536px'></canvas>
                         }
                     }

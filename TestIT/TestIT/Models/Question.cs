@@ -34,12 +34,12 @@ namespace TestIT.Models
     public class RegionAnswer: Answer
     {
 
-        public float x1 { get; set; }
-        public float x2 { get; set; }
-        public float y1 { get; set; }
-        public float y2 { get; set; }
+        public double x1 { get; set; }
+        public double x2 { get; set; }
+        public double y1 { get; set; }
+        public double y2 { get; set; }
         public RegionAnswer() { }
-        public RegionAnswer(float x1,float x2,float y1,float y2,bool isCorrect)
+        public RegionAnswer(double x1, double x2, double y1, double y2, bool isCorrect)
         {
             this.IsCorrect = isCorrect;
             this.x1 = x1;

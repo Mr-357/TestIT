@@ -14,6 +14,7 @@ using TestIT.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TestIT.Models;
+using System.Globalization;
 
 namespace TestIT
 {
@@ -75,6 +76,11 @@ namespace TestIT
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            var cultureInfo = new CultureInfo("en-US");
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
             UpdateDatabase(app);
         }
 

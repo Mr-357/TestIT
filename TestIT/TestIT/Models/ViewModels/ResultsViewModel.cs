@@ -125,10 +125,10 @@ namespace TestIT.Models.ViewModels
     {
         public bool isUserPick { get; set; }
         public String RightAnswerText { get; set; }
-        public float RightX1 { get; set; }
-        public float RightY1 { get; set; }
-        public float RightX2 { get; set; }
-        public float RightY2 { get; set; }
+        public double RightX1 { get; set; }
+        public double RightY1 { get; set; }
+        public double RightX2 { get; set; }
+        public double RightY2 { get; set; }
         public ResultAnswer(BaseAnswerModel baseAnswerModel)
         {
             this.answerText = baseAnswerModel.answerText;

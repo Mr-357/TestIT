@@ -12,6 +12,10 @@ namespace TestIT.Models.ViewModels
         {
             this.Questions = new List<QuestionModel>();
         }
+        public void normalizeDouble()
+        {
+
+        }
     }
 
     public class QuestionModel : BaseQuestionModel
