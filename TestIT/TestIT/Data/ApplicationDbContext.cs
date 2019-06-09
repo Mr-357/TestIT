@@ -17,6 +17,7 @@ namespace TestIT.Data
         }
         public DbSet<TestIT.Models.Quiz> Quiz { get; set; }
         public DbSet<TestIT.Models.Course> Courses { get; set; }
+        public DbSet<TestIT.Models.Competition> Competitions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -53,7 +54,22 @@ namespace TestIT.Data
                 .WithMany(c => c.Comments)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
+            builder.Entity<Competition>()
+                .HasOne(x => x.Quiz)
+                .WithMany()
+                .OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Competition>()
+                .HasMany(x => x.Participations)
+                .WithOne(p => p.Competition)
+                .OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Participation>()
+                .HasOne(x => x.User)
+                .WithMany()
+                .OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Participation>()
+                .HasOne(x => x.Competition)
+                .WithMany(c => c.Participations)
+                .OnDelete(DeleteBehavior.SetNull);
             //seed Data
             builder.Entity<IdentityRole>()
                 .HasData(

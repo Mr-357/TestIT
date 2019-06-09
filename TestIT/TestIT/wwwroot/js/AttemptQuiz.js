@@ -200,6 +200,7 @@ function drowText(x, y, text, ctx) {
 
 window.onImageLoad = function onImageLoad(input, index) {
     isResultPage = true;
+    console.log(input);
     let img = document.getElementById("imageQ" + index);
     let cnvs = document.getElementById("myCanvas" + index);
     cnvs.style.position = "absolute";
@@ -215,7 +216,7 @@ window.onImageLoad = function onImageLoad(input, index) {
     let i = 0;
     input[index].Answers.forEach(a => {
         drowText(a.RightX1 * img.width, a.RightY1 * img.width, "T" + (i + 1), ctx);
-        if (a.isUserPick == true)
+        if (a.isUserPick == true || (a.isCorrect == true && input[index].Answers.length == 1))
             ctx.strokeStyle = '#00ff00';
         else
             ctx.strokeStyle = '#ff0000';
