@@ -33,20 +33,20 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Polje trenutne sifre nije popunjeno")]
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "Trenutna šifra")]
             public string OldPassword { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Polje nove sifre nije popunjeno")]
+            [StringLength(100, ErrorMessage = "Šifra mora biti najmanje {2} a najviše {1} karaktera duga.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Nova šifra")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "Potvrdite novu šifru")]
+            [Compare("NewPassword", ErrorMessage = "Šifre se ne podudaraju.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -85,7 +85,8 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
             {
                 foreach (var error in changePasswordResult.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    // ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(string.Empty, "Netacna sifra");
                 }
                 return Page();
             }
