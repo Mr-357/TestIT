@@ -181,7 +181,7 @@ function drowPoints(questionIndex) {
     tempQuestions[questionIndex].Answers.forEach(a => {
         let x = a.x1  * img.width;
         let y = a.y1 * img.height;
-        drowText(x, y, "T" + (i+1),ctx);
+        drawText(x, y, "T" + (i+1),ctx);
         ctx.rect(x, y, 10, 10);
         //ctx.arc(x, y, 5, 0, 2 * Math.PI, false); //ovo se ponasa retardirano
         ctx.fill();
@@ -190,7 +190,7 @@ function drowPoints(questionIndex) {
     ctx.stroke();
 }
 
-function drowText(x, y, text, ctx) {
+function drawText(x, y, text, ctx) {
     let tempSytyle = ctx.fillStyle;
     ctx.fillStyle = "red";
     ctx.font = "13px Arial";
@@ -216,7 +216,7 @@ window.onImageLoad = function onImageLoad(input, index) {
     let i = 0;
     input[index].Answers.forEach(a => {
         ctx.beginPath();
-        //drowText(a.RightX1 * img.width, a.RightY1 * img.width, "T" + (i + 1), ctx);
+        //drawText(a.RightX1 * img.width, a.RightY1 * img.width, "T" + (i + 1), ctx);
         if (a.isUserPick == true || (a.isCorrect == true && input[index].Answers.length == 1))
             ctx.strokeStyle = '#00ff00';
         else

@@ -1,42 +1,71 @@
 @model TestIT.Models.Question
-
 @{
     ViewData["Title"] = "Izmena pitanja";
+    string questionData = Newtonsoft.Json.JsonConvert.SerializeObject(Model, new Newtonsoft.Json.JsonSerializerSettings()
+    {
+        PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects,
+        Formatting = Newtonsoft.Json.Formatting.Indented,
+        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    });
 }
 <link rel="stylesheet" type="text/css" href="~/css/EditQuestion.css" />
+<script src="~/js/EditQuestion.js" type="module"></script>
 
-
-<h1>Izmena Pitanja</h1>
-<hr/>
-
-<label>Tekst pitanja</label>
-<div style="width:100%">
-    <textarea class="text-area" > @Model.QuestionText</textarea>
-</div>
-@{
-    if(Model.Answers.Count == 1)
-    {
-        var single = Model.Answers[0] as TextAnswer;
-        if(single != null)
+<body onload="startUp(@questionData);" class="bodyDiv">
+    <h1>Izmena Pitanja</h1>
+    <hr />
+    <label>Tekst pitanja</label>
+    <textarea id="questionTextArea" class="text-area"> @Model.QuestionText</textarea>
+    @{
+        if (Model.Picture != null)
         {
-            <p>Odgovor</p>
-            <textarea class="text-area"> @single.text </textarea> 
+            var base64 = Convert.ToBase64String(TestIT.Data.Managers.SeedDataManager.FileToByteArray(Model.Picture));
+            var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+            <img id="imageQ" src="@imgSrc" />
+            <canvas hidden="hidden" id='myCanvas' width='10000px' height='10000px'></canvas>
+        }
+    }
+    @{
+        if (Model.Answers.Count == 1)
+        {
+            var single = Model.Answers[0] as TextAnswer;
+            if (single != null)
+            {
+                <p>Odgovor</p>
+                <textarea id="answerTextArea" class="text-area"> @single.text </textarea>
+            }
+            else
+            {
+                var region = Model.Answers[0] as RegionAnswer;
+                <div class="sirinaDiv">
+                    <label>sirina</label>
+                    <input id="sirinaInput" />
+                </div>
+                <div class="dubinaDiv">
+                    <label>Dubina</label>
+                    <input id="dubinaInput" />
+                </div>
+            }
         }
         else
         {
-            var pic = Model.Answers[0] as RegionAnswer;
+            <div class="multyAnswerArea" id="multyAnswerArea" hidden="hidden">
+                <table class="table custom-table">
+                    <thead>
+                        <tr>
+                            <td>Odgovor</td>
+                            <td>tacan</td>
+                            <td>brisanje</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
         }
     }
-    else
-    {
-        <p>Odgovori</p>
-        foreach(TextAnswer p in Model.Answers)
-        {
-            <textarea class="text-area"> @p.text </textarea> 
-        }
-    }
+    <a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
+    <a class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>
+</body>
+<div onload="startUp(questionData)" class="bodyDiv">
     
-     
-}
-<a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
-<a class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>
+</div>
