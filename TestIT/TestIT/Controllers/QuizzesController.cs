@@ -361,11 +361,11 @@ namespace TestIT.Controllers
 
 
 
-        [HttpGet]
-        public IActionResult CreateTournament()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult CreateTournament()
+        //{
+        //    return View();
+        //}
 
         [HttpGet]
         public IActionResult AdminQuiz()
