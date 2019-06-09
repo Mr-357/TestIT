@@ -1,0 +1,42 @@
+@model TestIT.Models.Question
+
+@{
+    ViewData["Title"] = "Izmena pitanja";
+}
+<link rel="stylesheet" type="text/css" href="~/css/EditQuestion.css" />
+
+
+<h1>Izmena Pitanja</h1>
+<hr/>
+
+<label>Tekst pitanja</label>
+<div style="width:100%">
+    <textarea class="text-area" > @Model.QuestionText</textarea>
+</div>
+@{
+    if(Model.Answers.Count == 1)
+    {
+        var single = Model.Answers[0] as TextAnswer;
+        if(single != null)
+        {
+            <p>Odgovor</p>
+            <textarea class="text-area"> @single.text </textarea> 
+        }
+        else
+        {
+            var pic = Model.Answers[0] as RegionAnswer;
+        }
+    }
+    else
+    {
+        <p>Odgovori</p>
+        foreach(TextAnswer p in Model.Answers)
+        {
+            <textarea class="text-area"> @p.text </textarea> 
+        }
+    }
+    
+     
+}
+<a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
+<a class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>

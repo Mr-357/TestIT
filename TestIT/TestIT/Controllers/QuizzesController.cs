@@ -165,7 +165,9 @@ namespace TestIT.Controllers
                 return NotFound();
             }
 
-            var quiz = await _context.Quiz.FindAsync(id);
+            var quiz = await _context.Quiz
+                    .Include(x=> x.Questions)
+                    .FirstOrDefaultAsync(x => x.ID == id);
             if (quiz == null)
             {
                 return NotFound();
@@ -369,6 +371,24 @@ namespace TestIT.Controllers
         public IActionResult AdminQuiz()
         {
             return View();
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Question(int? id)
+        {
+            if(id ==null)
+            {
+                return NotFound();
+            }
+
+            var question = await _context.Quiz
+                    .SelectMany(x => x.Questions)
+                    .Include(x => x.Answers)
+                    .Include(x => x.Quiz)
+                    .FirstOrDefaultAsync(x => x.ID == id);
+
+            return View(question);
         }
     }
 }
