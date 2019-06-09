@@ -243,11 +243,25 @@ namespace TestIT.Controllers
             results.copyInfo(quiz);
             for (int i = 0; i < quiz.Questions.Count; i++)
             {
+                if(quiz.Questions[i].Picture != null)
+                    results.Images.Add(i, FileToByteArray(quiz.Questions[i].Picture));
                 ResultQuestion resultQuestion = new ResultQuestion(quiz.Questions[i],viewModel.Questions[i]);
                 results.Questions.Add(resultQuestion);
             }
             results.countRightAnswers();
             return results;
+        }
+
+        public byte[] FileToByteArray(string fileName)
+        {
+            byte[] buff = null;
+            FileStream fs = new FileStream(fileName,
+                                           FileMode.Open,
+                                           FileAccess.Read);
+            BinaryReader br = new BinaryReader(fs);
+            long numBytes = new FileInfo(fileName).Length;
+            buff = br.ReadBytes((int)numBytes);
+            return buff;
         }
         /*[HttpGet]
         public IActionResult Results()

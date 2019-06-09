@@ -1,12 +1,12 @@
-﻿import { Quiz } from "./Quiz.js";
-import { Answer } from "./Answer.js";
+﻿import { JSQuiz } from "./Quiz.js";
+import { JSAnswer } from "./Answer.js";
 import { RegionAnswer } from "./Answer.js";
 import { TextAnswer } from "./Answer.js";
-import { Question } from "./Question.js";
+import { JSQuestion } from "./Question.js";
 
 
-let QuizTemplate = new Quiz();  // pokusao sam da nazovem samo quiz al ne da mi jer postoji klasa koja se zove Quiz, pokusao sam i malo slovo na pocetku nece ni to
-let QuestionTemplate = new Question();
+let QuizTemplate = new JSQuiz();  // pokusao sam da nazovem samo quiz al ne da mi jer postoji klasa koja se zove Quiz, pokusao sam i malo slovo na pocetku nece ni to
+let QuestionTemplate = new JSQuestion();
 let answerQuantity = "single";
 let answerType = "text";
 let AnswerTextArea = document.getElementById("AnswerTextArea");
@@ -22,7 +22,7 @@ window.addQuestion = function addQuestion() {
     QuestionTemplate.Picture = document.querySelector('[type=file]').files[0];
     if (answerQuantity == "single") {
         if (answerType == "text") {
-            let tempAnswer = new Answer(true);
+            let tempAnswer = new JSAnswer(true);
             tempAnswer.answerText = AnswerTextArea.value;
             tempAnswer.type = answerQuantity + "-" + answerType;
             QuestionTemplate.addAnswer(tempAnswer);
@@ -33,7 +33,7 @@ window.addQuestion = function addQuestion() {
     }
     QuizTemplate.addQuestion(QuestionTemplate);
     addQuestionToLeftSide(QuestionTemplate);
-    QuestionTemplate = new Question();
+    QuestionTemplate = new JSQuestion();
     let fileInput = document.querySelector('[type=file]');
     fileInput.value = "";
     previewFile();
@@ -118,7 +118,7 @@ window.createQuestion = function createQuestion(elements) {
 }
 
 window.addAnswer = function addAnswer() {
-    let tempAnswer = new Answer(false);
+    let tempAnswer = new JSAnswer(false);
     tempAnswer.answerText = AnswerTextArea.value;
     tempAnswer.type = answerQuantity + "-" + answerType;
     QuestionTemplate.addAnswer(tempAnswer);
@@ -126,7 +126,7 @@ window.addAnswer = function addAnswer() {
 }
 
 function addRegionAnswer(x1, y1, x2, y2) {
-    let tempAnswer = new Answer(false);
+    let tempAnswer = new JSAnswer(false);
     tempAnswer.x1 = x1;
     tempAnswer.x2 = x2;
     tempAnswer.y1 = y1;
@@ -237,7 +237,7 @@ function showAnswer(answer, index) {
         tempLabel.innerHTML = answer.answerText;
     }
     else if (answer.type.includes("region")) {
-        tempLabel.innerHTML = "T"+(index+1) +": " + answer.x1 + " " + answer.y1 + " " + answer.x1 + " " + answer.y2;
+        tempLabel.innerHTML = "T"+(index+1) +": (" + answer.x1 + ", " + answer.y1 + ") (" + answer.x2 + ", " + answer.y2 + ")";
     }
     let checkBox = document.createElement("input");
     checkBox.type = "checkbox"
@@ -286,6 +286,8 @@ window.previewFile = function previewFile() {
         reader.readAsDataURL(file); //reads the data as a URL
     } else {
         preview.src = "";
+        preview.hidden = "hidden";
+        document.getElementById("myCanvas").hidden = "hidden";
     }
 }
 //previewFile();

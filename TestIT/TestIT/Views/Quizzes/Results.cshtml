@@ -7,6 +7,12 @@
         Formatting = Newtonsoft.Json.Formatting.Indented,
         ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
     });
+    string questionsData = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Questions, new Newtonsoft.Json.JsonSerializerSettings()
+    {
+        PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects,
+        Formatting = Newtonsoft.Json.Formatting.Indented,
+        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    });
 }
 
 
@@ -32,65 +38,67 @@
                 @{
                     for (int i = 0; i < Model.Questions.Count; i++)
                     {
-                        <div id="question@(i)" hidden="hidden" class="questionBox">
-                            <label class="questionText">@Model.Questions[i].QuestionText</label>
-                            @{
-                                @*if (Model.Questions[i].Picture != null)
-                                {
-                                    //var base64 = Convert.ToBase64String(Model.Questions[i].Picture);
-                                    //var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
-                                    <img id="imageQ@(i)" src="@Model.Questions[i].Picture" />
-                                }*@
-                            }
-                            @{
-                                if (Model.Questions[i].Answers[0].type.Contains("Text"))
-                                {
-                                    <div class="answerBox">
-                                        @{
-                                            for (int j = 0; j < Model.Questions[i].Answers.Count; j++)
-                                            {
-                                                if (Model.Questions[i].Answers.Count > 1)
-                                                {
-                                                    <div>
-                                                        <input type="radio" name="Q@(i)" value="@(Model.Questions[i].Answers[j].answerText)" /><span>@(Model.Questions[i].Answers[j].answerText)</span>
-                                                        @{
-                                                            bool userPick = Model.Questions[i].Answers[j].isUserPick;
-                                                            bool correct = Model.Questions[i].Answers[j].isCorrect;
-                                                            if (userPick)
-                                                            {
-                                                                if (correct)
-                                                                {
-                                                                    <span>✔</span>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <span class="wrongSimbol">❌</span>
-                                                                }
-                                                            }
-                                                            else if (correct) {
-                                                                <span class="rightSimbol">🙀</span>
-                                                            }
+                <div id="question@(i)" hidden="hidden" class="questionBox">
+                    <label class="questionText">@Model.Questions[i].QuestionText</label>
+                    @{
+                        if (Model.Questions[i].PicturePath != null)
+                        {
+                            var base64 = Convert.ToBase64String(Model.Images[i]);
+                            var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                            <img id="imageQ@(i)" onload="onImageLoad(@questionsData,@i)"  src="@imgSrc" />
+                            <canvas hidden="hidden" id='myCanvas@(i)' width='536px' height='536px'></canvas>
+                        }
+                    }
+                    @{
+                        if (Model.Questions[i].Answers[0].type.ToLower().Contains("text"))
+                        {
+                            <div class="answerBox">
+                                @{
+                                    for (int j = 0; j < Model.Questions[i].Answers.Count; j++)
+                                    {
+                                        if (Model.Questions[i].Answers.Count > 1)
+                                        {
+                                            <div>
+                                                <input type="radio" name="Q@(i)" value="@(Model.Questions[i].Answers[j].answerText)" /><span>@(Model.Questions[i].Answers[j].answerText)</span>
+                                                @{
+                                                    bool userPick = Model.Questions[i].Answers[j].isUserPick;
+                                                    bool correct = Model.Questions[i].Answers[j].isCorrect;
+                                                    if (userPick)
+                                                    {
+                                                        if (correct)
+                                                        {
+                                                            <span>✔</span>
                                                         }
-                                                    </div>
+                                                        else
+                                                        {
+                                                            <span class="wrongSimbol">❌</span>
+                                                        }
+                                                    }
+                                                    else if (correct)
+                                                    {
+                                                        <span class="rightSimbol">🙀</span>
+                                                    }
                                                 }
-                                                else
-                                                {
-                                                     String style = (Model.Questions[i].Answers[0].isCorrect) ? "rightAnswerText" : "wrongAnwserText";
-                                                    <textarea name="Q@(i)" class ="@(style)" >@(Model.Questions[i].Answers[0].answerText)</textarea>
-                                                    <label>Tacan Ogovor:</label>
-                                                    <p>@Model.Questions[i].Answers[0].RightAnswerText</p>
-                                                }
-                                            }
+                                            </div>
                                         }
-                                    </div>
+                                        else
+                                        {
+                                            String style = (Model.Questions[i].Answers[0].isCorrect) ? "rightAnswerText" : "wrongAnwserText";
+                                            <textarea name="Q@(i)" class="@(style)">@(Model.Questions[i].Answers[0].answerText)</textarea>
+                                            <label>Tacan Ogovor:</label>
+                                            <p>@Model.Questions[i].Answers[0].RightAnswerText</p>
+                                        }
+                                    }
+                                }
+                            </div>
 
-                                }
-                                else if (Model.Questions[i].Answers[0].type.Contains("Region"))
-                                {
-                                    <Label>Imate @Model.Questions[i].Answers.Count regiona da izaberete</Label>
-                                }
-                            }
-                        </div>
+                        }
+                        else if (Model.Questions[i].Answers[0].type.Contains("Region"))
+                        {
+                            <Label>Imate @Model.Questions[i].Answers.Count regiona da izaberete</Label>
+                        }
+                    }
+                </div>
                     }
                 }
                 <input type='button' value='Sledece pitanje >>' class="btn btn-primary" onclick='' />

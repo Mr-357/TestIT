@@ -1,6 +1,6 @@
-﻿import { Quiz } from "./Quiz.js";
-import { Answer } from "./Answer.js";
-import { Question } from "./Question.js";
+﻿import { JSQuiz } from "./Quiz.js";
+import { JSAnswer } from "./Answer.js";
+import { JSQuestion } from "./Question.js";
 
 console.log("Attempt Quiz Hello");
 let quiz = null;
@@ -12,11 +12,10 @@ let timer;
 let timerInterval;
 let timeO;
 window.startUp = function startUp(json) { //ova fja moze da se renameuje u crtajkviz ili tako nesto
-    console.log(json);
+    //console.log(json);
     quiz = json;
     tempQuestions = bestCopyEver(quiz.Questions);
     tempQuestions.forEach(x => x.Answers = []);
-    console.log(tempQuestions);
     let questionDiv = document.getElementById("question" + visibleQuestion);
     questionDiv.hidden = "";
     if (quiz.time > 0) {
@@ -52,7 +51,6 @@ window.submitAnswers = function submitAnswers() {
     clearInterval(timerInterval);
     clearTimeout(timeO);
     let result = getherAnswers();
-    console.log(result);
     jsFetch(result);
 }
 window.showQuestion = function showQuestion(index) {
@@ -63,19 +61,16 @@ window.showQuestion = function showQuestion(index) {
     visibleQuestion = index;
 }
 function getherAnswers() {
-    let result = new Quiz();
-    result.ID = quiz.ID;
-    //let i = 0;
-    console.log(quiz.Questions);
-    for (var i = 0; i < quiz.Questions.length; i++) {
-        //console.log("se desava ovo uopste ??");
+    let result = new JSQuiz();
+    result.ID = quiz.ID;   
+    for (let i = 0; i < quiz.Questions.length; i++) {
         if (document.getElementById("regionLabel" + i) == null) {
-            let tempQuestion = new Question();
+            let tempQuestion = new JSQuestion();
             let tempAnswer;
             let answerInput = document.getElementsByName("Q" + i);
 
             if (answerInput.length == 1) {
-                tempAnswer = new Answer();
+                tempAnswer = new JSAnswer();
                 tempAnswer.answerText = answerInput.item(0).value;
                 tempAnswer.type = "singleText";
                 tempQuestion.addAnswer(tempAnswer);
@@ -83,7 +78,7 @@ function getherAnswers() {
             else if (answerInput.length > 1) {
                 for (let j = 0; j < answerInput.length; j++) {
                     if (answerInput[j].checked) {
-                        tempAnswer = new Answer();
+                        tempAnswer = new JSAnswer();
                         tempAnswer.answerText = answerInput[j].value;
                         tempAnswer.type = "multyText";
                         tempQuestion.addAnswer(tempAnswer);
@@ -102,12 +97,12 @@ function getherAnswers() {
 }
 
 window.imageClick = function imageClick(questionIndex) {
-    var img = document.getElementById("imageQ"+questionIndex);
-    var x = event.pageX;
-    var y = event.pageY;
+    let img = document.getElementById("imageQ"+questionIndex);
+    let x = event.pageX;
+    let y = event.pageY;
     x = x - img.offsetLeft;
     y = y - img.offsetTop
-    let answer = new Answer();
+    let answer = new JSAnswer();
     answer.x1 = x;
     answer.y1 = y;
     answer.x2 = x;
@@ -154,22 +149,22 @@ function removeAnswer(questionIndex, answerIndex) {
 }
 
 function drowPoints(questionIndex) {
-    var img = document.getElementById("imageQ" + questionIndex);
-    var cnvs = document.getElementById("myCanvas" + questionIndex);
+    let img = document.getElementById("imageQ" + questionIndex);
+    let cnvs = document.getElementById("myCanvas" + questionIndex);
     cnvs.style.position = "absolute";
     cnvs.style.left = img.offsetLeft + "px";
     cnvs.style.top = img.offsetTop + "px";
-    cnvs.widht = img.widht;;
+    cnvs.widht = img.widht;
     cnvs.height = img.height;
     cnvs.hidden = "";
-    var ctx = cnvs.getContext("2d");
+    let ctx = cnvs.getContext("2d");
     ctx.beginPath();
     ctx.lineWidth = 3;
     ctx.strokeStyle = '#00ff00';
     let i = 0;
     tempQuestions[questionIndex].Answers.forEach(a => {
-        var x = a.x1;
-        var y = a.y1;
+        let x = a.x1;
+        let y = a.y1;
         drowText(x, y, "T" + (i+1),ctx);
         ctx.rect(x, y, 10, 10);
         //ctx.arc(x, y, 5, 0, 2 * Math.PI, false); //ovo se ponasa retardirano
@@ -187,8 +182,35 @@ function drowText(x, y, text, ctx) {
     ctx.fillStyle = tempSytyle;
 }
 
+window.onImageLoad = function onImageLoad(input, index) {
+    console.log(input[index]);
+    let img = document.getElementById("imageQ" + index);
+    let cnvs = document.getElementById("myCanvas" + index);
+    cnvs.style.position = "absolute";
+    cnvs.style.left = img.offsetLeft + "px";
+    cnvs.style.top = img.offsetTop + "px";
+    cnvs.widht = img.widht;;
+    cnvs.height = img.height;
+    cnvs.hidden = "";
+    let ctx = cnvs.getContext("2d");
+    ctx.beginPath();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#00ff00';
+    let i = 0;
+    input[index].Answers.forEach(a => {
+        drowText(a.RightX1, a.RightY1, "T" + (i + 1), ctx);
+        if (a.isUserPick == true)
+            ctx.strokeStyle = '#00ff00';
+        else
+            ctx.strokeStyle = '#ff0000';
+        ctx.rect(a.RightX1, a.RightY1, a.RightX2 - a.RightX1, a.RightY2 - a.RightY1);
+        i++;
+    })
+    ctx.stroke();
+}
+
+
 function jsFetch(result) {
-    //console.log(result);
     const formData = new FormData();
     buildFormData(formData, result);
     const fetchData =
@@ -211,12 +233,10 @@ function jsFetch(result) {
         .catch(error => console.log(error));*/
     fetch("/Quizzes/Results", fetchData)
         .then(response => {
-            console.log(response);
             return response.text();
         })
         .then(data => document.write(data))
         .catch(error => console.log(error));
-
 }
 
 //rekurzivno kreiranje formData iz kompleksnog objekta trebalo bi da radi za sve vrste objekata

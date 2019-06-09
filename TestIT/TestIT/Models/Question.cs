@@ -53,9 +53,9 @@ namespace TestIT.Models
     {
         public string text { get; set; }
         public TextAnswer() { }
-        public TextAnswer(string text,bool isCorect)
+        public TextAnswer(string text,bool isCorrect)
         {
-            this.IsCorrect = IsCorrect;
+            this.IsCorrect = isCorrect;
             this.text = text;
         }
     }

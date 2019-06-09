@@ -49,11 +49,12 @@ namespace TestIT.Models
                 {
                     if(answer.type.Contains("text"))
                     {
-                        tempQuestion.Answers.Add(new TextAnswer(answer.answerText, answer.isCorrect));
+                        TextAnswer temp = new TextAnswer(answer.answerText, answer.isCorrect);
+                        tempQuestion.Answers.Add(temp);
                     }
                     else if (answer.type.Contains("region"))
                     {
-                        tempQuestion.Answers.Add(new RegionAnswer(answer.x1, answer.x2, answer.y1, answer.y1, answer.isCorrect));
+                        tempQuestion.Answers.Add(new RegionAnswer(answer.x1, answer.x2, answer.y1, answer.y2, answer.isCorrect));
                     }
                 }
                 this.Questions.Add(tempQuestion);

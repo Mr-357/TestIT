@@ -9,10 +9,11 @@ namespace TestIT.Models.ViewModels
     {
         public float NumberOfRightAnswers { get; set; }
         public List<ResultQuestion> Questions { get; set; }
-
+        public Dictionary<int, byte[]> Images { get; set; }
         public ResultsViewModel()
         {
             this.Questions = new List<ResultQuestion>();
+            this.Images = new Dictionary<int, byte[]>();
         }
 
         public void copyInfo(Quiz quiz)
@@ -43,13 +44,24 @@ namespace TestIT.Models.ViewModels
             this.Answers = new List<ResultAnswer>();
             this.Points = question.Points;
             this.QuestionText = question.QuestionText;
-
+            this.PicturePath = question.Picture;
             ResultAnswer tempAnswer;
             if (question.Answers.Count == 1)
             {
                 tempAnswer = new ResultAnswer(attemptQuestion.Answers[0]);
-                tempAnswer.RightAnswerText = ((TextAnswer)question.Answers[0]).text;
-                tempAnswer.isCorrect = compareAnswers(tempAnswer.RightAnswerText, attemptQuestion.Answers[0].answerText);
+                if(question.Answers[0].GetType() == typeof(TextAnswer))
+                {
+                    tempAnswer.RightAnswerText = ((TextAnswer)question.Answers[0]).text;
+                    //tempAnswer.isCorrect = compareAnswers(tempAnswer.RightAnswerText, attemptQuestion.Answers[0].answerText);
+                }else if(question.Answers[0].GetType() == typeof(RegionAnswer))
+                {
+                    tempAnswer.RightX1 = ((RegionAnswer)question.Answers[0]).x1;
+                    tempAnswer.RightY1 = ((RegionAnswer)question.Answers[0]).y1;
+                    tempAnswer.RightX2 = ((RegionAnswer)question.Answers[0]).x2;
+                    tempAnswer.RightY2 = ((RegionAnswer)question.Answers[0]).y2;
+                }
+                tempAnswer.validateSingleAnswer();
+                
                 this.Answers.Add(tempAnswer);
             }
             else if(question.Answers.Count > 1)
@@ -57,13 +69,28 @@ namespace TestIT.Models.ViewModels
                 for (int j = 0; j < question.Answers.Count; j++)
                 {
                     tempAnswer = new ResultAnswer(question.Answers[j]);
-                    tempAnswer.isUserPick = (tempAnswer.answerText.Equals(attemptQuestion.Answers[0].answerText)) ? true : false;
+                    if (question.Answers[j].GetType() == typeof(TextAnswer))
+                    {
+                        if (attemptQuestion.Answers[0].answerText != null)
+                            tempAnswer.isUserPick = (tempAnswer.answerText.Equals(attemptQuestion.Answers[0].answerText)) ? true : false;
+                        else tempAnswer.isUserPick = false;
+                    }
+                    else if(question.Answers[j].GetType() == typeof(RegionAnswer))
+                    {
+                        tempAnswer.isUserPick = tempAnswer.hasPoint(attemptQuestion.Answers);
+                        //if (attemptQuestion.Answers[j].x1 == 0 || attemptQuestion.Answers[j].y1 == 0)
+                        //    tempAnswer.isUserPick = false;
+                        //else
+                        //{
+                        //    Boolean temp = (attemptQuestion.Answers[j].x1 >= tempAnswer.x1 && attemptQuestion.Answers[j] <= RightX2) && (attemptQuestion.Answers[j].y1 >= RightY1 && y1 <= RightY2);
+                        //    tempAnswer.isUserPick = temp;
+                        //}
+                    }
                     this.Answers.Add(tempAnswer);
                 }
             }
             this.calculatePoint();
         }
-
         private Boolean compareAnswers(String rightAnswer,String attemptAnswer)
         {
             if (attemptAnswer == null || rightAnswer == null)
@@ -96,6 +123,12 @@ namespace TestIT.Models.ViewModels
 
     public class ResultAnswer : BaseAnswerModel
     {
+        public bool isUserPick { get; set; }
+        public String RightAnswerText { get; set; }
+        public float RightX1 { get; set; }
+        public float RightY1 { get; set; }
+        public float RightX2 { get; set; }
+        public float RightY2 { get; set; }
         public ResultAnswer(BaseAnswerModel baseAnswerModel)
         {
             this.answerText = baseAnswerModel.answerText;
@@ -115,17 +148,47 @@ namespace TestIT.Models.ViewModels
             }
             else if(answer.GetType() == typeof(RegionAnswer))
             {
-                this.x1 = ((RegionAnswer)answer).x1;
-                this.x2 = ((RegionAnswer)answer).x2;
-                this.y1 = ((RegionAnswer)answer).y1;
-                this.y2 = ((RegionAnswer)answer).y2;
+                this.RightX1 = ((RegionAnswer)answer).x1;
+                this.RightX2 = ((RegionAnswer)answer).x2;
+                this.RightY1 = ((RegionAnswer)answer).y1;
+                this.RightY2 = ((RegionAnswer)answer).y2;
                 this.type = "Region";
             }
         }
         public ResultAnswer() { }
 
+        public void validateSingleAnswer()
+        {
+            if (this.type.ToLower().Contains("text"))
+            {
+                if (this.answerText == null || this.RightAnswerText== null)
+                    this.isCorrect = false;
+                this.isCorrect = this.RightAnswerText.ToLower().Equals(this.answerText.ToLower());
+            }
+            else if (this.type.ToLower().Contains("region"))
+            {
+                if (x1 == 0 || RightX1 == 0 || RightX2 == 0 || y1 == 0 || RightY1 == 0 || RightY2 == 0)
+                    this.isCorrect = false;
+                else if ((x1 >= RightX1 && x1 <= RightX2) && (y1 >= RightY1 && y1 <=RightY2))
+                    this.isCorrect = true;
+                else
+                    this.isCorrect = false;
+            }
+        }
+        public Boolean hasPoint(List<BaseAnswerModel> answers)
+        {
+            foreach (BaseAnswerModel answer in answers)
+            {
+                this.x1 = this.x2 = answer.x1;
+                this.y1 = this.y2 = answer.y1;
+                if ((answer.x1 >= this.RightX1 && answer.x1 <= this.RightX2) && ((answer.y1 >= this.RightY1 && answer.y1 <= this.RightY2)))
+                {
+                    answers.Remove(answer);
+                    return true;
+                }
+            }
+            return false;
+        }
 
-        public bool isUserPick { get; set; }
-        public String RightAnswerText { get; set; }
     }
 }

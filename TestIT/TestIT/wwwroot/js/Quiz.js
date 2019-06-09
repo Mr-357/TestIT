@@ -1,5 +1,5 @@
 ﻿
-export class Quiz {
+export class JSQuiz {
     /*constructor(name, numOfQuestionsPerTry, time, visibility) {
         this.name = name;
         this.numOfQuestionsPerTry = numOfQuestionsPerTry;

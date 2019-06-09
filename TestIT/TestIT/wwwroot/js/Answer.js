@@ -1,5 +1,5 @@
 ﻿
-export class Answer {
+export class JSAnswer {
     constructor(isCorrect) {
         this.isCorrect = isCorrect;
         this.x1 = null;
@@ -25,7 +25,7 @@ export class Answer {
     }
 }
 
-export class RegionAnswer extends Answer {
+export class RegionAnswer extends JSAnswer {
     constructor( pointA, pointB,isCorrect) {
         super(isCorrect);
         this.pointA = pointA;
@@ -33,7 +33,7 @@ export class RegionAnswer extends Answer {
     }
 }
 
-export class TextAnswer extends Answer {
+export class TextAnswer extends JSAnswer {
     constructor(answerText, isCorrect) {
         super(isCorrect);
         this.answerText = answerText
