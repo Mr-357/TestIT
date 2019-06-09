@@ -122,7 +122,6 @@ namespace TestIT.Controllers
             // process uploaded files
             // Don't rely on or trust the FileName property without validation.
             return Ok( Json(new { count = images.Count, size, filePaths }));
-            return Ok(new { count = images.Count, size, filePaths });
         }
 
         // POST: Quizs/Create
@@ -331,8 +330,8 @@ namespace TestIT.Controllers
             {
                 return NotFound();
             }
-            var tmp = _context.Quiz
-                        .FirstOrDefault(x => x.ID == id);
+            var tmp = await _context.Quiz
+                        .FirstOrDefaultAsync(x => x.ID == id);
 
             tmp.Visibility = quizVisibility.Ceka;
             _context.SaveChanges();

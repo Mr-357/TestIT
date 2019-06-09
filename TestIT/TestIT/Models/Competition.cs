@@ -15,7 +15,7 @@ namespace TestIT.Models
         public String Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime Deadline { get; set; }
-
+        public Course Course { get; set; }
         public Competition()
         {
             this.Participations = new List<Participation>();

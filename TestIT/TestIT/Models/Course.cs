@@ -23,6 +23,7 @@ namespace TestIT.Models
         public IList<Quiz> Quizzes { get; set; }
         public IList<onCours> Users { get; set; }
         public IList<Comment> Comments {get; set;}
+        public IList<Competition> Competitions { get; set; }
         public Course()
         {
             this.Comments = new List<Comment>();
