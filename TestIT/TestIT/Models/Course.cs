@@ -10,10 +10,15 @@ namespace TestIT.Models
     {
         [Key]
         public int ID { get; set; }
+        [Display(Name = "Godina")]
         public String SchoolYear { get; set; }
+        [Display(Name = "Naziv predmeta")]
         public String Name { get; set; }
+        [Display(Name = "Modul")]
         public String Module { get; set; }
+        [Display(Name = "Opis")]
         public String Description { get; set; }
+        [Display(Name = "Skracenica")]
         public String Short  { get; set; }
         public IList<Quiz> Quizzes { get; set; }
         public IList<onCours> Users { get; set; }

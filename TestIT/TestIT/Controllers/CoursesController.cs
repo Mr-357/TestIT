@@ -237,14 +237,21 @@ namespace TestIT.Controllers
         [HttpPost]
         public async Task<IActionResult> Unsubscribe(int course, string user)
         {
-            ApplicationUser u = await _context.Users.FirstOrDefaultAsync(x => x.Id == user);
-            Course crs = await _context.Courses
+            ApplicationUser u = await _context.Users.Include(us=>us.OnCours).ThenInclude(c=>c.Course).FirstOrDefaultAsync(x => x.Id == user);
+            Course crs = await _context.Courses.Include(c=>c.Users)
                                 .FirstOrDefaultAsync(m => m.ID == course);
-
-            for(int i = 0;i<crs.Users.Count;i++)
-                if(crs.Users[i].User.Name == u.Name)
+            
+            for(int i=0;i<u.OnCours.Count;i++)
+            {
+                if (u.OnCours[i].Course.ID== crs.ID)
+                {
+                    u.OnCours.RemoveAt(i);
+                }
+            }
+            for (int i = 0;i<crs.Users.Count;i++)
+                if(crs.Users[i].User.Id == u.Id)
                     crs.Users.RemoveAt(i);
-
+       
             _context.SaveChanges();
             int idc = course;
             return RedirectToAction("Course", "Home", new { id = idc  });
