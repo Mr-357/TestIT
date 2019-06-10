@@ -1,6 +1,9 @@
 .quiz{
     border: solid 1px dimgrey;
 }
+body h1 {
+    color: #0d004f;
+}
 
 .DoQuiz{
     display:flex;

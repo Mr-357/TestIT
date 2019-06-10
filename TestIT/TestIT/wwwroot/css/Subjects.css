@@ -1,0 +1,53 @@
+.modules {
+    display: flex;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.year-label {
+    border-radius: 7px;
+    background-color: #5190b6;
+    width: 75%;
+    margin-left: 11.5%;
+    align-self: center;
+    text-align: center;
+    color: whitesmoke;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.subjects{
+    text-align: center;
+    width:100%;
+    margin-bottom:7px;
+}
+.btn-primary{
+    flex-basis:15%
+}
+.subject-button {
+    display: block;
+    background-color: whitesmoke;
+    width: 60%;
+    margin-left: 19%;
+    border: 1px solid whitesmoke;
+    border-radius:10px;
+    color:#5190b6;
+    margin-bottom: 2px;
+    text-align:center;
+}
+
+.custom-button{
+    width:16%;
+    margin-left:2px;
+}
+
+.subject-button:hover{
+    text-decoration: underline;
+}
+body h1 {
+    color: #0d004f;
+}
+

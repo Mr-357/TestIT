@@ -40,21 +40,33 @@ namespace TestIT.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email polje mora biti popunjeno")]
+            [EmailAddress(ErrorMessage = "Email nije validan")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Polje za šifru mora biti popunjeno")]
+            [StringLength(100, ErrorMessage = "Šifra mora biti najmanje {2} a najviše {1} karaktera duga.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Šifra")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Potvrdite šifru")]
+            [Compare("Password", ErrorMessage = "Šifre se ne poklapaju.")]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "Polje za korisnicko ime mora biti popunjeno")]
+            [Display(Name = "Korisnicko ime")]
+            public string UserName { get; set; }
+
+            [Required(ErrorMessage = "Polje za ime mora biti popunjeno")]
+            [Display(Name = "Ime")]
+            public string Name { get; set; }
+
+            [Required(ErrorMessage = "Polje za prezime mora biti popunjeno")]
+            [Display(Name = "Prezime")]
+            public string Surname { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -67,7 +79,7 @@ namespace TestIT.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, Name = Input.Name, Surname = Input.Surname };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -88,7 +100,12 @@ namespace TestIT.Areas.Identity.Pages.Account
                 }
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    if(error.Description == "User name '"+ Input.UserName +"' is already taken.")
+                        ModelState.AddModelError(string.Empty, "Korisnicko ime '"+ Input.UserName +"' vec postoji");
+                    else if(error.Description == "Email '"+ Input.Email +"' is already taken.")
+                        ModelState.AddModelError(string.Empty, "Email '"+ Input.Email +"' vec postoji");
+                    else
+                        ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 

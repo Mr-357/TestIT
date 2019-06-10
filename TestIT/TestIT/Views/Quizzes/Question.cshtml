@@ -1,0 +1,89 @@
+@model TestIT.Models.Question
+@{
+    ViewData["Title"] = "Izmena pitanja";
+    string questionData = Newtonsoft.Json.JsonConvert.SerializeObject(Model, new Newtonsoft.Json.JsonSerializerSettings()
+    {
+        PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects,
+        Formatting = Newtonsoft.Json.Formatting.Indented,
+        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    });
+}
+<link rel="stylesheet" type="text/css" href="~/css/EditQuestion.css" />
+<script src="~/js/EditQuestion.js" type="module"></script>
+
+<body onload="startUp(@questionData);" class="bodyDiv">
+    <h1>Izmena Pitanja</h1>
+    <hr />
+    <label>Tekst pitanja</label>
+    <textarea id="questionTextArea" class="text-area"> @Model.QuestionText</textarea>
+    @{
+        if (Model.Picture != null)
+        {
+            var base64 = Convert.ToBase64String(TestIT.Data.Managers.SeedDataManager.FileToByteArray(Model.Picture));
+            var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+            <img id="imageQ" onclick="onImageClick()" src="@imgSrc" />
+            <canvas hidden="hidden" onclick="onImageClick()" id='myCanvas' width='10000px' height='10000px'></canvas>
+        }
+    }
+    @{
+        if (Model.Answers.Count == 1)
+        {
+            var single = Model.Answers[0] as TextAnswer;
+            if (single != null)
+            {
+                <p>Odgovor</p>
+                <textarea onchange="editSingleText()" id="answerTextArea" class="text-area"> @single.text </textarea>
+                <a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
+                <a onclick="sendData()" class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>
+            }
+            else
+            {
+                //var region = Model.Answers[0] as RegionAnswer;
+                <div class="multyAnswerArea" id="multyAnswerArea">
+                    <table class="table custom-table">
+                        <thead>
+                            <tr>
+                                <td>sirina i visina regiona</td>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
+                <a onclick="sendData()" class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>
+            }
+        }
+        else
+        {
+            var multy = Model.Answers[0] as TextAnswer;
+            <div class="multyAnswerArea" id="multyAnswerArea">
+                <table class="table custom-table">
+                    <thead>
+                        <tr>
+                            <td>sirina i visina regiona</td>
+                            @{
+                                if (multy != null)
+                                {
+                                    <td>tacan</td>
+                                }
+                            }
+                            <td>brisanje</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+                <a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
+                <a onclick="sendData()" class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>
+                @{
+
+                    if (multy != null)
+                    {
+                        <input onclick="addAnswer()" type="button" class="btn btn-success addButton" value="+" />
+                    }
+                }
+
+            </div>
+        }
+    }
+
+</body>

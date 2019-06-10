@@ -1,0 +1,143 @@
+@model TestIT.Models.Course
+@using Microsoft.AspNetCore.Identity;
+@using System.Security.Claims
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Predmet";
+    ViewBag.Title = "Course";
+}
+
+
+<link rel="stylesheet" type="text/css" href="~/css/ConcreteSubject.css" />
+<script src="~/js/Course.js" type="module"></script>
+<div class="course-container">
+    <h3 class="name">@Model.Name</h3>
+    @{
+        if(SignInManager.IsSignedIn(User))
+        {
+        string a = ViewBag.Message;
+        if(ViewBag.Message != "prijavljen")
+        {
+            <form asp-action="Subscribe" asp-controller="Courses"  method="post" >
+                <input type="text" name="course" value="@Model.ID" hidden >
+                <input type="text" name="user" value="@UserManager.GetUserId(User)" hidden >
+                <input type="submit" class="btn btn-primary" value="Prijava" />
+            </form>
+        }
+        else
+        {
+             <form asp-action="Unsubscribe" asp-controller="Courses"  method="post" >
+                <input type="text" name="course" value="@Model.ID" hidden >
+                <input type="text" name="user" value="@UserManager.GetUserId(User)" hidden >
+                <input type="submit" class="btn btn-danger" value="Odjava" />
+            </form>   
+            }
+        }
+    }
+
+</div>
+
+<hr/>
+
+<p>@Model.Description</p>
+<div class="profesori-asistenti-container">
+    <div class="left-container">
+        <table class="table custom-table profesori-asistenti">
+            <thead>
+                <tr>
+                    <p style="text-align: center">Profesori</p>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var p in Model.Users)
+                    {
+                        var t = await UserManager.GetRolesAsync(p.User);
+                        if (t.Contains("Profesor"))
+                        {
+                            <tr>
+                                <td>@p.User.Name @p.User.Surname</td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</div>
+<div class="comments-quizzes">
+    <div class="subject-quizzes">
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <td>Kvizovi</td>
+                    <td>
+                        @{
+                            if (SignInManager.IsSignedIn(User))
+                            {
+                                if (!User.IsInRole("Student"))
+                                {
+                                    <a href='/Courses/Validate/@Model.ID' class="table-button">Ceka na validaciju</a>
+                                }
+                            }
+                         }
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach(var p in Model.Quizzes)
+                    {
+                        <tr>
+                            <td>
+                                @p.Name
+                            </td>
+                            <td>
+                                <a href="https://www.google.com" class="table-button">Pokusaj</a> <a href="https://www.google.com" class="table-button-danger text-danger">Prijavi</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="subject-comments">
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <td>Komentari</td>
+                    <td>Korisnik</td>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var p in Model.Comments)
+                    {
+                        <tr>
+                            <td>
+                                @p.Content
+                            <td> <a href='/Home/UserInfo/@p.ApplicationUser.Id' class="table-button" style="color:#5190b6">@p.ApplicationUser.UserName</a> </td>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        @{
+            if(SignInManager.IsSignedIn(User))
+            { 
+            <div class="comment-section">
+                <div class="comment-section-left">
+                    <textarea class="comment-content" class="form-control" style="resize: height"></textarea>
+                </div>
+                <div class="comment-section-right">
+                    <button onclick="SubmitComment(@Model.ID);" class="btn btn-primary">Postavi</button>
+                </div>
+            </div>
+            }
+        }
+    </div>
+</div>

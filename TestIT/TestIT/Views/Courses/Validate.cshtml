@@ -1,0 +1,13 @@
+﻿@model  List<Quiz>
+@{
+    ViewData["Title"] = "Validate";
+}
+
+<h1>Validate</h1>
+@{ 
+    foreach(Quiz q in Model)
+    {
+        <p> @q.Name </p>
+        <p> @q.ID </p>
+    }
+}

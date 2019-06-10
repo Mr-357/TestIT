@@ -15,16 +15,6 @@ html {
   }
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
 
 button.accept-policy {
   font-size: 1rem;
@@ -36,17 +26,90 @@ button.accept-policy {
 html {
   position: relative;
   min-height: 100%;
+  font-family: Helvetica;
+}
+
+body{
+  background-color: white
+}
+
+.custom-button-container{
+  display:flex;
+  justify-content:center;
+}
+
+a {color:white;}         /* Unvisited link  */
+a:visited {color:white;} /* Visited link    */
+a:hover {color:white;}   /* Mouse over link */
+a:active {color:white;}
+
+a:hover{
+  text-decoration: none;
+}
+
+
+.table-button:visited {
+    color: #5190b6;
+}
+.table-button:hover {
+    color: #5190b6;
+}
+.table-button:active {
+    color: #5190b6;
+}
+
+.table-button {
+    font-weight:bold;
+    /*background-color: #5190b6;*/
+    border-radius: 7px;
+    text-decoration: none;
+    border: none;
+    color: #5190b6;
+}
+
+.table-button-danger {
+    font-weight:bold;
+    border-radius: 7px;
+    border: none;
+}
+
+.custom-button {
+    border-radius: 7px;
+    background-color: #5190b6;
+    border: none;
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    line-height: 50px;
+    height: 50px;
+}
+
+.custom-btn {
+    margin: 15px 32px;
+    font-size: 35px;
+    width: 30%;
+    line-height: 150px;
+    height: 150px;
+}
+
+@media(max-width:768px){ 
+  .custom-btn{
+    font-size: 15px;
+    line-height: 50px;
+    height: 50px;
+  }
 }
 
 body {
-  /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
+  background-color: white;
   /* Set the fixed height of the footer here */
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
@@ -54,4 +117,66 @@ body {
 
 img{
   max-width:100%;
+}
+
+.custom-background{
+  background-color: #5190b6;
+}
+
+.custom-table tr{
+    text-align:center;
+    vertical-align:central;
+}
+
+.custom-table td {
+    vertical-align: middle;
+}
+
+.custom-table th {
+ 
+    background-color: whitesmoke;
+}
+
+@media(max-width:768px) {
+    .remove {
+        color:white;
+    }
+}
+
+.nav-link {
+    background-color: #5190b6;
+    margin-bottom: 5px;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: #111F47;
+}
+
+
+.btn-primary {
+    background-color: #5190b6;
+    border-color: #5190b6;
+}
+
+.btn-primary:hover{
+    background-color: #5190b6;
+}
+
+.custom-button-danger {
+  border-radius: 7px;
+  background-color: #c82333;
+  border: none;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  line-height: 50px;
+  height: 50px;
+}
+
+.custom-popup-button{
+  font-weight:700;
+  text-shadow: 0.5px 0.5px 30px #137282;
+}
+body h1 {
+    color: #0d004f;
 }

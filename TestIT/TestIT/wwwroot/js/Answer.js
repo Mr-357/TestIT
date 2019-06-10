@@ -1,16 +1,16 @@
 ﻿
-export class Answer {
+export class JSAnswer {
     constructor(isCorrect) {
         this.isCorrect = isCorrect;
         this.x1 = null;
         this.x2 = null;
         this.y2 = null;
         this.y1 = null;
-        this.answerText = null;
+        this.text = null;
         this.type = null;
     }
     setAnswerText(text) {
-        this.answerText = text;
+        this.text = text;
         this.type = "text";
     }
     sePoints(x1, x2, y1, y2) {
@@ -25,7 +25,7 @@ export class Answer {
     }
 }
 
-export class RegionAnswer extends Answer {
+export class RegionAnswer extends JSAnswer {
     constructor( pointA, pointB,isCorrect) {
         super(isCorrect);
         this.pointA = pointA;
@@ -33,9 +33,9 @@ export class RegionAnswer extends Answer {
     }
 }
 
-export class TextAnswer extends Answer {
+export class TextAnswer extends JSAnswer {
     constructor(answerText, isCorrect) {
         super(isCorrect);
-        this.answerText = answerText
+        this.text = answerText
     }
 }

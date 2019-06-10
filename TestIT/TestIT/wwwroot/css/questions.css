@@ -1,5 +1,6 @@
 .question {
-    border: solid 1px dimgrey;
+    background-color: whitesmoke;
+    border-radius: 5px;
 }
 
 .QuizCreation{
@@ -19,12 +20,51 @@
     flex: 1 1 66.6%;
 }
 
-.existingQuestionsButton{
-    margin-bottom: 2%;
+    .RightSide .answerOptionsDiv {
+        display: flex;
+        flex-direction: row;
+        margin-top:3%;
+    }
+
+        .RightSide .answerOptionsDiv .options {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .RightSide .answerOptionsDiv .leftOptions {
+            border-right:groove;
+        }
+        .RightSide .answerOptionsDiv .rightOptions {
+            margin-left : 3%;
+        }
+    .RightSide .textAnserDiv{
+        margin-top:3%;
+        display:flex;
+        flex-direction:column;
+    }
+    .RightSide .multyAnswerArea {
+        margin-top:3%;
+    }
+
+    .existing-questions-button {
+        margin-bottom: 5px;
+    }
+
+    .RightSide .imageArea {
+        margin-top:3%;
+        margin-bottom:2%
+    }
+    .RightSide .imageArea img {
+
+    }
+    
+
+.add-question-container {
+    display: block;
 }
 
-.addQuestionButton{
-    margin-left:83%;
+.add-question-button{
+    float:right;
     margin-bottom: 2%;
 }
 
@@ -36,7 +76,6 @@
 .ExistingQuestions{
     padding-right: 2.5%;
     flex: 1 1 33.3%;
-    max-width: 33.3%;
 }
 
 .AnswersDiv{
@@ -45,5 +84,16 @@
 }
 
 .addAnswerButton{
-    margin:2%;
+    float:right;
+}
+
+.answer-text-area{
+    resize: height;
+    width: 100%;
+    height: 50px;
+    min-height: 50px;
+    max-height: 250px;
+}
+body h1 {
+    color: #0d004f;
 }

@@ -1,0 +1,16 @@
+.container{
+    display: flex;
+    width:1080px;
+}
+.right-container{
+    width: 100%;
+    margin-left:5px;
+}
+
+.left-container{
+    width: 100%;
+    margin-right:5px;
+}
+body h1 {
+    color: #0d004f;
+}

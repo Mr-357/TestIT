@@ -1,0 +1,33 @@
+﻿body {
+}
+
+.outerDiv{
+    display:flex;
+    flex-direction:column;
+
+}
+    .outerDiv .infoDiv {
+        display: flex;
+        flex-direction: column;
+        
+    }
+        .outerDiv .infoDiv label {
+            margin-bottom:0;
+            font-size:large;
+        }
+        .outerDiv .infoDiv .infoLabel {
+            margin-bottom: 2%;
+            border-radius:5px;
+            background-color:whitesmoke;
+            width: 30%;
+        }
+        .outerDiv .controlDiv {
+            border-top:groove;
+            margin-top:2%;
+            width:20%;
+
+        }
+        .outerDiv .controlDiv a{
+            margin-top: 2%;
+
+        }

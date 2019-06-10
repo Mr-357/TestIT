@@ -1,0 +1,44 @@
+﻿@model TestIT.Models.Competition
+
+@{
+    ViewData["Title"] = "Brisanje turnira";
+}
+
+<h1>Brisanje turnira</h1>
+
+<h3>@Model.Name</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Deadline)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Deadline)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Quiz)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quiz.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Course)
+        </dt>
+        <dd class = "col-sm-10">
+            <a class="table-button" href="/Courses/Edit/@Model.Course.ID" style="color:#5190b6">@Html.DisplayFor(model => model.Course.Name)</a>
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Obrisi" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-primary">Povratak na listu</a>
+    </form>
+</div>

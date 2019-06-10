@@ -1,0 +1,32 @@
+form{
+    width:100%;
+}
+
+.container-cst{
+    width: 100%;
+    display: flex;
+}
+
+@media (max-width: 768px) {
+    .container-cst {
+        flex-wrap: wrap;
+    }
+  }
+
+.left{
+    margin-right: 2.5%;
+    margin-left: 2.5%;
+
+    flex: 1 1 auto;
+}
+
+.right{
+    margin-right: 2.5%;
+    margin-left: 2.5%;
+    flex: 8 1 auto;
+}
+
+.text-area{
+    min-height: 250px;
+    max-height: 250px;
+}

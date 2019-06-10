@@ -1,0 +1,70 @@
+@model TestIT.Models.ApplicationUser
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Korisnicki podaci";
+
+}
+
+<link rel="stylesheet" type="text/css" href="~/css/Users.css">
+<script src="~/js/Users.js" type="module"></script>
+
+<h3>Pregled profila</h3>
+<hr />
+<div class="container"> 
+    <div class="left-container">
+        <label>Korisnicko ime</label>
+        <input value="@Model.UserName" class="form-control" disabled/>
+
+        <label>Ime</label>
+        <input value="@Model.Name" class="form-control" disabled/>
+
+        <label>Prezime</label>
+        <input value="@Model.Surname" class="form-control" disabled/>
+        <br/>
+        <div >
+            <table class="table custom-table common-courses">
+                    <thead>
+                        <tr >
+                            <p style="text-align: center">Predmeti na koje je korisnik prijavljen</p>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                             @{
+                                foreach(var k in Model.OnCours)
+                                {
+                                    <tr><td class="courses">@k.Course.Name</td></tr>
+                                }
+                            }
+                        </tr>
+                    </tbody>
+            </table>
+        </div>
+        <div>
+            <button onclick="window.history.back()" class="btn btn-primary">Povratak nazad</button>
+            <a class="btn btn-danger" href="/Home/VS/@Model.Id" style="color:white">Izazovi</a>
+        </div>
+    </div>
+
+    <div class="right-container">
+        <table class="table custom-table common-courses">
+            <thead>
+                <tr >
+                    <p style="text-align: center">Javni kvizovi korisnika</p>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @{
+                        foreach(var k in Model.Quizzes)
+                        {
+                            <tr><td class="courses">@k.Name</td></tr>
+                        }
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

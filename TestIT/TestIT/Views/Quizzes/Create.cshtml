@@ -1,86 +1,137 @@
-﻿
-
-@{
-    ViewData["Title"] = "Create a quiz";
+﻿@{
+    ViewData["Title"] = "Napravi kviz";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
 
 <link rel="stylesheet" type="text/css" href="~/css/questions.css">
+<body onload="fetchYears()">
+    <h1>Novi kviz</h1>
+    <div class="QuizCreation">
 
-<div class="QuizCreation">
+        <div class="LeftSide">
+            <div class="QuizCreationForm">
+                <form asp-action="Create">
+                    <div class="form-group">
+                        <input type='button' value='Povratak nazad' class="btn btn-danger" onclick='window.location = "@Url.Action("Index", "Quizzes")";' />
+                        <input type="button" name="command" value="Napravi" class="btn btn-primary" onclick="createQuez()" />
+                    </div>
+                    <div class="text-danger"></div>
+                    <div class="form-group">
+                        <div class="quiz-creation">
+                            <label>Ime kviza</label>
+                            <br />
+                            <textarea id="quizName" class="form-control" style="resize: height"></textarea>
+                            <br />
+                            <div class="form-group">
+                                <label class="control-label">Pitanja po pokušaju</label>
+                                <input type="number" id="questionPerTry" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Vreme za izradu kviza (u minutima)</label>
+                                <input type="number" id="timeForQuiz" class="form-control" />
+                            </div>
+                            <div>
+                                <label>Teme (kljucne reci)</label>
+                                <input type="number" id="timeForQuiz" class="form-control" />
+                            </div>
+                            <br />
+                            <div>
+                                <label>Godina</label>
+                                <select id="godina" onchange="window.fetchCourses()">
+                                    <option value="">Izaberite godinu</option>
 
-    <div class="LeftSide">
-        <div class="QuizCreationForm">
-            <form asp-action="Create">
-                <div class="form-group">
-                    <input type='button' value='Povratak nazad' class="btn btn-primary" onclick='window.location = "@Url.Action("Index", "Quizzes")";' />
-                    <input type="button" name="command" value="Napravi" class="btn btn-primary"  onclick="jsFetch()"/>
-                </div>
-                <div  class="text-danger"></div>
-                <div class="form-group">
-                    <br />
-                    <div class="quiz-creation">
-                        <label> Ime kviza: </label>
-                        <br />
-                        <textarea  id="quizName" class="form-control" style="resize: both"></textarea>
-                        <div class="form-group">
-                            <label class="control-label">Questions per try</label>
-                            <input type="number" id="questionPerTry" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">time</label>
-                            <input type="number" id="timeForQuiz" class="form-control" />
-
+                                </select>
+                            </div>
+                            <div>
+                                <label>Predmet kviza</label>
+                                <select id="predmeti">
+                                    <option value="">Izaberite godinu</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
-</div>
+                </form>
+            </div>
+            <div class="addedThings">
+                <div class="ExistingQuestions">
+                    <input type='button' value='Prikazi postojeca pitanja' class="btn btn-primary existing-questions-button" onclick="showQuestions();" />
+                    <div id="questions" hidden="hidden">
 
-<div class="RightSide">
-    <form asp-action="Create">
-        <div class="QuestionCreation">
-            <input type="button" name="command" value="Dodaj pitanje" class="btn btn-primary addQuestionButton" onclick="addQuestion();" />
-            <div class="new-question-form">
-                <label>Question text: </label>
-                <br />
-                <textarea id="questionText" class="form-control" style="resize: both"></textarea>
-                <div>
-                    <label>Points : </label>
-                    <input type="number" name="questionPoints" id="questionPoints" value="" />
-                </div>
-
-                <label>Answer: </label>
-                <div id="answer-options">
-                    <label>Pick answer type: </label>
-                    <br />
-                    <input type="radio" onchange="createAnswerTextArea();" value="Text" name="AnswerType" /> Text
-                    <br />
-                    <input type="radio" onchange="createAnswerSelectionArea();" value="Select" name="AnswerType" /> Select
-                    <br />
-                    <input type="radio" onchange="createAnswerImageArea();" value="Image" name="AnswerType" /> Image
-                    <br />
+                    </div>
                 </div>
             </div>
         </div>
-    </form>
-</div>
-</div>
 
-<div class="addedThings">
-    <div class="ExistingQuestions">
-        <input type='button' value='Prikazi postojeca pitanja' class="btn btn-primary existingQuestionsButton" onclick="showQuestions();" />
-        <div id="questions" hidden="hidden">
-
+        <div class="RightSide">
+            <div class="QuestionCreation">
+                <div class="add-question-container">
+                    <input type="button" name="command" value="Dodaj pitanje" class="btn btn-primary add-question-button" onclick="addQuestion();" />
+                    <br />
+                    <br />
+                </div>
+                <div class="new-question-form">
+                    <label>Pitanje </label>
+                    <br />
+                    <textarea id="questionText" class="form-control" style="resize: height"></textarea>
+                    <div>
+                        <br />
+                        <label>Broj poena: </label>
+                        <input type="number" name="questionPoints" id="questionPoints" value="" />
+                    </div>
+                    <div class="imageArea">
+                        <input type="file" onchange="previewFile()"><br>
+                        <img id="questionImageArea" onclick="imageClick()" hidden="hidden" src="" height="200" alt="Image preview...">
+                        <canvas hidden="hidden" onclick="imageClick()" id='myCanvas' width='536px' height='536px'></canvas>
+                    </div>
+                    <div class="answerOptionsDiv" id="answer-options">
+                        <div class="options leftOptions">
+                            <label>Izaberite Kolicinu odgoovra </label>
+                            <div>
+                                <input type="radio" checked ="checked" onchange="setAnswerCuantity('single');" value="Text" name="leftOptions" /> Jedan Odgovor
+                            </div>
+                            <div>
+                                <input type="radio" onchange="setAnswerCuantity('multy');" value="Text" name="leftOptions" /> Vise Odgovora <br />
+                            </div>
+                        </div>
+                        <div class="options rightOptions">
+                            <label>Izaberite tipOdgovora </label>
+                            <div>
+                                <input checked ="checked" type="radio" onchange="createTextAnswerArea();" value="Text" name="rightOptions" /> Tekst <br />
+                            </div>
+                            <div>
+                                <input type="radio" onchange="createRegionAnswerArea();" value="Select" name="rightOptions" /> Region Na slici <br />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textAnserDiv">
+                        <label>Unesite Odgovor</label>
+                        <textarea class="textAnswerArea" id="AnswerTextArea"></textarea>
+                        <input type="button" hidden="hidden" id="addAnswerButton" value="Dodaj Odgovor" class="btn btn-primary" onclick="addAnswer();" />
+                    </div>
+                    <div class="multyAnswerArea" id="multyAnswerArea" hidden="hidden">
+                        <table class="table custom-table">
+                            <thead>
+                                <tr>
+                                    <td>Odgovor</td>
+                                    <td>tacan</td>
+                                    <td>brisanje</td>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="AnswersDiv" hidden="hidden">
+            </div>
         </div>
     </div>
-    <div class="AnswersDiv" hidden="hidden">
 
-    </div>
 
-</div>
+</body>
 <script src="~/js/QuizForm.js" type="module"></script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -8,6 +8,8 @@ namespace TestIT.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("SET default_storage_engine=INNODB");
+            migrationBuilder.Sql($@"ALTER DATABASE CHARACTER SET utf8 COLLATE utf8_general_ci;");
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new

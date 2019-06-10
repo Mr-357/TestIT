@@ -1,0 +1,108 @@
+﻿.titleDeo{
+    display:flex;
+}
+    .titleDeo h1 {
+        color: #0d004f;
+        flex: 1;
+    }
+    .titleDeo h2 {
+        text-align: right;
+        flex: 1;
+        font-size: medium;
+    }
+.pageBox{
+    display:flex;
+    flex-direction:column;
+    height:100%;
+}
+.outsideBox{
+    display:flex;
+    margin-top:2%;
+    color:white;
+}
+.leviDeo {
+    border-right: groove;
+    display: flex;
+    flex-direction: column;
+    
+}
+.leviDeo button {
+    margin: 10px;
+    border-radius: 100%;
+    background-color: #5190b6;
+    color:white;
+}
+.desniDeo {
+    display:flex;
+    flex-direction:column;
+    flex:1;
+}
+.desniDeo input[type="button"] {
+    width:20%;
+    margin-left:50%;
+    
+}
+    .desniDeo .imageDiv {
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-bottom: 1%;
+        margin-top: 1%;
+    }
+.questionBox {
+    margin: 5% 5% 2% 20%;
+    display: flex;
+    flex-direction: column;
+    background-color: #548daf;
+    border-radius: 5px;
+    width:50%;
+}
+
+    .questionBox textarea {
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-bottom: 1%;
+        margin-top: 1%;
+        resize: vertical;
+        height: 200px;
+        border-radius:5px;
+    }
+    .questionBox span{
+        margin-left:3%
+    }
+    .questionBox .rightAnswerText {
+        background-color: lightgreen;
+    }
+    .questionBox .wrongAnwserText {
+        background-color: #c82333;
+    }
+    
+    .questionText {
+        text-align: center;
+        margin-top: 2%
+    }
+.questionBox input {
+    margin-left:5%;
+    margin-top:2%
+}
+.answerBox{
+    display:flex;
+    flex-direction:column;
+    margin : 5% 1% 5% 1%;
+}
+    .answerBox label {
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-bottom: 1%;
+        margin-top: 1%;
+    }
+    .answerBox p {
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-bottom: 1%;
+        margin-top: 1%;
+    }
+.controlDeo {
+    margin-top : 2%;
+}
+
+

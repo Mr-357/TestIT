@@ -1,0 +1,50 @@
+@model TestIT.Models.ApplicationUser
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "1 na 1";
+    ViewBag.Title = "VS";
+}
+
+<link rel="stylesheet" type="text/css" href="~/css/Users.css">
+<script src="~/js/Users.js" type="module"></script>
+
+<h3>Izazivate korisnika: @Model.UserName</h3>
+<hr />
+<div class="container">
+    <div class="left-container">
+            <table class="table custom-table common-courses">
+                    <thead>
+                        <tr >
+                            <p style="text-align: center">Vasi zajednicki predmeti</p>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @{
+                                var zajednicki = ViewBag.Message as List<TestIT.Models.Course>;
+                                if(zajednicki != null)
+                                {
+                                    foreach( var p in zajednicki)
+                                    {
+                                        <tr><td class="courses">@p.Name</td></tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td class="courses">Nemate zajednickih predmeta</td></tr>
+                                }
+                            }
+                        </tr>
+                    </tbody>
+            </table>
+    </div>
+    <div class="right-container">
+
+    </div>
+    
+</div>
+<div>
+    <a href="/Home/Users" class="btn btn-danger" >Povratak nazad</a>
+    <a class="btn btn-primary" style="color:white">Izazovi</a>
+</div>

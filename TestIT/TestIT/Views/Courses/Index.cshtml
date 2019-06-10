@@ -1,0 +1,54 @@
+﻿@model IEnumerable<TestIT.Models.Course>
+
+@{
+    ViewData["Title"] = "Predmeti";
+}
+
+<h1>Predmeti</h1>
+<hr/>
+
+<p class="btn btn-primary" style="color:white">
+    <a asp-action="Create">Napravi novi predmet</a>
+</p>
+
+<table class="table custom-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SchoolYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Module)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Short)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SchoolYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Module)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Short)
+            </td>
+            <td>
+                <a class="table-button" asp-action="Edit" asp-route-id="@item.ID">Detalji</a> |
+                <a class="table-button text-danger" asp-action="Delete" asp-route-id="@item.ID">Obrisi</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

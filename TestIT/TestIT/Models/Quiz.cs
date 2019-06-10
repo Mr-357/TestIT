@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -13,12 +14,15 @@ namespace TestIT.Models
     {
         [Key]
         public int ID { get; set; }
+        [DisplayName("Naziv")]
         public String Name { get; set; }
+        [DisplayName("Broj pitanja po pokusaju")]
         public int numberOfQustionsPerTry { get; set; }
+        [DisplayName("Vreme")]
         public int time { get; set; } //time on quiz in minutes, if 0 then unlimited,
-        [DefaultValue(quizVisibility.privateQuiz)]
+        [DefaultValue(quizVisibility.Privatni)]
+        [DisplayName("Tip")]
         public quizVisibility Visibility { get; set; }
-
 
         public IList<Question> Questions { get; set; }
 
@@ -28,7 +32,7 @@ namespace TestIT.Models
         }
         
         //copy constructor
-        public Quiz(CreateQuizViewModel model)
+        public Quiz(QuizViewModel model)
         {
             this.Name = model.Name;
             this.numberOfQustionsPerTry = model.NumberOdQuestionsPerTry;
@@ -40,15 +44,17 @@ namespace TestIT.Models
                 Question tempQuestion = new Question();
                 tempQuestion.QuestionText = questionModel.QuestionText;
                 tempQuestion.Points = questionModel.Points;
-                foreach (AnswerModel answer in questionModel.Answers)
+                tempQuestion.Picture = questionModel.PicturePath;
+                foreach (BaseAnswerModel answer in questionModel.Answers)
                 {
-                    if(answer.type == "text")
+                    if(answer.type.Contains("text"))
                     {
-                        tempQuestion.Answers.Add(new TextAnswer(answer.answerText, answer.isCorrect));
+                        TextAnswer temp = new TextAnswer(answer.text, answer.IsCorrect);
+                        tempQuestion.Answers.Add(temp);
                     }
-                    else if (answer.type=="range")
+                    else if (answer.type.Contains("region"))
                     {
-                        tempQuestion.Answers.Add(new RegionAnswer(answer.x1, answer.x2, answer.y1, answer.y1, answer.isCorrect));
+                        tempQuestion.Answers.Add(new RegionAnswer(answer.x1, answer.x2, answer.y1, answer.y2, answer.IsCorrect));
                     }
                 }
                 this.Questions.Add(tempQuestion);
@@ -58,6 +64,6 @@ namespace TestIT.Models
 
     public enum quizVisibility
     {
-        privateQuiz, PublicQuiz
+        Privatni, Javni, Ceka
     }
 }

@@ -27,8 +27,6 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
             _emailSender = emailSender;
         }
 
-        public string Username { get; set; }
-
         public bool IsEmailConfirmed { get; set; }
 
         [TempData]
@@ -39,13 +37,21 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
+            public string UserName { get; set; }
+
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+            
+            public string Name { get; set; }
+            
+            public string Surname { get; set; }
 
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+            [Required]
+            public string Modul { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -56,16 +62,14 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var userName = await _userManager.GetUserNameAsync(user);
-            var email = await _userManager.GetEmailAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
-
             Input = new InputModel
             {
-                Email = email,
-                PhoneNumber = phoneNumber
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Name = user.Name,
+                Surname = user.Surname,
+                Modul = user.Modul
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -83,7 +87,7 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Greška ID: '{_userManager.GetUserId(User)}'.");
             }
 
             var email = await _userManager.GetEmailAsync(user);
@@ -93,7 +97,7 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
                 if (!setEmailResult.Succeeded)
                 {
                     var userId = await _userManager.GetUserIdAsync(user);
-                    throw new InvalidOperationException($"Unexpected error occurred setting email for user with ID '{userId}'.");
+                    throw new InvalidOperationException($"Greška prilikom promene E-Mail-a za korisnika sa ID: '{userId}'.");
                 }
             }
 
@@ -107,9 +111,19 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
-
+            var modul = user.Modul;
+            if (Input.Modul != modul)
+            {
+                user.Modul = Input.Modul;
+                var setModulResult = await _userManager.UpdateAsync(user);
+                if (!setModulResult.Succeeded)
+                {
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    throw new InvalidOperationException($"Greška prilikom promene modula za korisnika sa ID: '{userId}'.");
+                }
+            }
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Uspešna promena profila";
             return RedirectToPage();
         }
 
@@ -140,7 +154,7 @@ namespace TestIT.Areas.Identity.Pages.Account.Manage
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = "Poslat verifikacioni mejl. Molimo vas proverite vaš email.";
             return RedirectToPage();
         }
     }

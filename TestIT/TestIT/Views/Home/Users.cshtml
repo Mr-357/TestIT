@@ -1,0 +1,28 @@
+@model TestIT.Models.ViewModels.UsersViewModel
+
+@{
+    ViewData["Title"] = "Korisnici";
+}
+
+<label>Pretrazi po imenu</label>
+<input>
+<br>
+
+<table class="table custom-table">
+    <thead>
+        <tr>
+            <p style="text-align: center">Korisnici</p>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach(var u in Model.GetUsers())
+            {
+                <tr>
+                    <td>@u.FullName()</td>
+                    <td> <a class="table-button text-danger" href='/Home/VS/@u.Id' style="margin-right:5px;">Izazovi</a> <a class="table-button" href='/Home/UserInfo/@u.Id' style="margin-left:5px";>Vidi profil</a> </td>
+                </tr>
+            }
+        }        
+    </tbody>
+</table>

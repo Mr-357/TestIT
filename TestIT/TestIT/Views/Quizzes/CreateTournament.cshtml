@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "CreateTournament";
+    var predmeti = new Dictionary<string, Dictionary<int, List<string>>>();
+    var rii = new Dictionary<String, List<string>>();
+
+    rii.Add("Algoritmi i programiranje", new List<string>() { "Quiz1", "Quiz2", "Quiz3", "Quiz4", "Quiz5" });
+    rii.Add("Objektno orijentisano programiranje", new List<string>() { "Quiz1", "Quiz2", "Quiz3", "Quiz4", "Quiz5" });
+    rii.Add("Racunarski sistemi", new List<string>() { "Quiz1", "Quiz2", "Quiz3", "Quiz4", "Quiz5" });
+}
+
+<link rel="stylesheet" type="text/css" href="~/css/CreateTurnir.css">
+<script src="~/js/CreateTurnir.js" type="module"></script>
+<div class="outerDiv">
+    <h1>Novi turnir</h1>
+    <div class="middleDiv">
+        <div class="leviDeo">
+            <label>Naziv turnira</label>
+            <textarea></textarea>
+            <label>Sifra za pristup</label>
+            <input />
+            <label>Vidljivost turnira</label>
+            <select>
+                <option value="privatan">Privatan</option>
+                <option value="javan">Javan</option>
+            </select>
+            <label>Rok odrade</label>
+            <input type="datetime-local">
+        </div>
+        <div class="desniDeo">
+            <label class="predmeti" onclick="HideSubjects('1');">Algoritmi i programiranje &#9660; </label>
+            <div hidden="" class="1st-year  kvizovi">
+                @{
+                    foreach (var el in rii["Algoritmi i programiranje"])
+                    {
+                        <div>
+                            <a href='/Home/ConcreteSubject/'  style="color:#5190b6">@el</a>
+                        </div>
+                    }
+                }
+            </div>
+            <label class="predmeti" onclick="HideSubjects('2');">Objektno orijentisano programiranje &#9660; </label>
+            <div hidden="hidden" class="2nd-year  kvizovi">
+                @{
+                    foreach (var el in rii["Objektno orijentisano programiranje"])
+                    {
+                        <div>
+                            <a href='/Home/ConcreteSubject/' style="color:#5190b6">@el</a>
+                        </div>
+                    }
+                }
+            </div>
+            <label class="predmeti" onclick="HideSubjects('3');">Racunarski sistemi &#9660; </label>
+            <div hidden="hidden" class="3rd-year kvizovi">
+                @{
+                    foreach (var el in rii["Objektno orijentisano programiranje"])
+                    {
+                        <div>
+                            <a href='/Home/ConcreteSubject/' style="color:#5190b6">@el</a>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="controlDiv">
+        <a href="/Home/Users" class="btn btn-danger">Povratak nazad</a>
+        <a class="btn btn-primary" style="color:white">Kreiraj</a>
+    </div>
+
+</div>
+
+
+

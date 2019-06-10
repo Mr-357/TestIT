@@ -1,0 +1,50 @@
+﻿@model TestIT.Models.Competition
+
+@{
+    ViewData["Title"] = "Izmena turnira";
+}
+
+<h1>Izmena turnira</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" disabled/>
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Deadline" class="control-label"></label>
+                <input asp-for="Deadline" class="form-control" />
+                <span asp-validation-for="Deadline" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Course" class="control-label"></label>
+                <input asp-for="Course.Name" class="form-control" disabled/>
+                <span asp-validation-for="Course.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quiz" class="control-label"></label>
+                <input asp-for="Quiz.Name" class="form-control" disabled/>
+                <span asp-validation-for="Quiz.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Sacuvaj" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-danger">Povratak na listu</a>
+</div>
+

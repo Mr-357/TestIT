@@ -1,0 +1,65 @@
+.comments-quizzes{
+    margin-left:5%;
+    margin-right: 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-content: space-between;
+}
+
+@media(max-width:768px) {
+    .comments-quizzes {
+        flex-wrap: wrap;
+    }
+}
+
+.subject-comments{
+    margin-left:5px;
+    width: 100%;
+}
+
+.subject-quizzes{
+    margin-right:5px;
+    width:100%;
+}
+
+.left-container{
+    margin-right: 5px;
+}
+
+.right-container{
+    margin-left: 5px;
+}
+
+.profesori-asistenti-container{
+    display:flex;
+}
+
+.comment-section{
+    display:flex;
+    flex-direction: row;
+}
+
+.comment-content{
+    width:95%;
+}
+
+.comment-section-left{
+    flex:1 1 auto;
+}
+
+.comment-section-right{
+    flex: 0 1 auto;
+}
+
+.course-container{
+    display:flex;
+}
+
+.name{
+    flex: 1 1 auto;
+}
+
+.subscribe-button{
+    flex: 0 1 auto;
+}
