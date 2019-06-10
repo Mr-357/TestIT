@@ -1,49 +1,59 @@
-﻿@model TestIT.Models.Competition
+﻿@model TestIT.Models.ViewModels.CompetitionViewModel
 
 @{
     ViewData["Title"] = "Napravi novi turnir";
 }
 <script src="~/js/Competition.js" type="module"></script>
+<link rel="stylesheet" type="text/css" href="~/css/EditCourse.css">
+@*@DateTime.Now.ToString("yyyy-MM-ddTHH:mm");*@
+@{ string now = DateTime.Now.ToString("yyyy-MM-ddTHH:mm"); }
 <body onload="get()">
     <h1>Napravi novi turnir</h1>
     <hr />
     <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="container-cst">
+            <div class="col-md-4 left">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StartDate" class="control-label"></label>
+                        <input asp-for="StartDate" value="@now" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Deadline" class="control-label"></label>
+                        <input asp-for="Deadline"  value="@now" class="form-control" />
+                        <span asp-validation-for="Deadline" class="text-danger"></span>
+                    </div>
+                    <input asp-for="CourseID" type="hidden" id="kurs" value="CourseID" />
+                    <input asp-for="QuizID" type="hidden" id="kviz" value="QuizID" />
+                    <div class="form-group">
+                        <input type="submit" value="Napravi" class="btn btn-primary" />
+                    </div>
+                </form>
                 <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <label class="control-label"></label>
+                    <select id="predmet" class="form-control" onchange="loadQuizzes()"></select>
                 </div>
                 <div class="form-group">
-                    <label asp-for="StartDate" class="control-label"></label>
-                    <input asp-for="StartDate" class="form-control" />
-                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                    <label class="control-label"></label>
+                    <select id="kvizovi" class="form-control" onchange="showData()"></select>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Deadline" class="control-label"></label>
-                    <input asp-for="Deadline" class="form-control" />
-                    <span asp-validation-for="Deadline" class="text-danger"></span>
+                <div>
+                    <a asp-action="Index" class="btn btn-danger">Povratak na listu</a>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Course" class="control-label"></label>
-                    <select asp-for="Course" id="predmet" class="form-control" ></select>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Quiz" class="control-label"></label>
-                    <select asp-for="Quiz" class="form-control" ></select>
-                    <span asp-validation-for="Deadline" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Napravi" class="btn btn-primary" />
-                </div>
-            </form>
+            </div>
+            <div class="right">
+
+            </div>
         </div>
     </div>
 
-    <div>
-        <a asp-action="Index" class="btn btn-danger">Povratak na listu</a>
-    </div>
+
 
 </body>

@@ -1,13 +1,12 @@
-window.ShowQuizzes = function ShowQuizzes(course){
+window.ShowQuizzes = function ShowQuizzes(course) {
     let td = document.getElementsByClassName("courses");
-    switch(course){
+    switch (course) {
         case "SI":
-        td[0].style="background-color:#5190b6; color:white";
-        break;
+            td[0].style = "background-color:#5190b6; color:white";
+            break;
     }
     Draw();
 }
-
 function Draw(){
     let div = document.getElementsByClassName("right-container");
 

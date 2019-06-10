@@ -28,15 +28,17 @@ window.getmodules = function getmodules(modul) {
         .catch(error => console.log(error));
     select = document.getElementById("moduli");
 
-    setTimeout(set, 50,modul);
+    setTimeout(set, 150,modul);
    
 }
 
 window.set = function set(modul) {
-
+ 
     let select = document.getElementById("moduli");
 
-        for (let i = 0; i < select.length; i++) {
+    for (let i = 0; i < select.length; i++)
+    {
+        console.log(select.options[i]);
             if (select.options[i].value == modul)
                 select.selectedIndex = i;
         }

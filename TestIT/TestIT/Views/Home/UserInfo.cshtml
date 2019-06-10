@@ -3,6 +3,7 @@
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Korisnicki podaci";
+
 }
 
 <link rel="stylesheet" type="text/css" href="~/css/Users.css">
@@ -41,7 +42,7 @@
             </table>
         </div>
         <div>
-            <a href="/Home/Users" class="btn btn-primary">Povratak nazad</a>
+            <button onclick="window.history.back()" class="btn btn-primary">Povratak nazad</button>
             <a class="btn btn-danger" href="/Home/VS/@Model.Id" style="color:white">Izazovi</a>
         </div>
     </div>

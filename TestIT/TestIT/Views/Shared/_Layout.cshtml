@@ -39,22 +39,23 @@
                             <!-- <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" style="color:white">Home</a> -->
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" style="color:white; font-weight:bold">Početna</a>
                         </li>
+                        @*<li class="nav-item">
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" style="color:white; font-weight:bold">Privatnost</a>
+        </li>*@
+
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" style="color:white; font-weight:bold">Privatnost</a>
-                        </li>
-                     
-                        <li class="nav-item">
-                            <a class="nav-link"  asp-controller="Home" asp-action="Courses" style="color:white; font-weight:bold">Predmeti</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Courses" style="color:white; font-weight:bold">Predmeti</a>
                         </li>
 
-                        
+
                         @if (SignInManager.IsSignedIn(User))
                         {
                             if (User.IsInRole("Profesor"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Competitions" asp-action="Index" style="color:white; font-weight:bold">Kreiraj Turnir</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Competitions" asp-action="IndexProf" style="color:white; font-weight:bold">Kreiraj Turnir</a>
                                 </li>
+
                             }
 
 
@@ -68,7 +69,9 @@
                                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="AdminUser" style="color:white; font-weight:bold">Admin User</a>
                                 </li>
                             }
-
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Competitions" asp-action="IndexUser" style="color:white; font-weight:bold">Kreiraj Turnir</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Users" style="color:white; font-weight:bold">Korisnici</a>
                             </li>

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestIT.Data;
 using TestIT.Models;
+using TestIT.Models.ViewModels;
 
 namespace TestIT.Controllers
 {
@@ -33,12 +34,29 @@ namespace TestIT.Controllers
                 .ToList();
             return courses;
         }
+        [HttpGet]
+        public async Task<List<Quiz>> GetQuizzes(string name)
+        {
+            onCours search = new onCours();
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            search.User = user;
+
+            List<Quiz> quizzes = _context.Courses
+                .Where(x => x.Name.Equals(name))
+                .SelectMany(x=>x.Quizzes)
+                .ToList();
+            return quizzes;
+        }
         // GET: Competitions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> IndexUser()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return View(await _context.Competitions.Where(x=>x.Course.Users.Any(u=>u.User.Id.Equals(user.Id))).ToListAsync());
+        }
+        public async Task<IActionResult> IndexProf()
         {
             return View(await _context.Competitions.ToListAsync());
         }
-
         // GET: Competitions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -68,13 +86,20 @@ namespace TestIT.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,StartDate,Deadline")] Competition competition)
+        public async Task<IActionResult> Create(CompetitionViewModel competition)
         {
+           
             if (ModelState.IsValid)
             {
-                _context.Add(competition);
+                Competition comp = new Competition();
+                comp.Name = competition.Name;
+                comp.StartDate = competition.StartDate;
+                comp.Deadline = competition.Deadline;
+                comp.Course = _context.Courses.FirstOrDefault(x => x.ID == competition.CourseID);
+                comp.Quiz = _context.Quiz.FirstOrDefault(x => x.ID == competition.QuizID);
+                _context.Add(comp);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexProf));
             }
             return View(competition);
         }
@@ -125,7 +150,7 @@ namespace TestIT.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexProf));
             }
             return View(competition);
         }
@@ -156,7 +181,7 @@ namespace TestIT.Controllers
             var competition = await _context.Competitions.FindAsync(id);
             _context.Competitions.Remove(competition);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexProf));
         }
 
         private bool CompetitionExists(int id)

@@ -148,6 +148,8 @@ namespace TestIT.Controllers
                 .Include(x => x.OnCours)
                 .ThenInclude(x => x.Course)
                 .FirstOrDefaultAsync(x => x.Id == id);
+
+
             if (user == null)
             {
                 return NotFound();
