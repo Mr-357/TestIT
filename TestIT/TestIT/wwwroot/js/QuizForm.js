@@ -155,6 +155,8 @@ window.imageClick = function imageClick() {
 
 //Display stuff
 window.onresize = drowOnImage;
+
+
 function drowOnImage() {
     let img = document.getElementById("questionImageArea");
     let cnvs = document.getElementById("myCanvas");

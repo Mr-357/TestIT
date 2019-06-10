@@ -72,8 +72,8 @@ namespace TestIT.Models.ViewModels
                     tempAnswer =  new ResultAnswer(question.Answers[j]);
                     if (question.Answers[j].GetType() == typeof(TextAnswer))
                     {
-                        if (attemptQuestion.Answers.Count > 0 && attemptQuestion.Answers[0].answerText != null)
-                            tempAnswer.isUserPick = (tempAnswer.answerText.Equals(attemptQuestion.Answers[0].answerText)) ? true : false;
+                        if (attemptQuestion.Answers.Count > 0 && attemptQuestion.Answers[0].text != null)
+                            tempAnswer.isUserPick = (tempAnswer.text.Equals(attemptQuestion.Answers[0].text)) ? true : false;
                         else tempAnswer.isUserPick = false;
                     }
                     else if(question.Answers[j].GetType() == typeof(RegionAnswer))
@@ -103,7 +103,7 @@ namespace TestIT.Models.ViewModels
         {
             if(this.Answers.Count == 1)
             {
-                this.AchievedPoints = (this.Answers[0].isCorrect) ? this.Points : 0;
+                this.AchievedPoints = (this.Answers[0].IsCorrect) ? this.Points : 0;
             }
             else if(this.Answers.Count > 1)
             {
@@ -111,7 +111,7 @@ namespace TestIT.Models.ViewModels
                 int numUserGotRigt = 0;
                 foreach (ResultAnswer answer in this.Answers)
                 {
-                    if (answer.isCorrect)
+                    if (answer.IsCorrect)
                     {
                         numCorrect++;
                         if (answer.isUserPick)
@@ -133,7 +133,7 @@ namespace TestIT.Models.ViewModels
         public double RightY2 { get; set; }
         public ResultAnswer(BaseAnswerModel baseAnswerModel)
         {
-            this.answerText = baseAnswerModel.answerText;
+            this.text = baseAnswerModel.text;
             this.type = baseAnswerModel.type;
             this.x1 = baseAnswerModel.x1;
             this.x2 = baseAnswerModel.x2;
@@ -142,10 +142,10 @@ namespace TestIT.Models.ViewModels
         }
         public ResultAnswer(Answer answer)
         {
-            this.isCorrect = answer.IsCorrect;
+            this.IsCorrect = answer.IsCorrect;
             if(typeof(TextAnswer) == answer.GetType())
             {
-                this.answerText = ((TextAnswer)answer).text;
+                this.text = ((TextAnswer)answer).text;
                 this.type = "Text";
             }
             else if(answer.GetType() == typeof(RegionAnswer))
@@ -163,22 +163,22 @@ namespace TestIT.Models.ViewModels
         {
             if (this.type != null && this.type.ToLower().Contains("text"))
             {
-                if (this.answerText == null || this.RightAnswerText== null)
-                    this.isCorrect = false;
+                if (this.text == null || this.RightAnswerText== null)
+                    this.IsCorrect = false;
                 else
-                    this.isCorrect = this.RightAnswerText.ToLower().Equals(this.answerText.ToLower());
+                    this.IsCorrect = this.RightAnswerText.ToLower().Equals(this.text.ToLower());
             }
             else if (this.type != null && this.type.ToLower().Contains("region"))
             {
                 if (x1 == 0 || RightX1 == 0 || RightX2 == 0 || y1 == 0 || RightY1 == 0 || RightY2 == 0)
-                    this.isCorrect = false;
+                    this.IsCorrect = false;
                 else if ((x1 >= RightX1 && x1 <= RightX2) && (y1 >= RightY1 && y1 <=RightY2))
-                    this.isCorrect = true;
+                    this.IsCorrect = true;
                 else
-                    this.isCorrect = false;
+                    this.IsCorrect = false;
             }else if(this.type == null)
             {
-                this.isCorrect = false;
+                this.IsCorrect = false;
             }
         }
         public Boolean hasPoint(List<BaseAnswerModel> answers)
