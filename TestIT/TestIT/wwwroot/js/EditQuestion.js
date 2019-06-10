@@ -12,7 +12,8 @@ window.startUp = function startUp(data) {
     answerQuantity = question.Answers.length == 1 ? "single": "multy";
     answerType = question.Answers[0].x1 == null ? "Text" : "Region";
     answerCount = question.Answers.length;
-    draw();
+    if (answerType == "Region")
+        draw();
     showAnswers();
 }
 
@@ -77,7 +78,8 @@ function showAnswers() {
     for (let i = 0; i < question.Answers.length; i++) {
         showAnswer(question.Answers[i], i );
     }
-    draw();
+    if(answerType == "Region")
+        draw();
 }
 
 function showAnswer(answer, index) {
@@ -88,12 +90,16 @@ function showAnswer(answer, index) {
     td.appendChild(infoDiv);
     tr.appendChild(td);
     if (answerType.includes("Text")) {
-        tempLabel.innerHTML = answer.answerText;
         if (answerQuantity == "multy") {
+            let textEditBox = document.createElement("input");
+            textEditBox.value = answer.text;
+            textEditBox.onchange = function () { textchange(textEditBox.value , index)  }
             let checkBox = document.createElement("input");
             checkBox.type = "checkbox"
+            checkBox.checked = question.Answers[index].IsCorrect;
             checkBox.onclick = function () { togleCorrect(index); };
             td = document.createElement("td");
+            infoDiv.appendChild(textEditBox);
             td.appendChild(checkBox);
             tr.appendChild(td);
         }
@@ -123,8 +129,8 @@ function showAnswer(answer, index) {
     tableBody.appendChild(tr);
 }
 function togleCorrect(index) {
-    question.Answers[index].isCorrect = !QuestionTemplate.Answers[index].isCorrect
-    console.log(QuestionTemplate.Answers[index]);
+    question.Answers[index].IsCorrect = !question.Answers[index].IsCorrect
+    console.log(question.Answers[index]);
 }
 
 function removeAnswer(index) {
@@ -143,4 +149,10 @@ function areaChange(size,index, isWidthEdit) {
         answer.y2 = question.Answers[index].y1 + size;
     }
     draw();
+}
+
+function textchange(newText, index) {
+    let answer = question.Answers[index];
+    answer.text = newText;
+    console.log(question);
 }
