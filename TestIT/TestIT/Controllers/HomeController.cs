@@ -161,15 +161,23 @@ namespace TestIT.Controllers
             course.Quizzes = course.Quizzes
                         .Where(x => x.Visibility == quizVisibility.Javni)
                         .ToList();
-
-            var user = await userManager.GetUserAsync(User);
-            foreach (var p in user.OnCours)
+            if (signInManager.IsSignedIn(User))
             {
-                if (p.Course.ID == course.ID)
-                    ViewBag.Message = "prijavljen";
-                else
-                    ViewBag.Message = "nije";
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                foreach (var p in user.OnCours)
+                {
+                    if (p.Course.ID == course.ID)
+                        ViewBag.Message = "prijavljen";
+                    else
+                        ViewBag.Message = "nije";
+                }
             }
+            else
+            {
+                ViewBag.Message = "nije";
+            }
+       
+ 
 
             if (course == null)
             {

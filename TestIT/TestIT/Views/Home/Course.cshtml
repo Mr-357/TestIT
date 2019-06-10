@@ -14,6 +14,8 @@
 <div class="course-container">
     <h3 class="name">@Model.Name</h3>
     @{
+        if(SignInManager.IsSignedIn(User))
+        {
         string a = ViewBag.Message;
         if(ViewBag.Message != "prijavljen")
         {
@@ -30,6 +32,7 @@
                 <input type="text" name="user" value="@UserManager.GetUserId(User)" hidden >
                 <input type="submit" class="btn btn-danger" value="Odjava" />
             </form>   
+            }
         }
     }
 
@@ -111,25 +114,30 @@
             </thead>
             <tbody>
                 @{
-                    foreach(var p in Model.Comments)
+                    foreach (var p in Model.Comments)
                     {
                         <tr>
                             <td>
                                 @p.Content
-                                <td> <a href='/Home/UserInfo/@p.ApplicationUser.Id' class="table-button" style="color:#5190b6" >@p.ApplicationUser.UserName</a> </td>
+                            <td> <a href='/Home/UserInfo/@p.ApplicationUser.Id' class="table-button" style="color:#5190b6">@p.ApplicationUser.UserName</a> </td>
                             </td>
                         </tr>
                     }
                 }
             </tbody>
         </table>
-        <div class="comment-section">
-            <div class="comment-section-left">
-                <textarea class="comment-content" class="form-control" style="resize: height"></textarea>
+        @{
+            if(SignInManager.IsSignedIn(User))
+            { 
+            <div class="comment-section">
+                <div class="comment-section-left">
+                    <textarea class="comment-content" class="form-control" style="resize: height"></textarea>
+                </div>
+                <div class="comment-section-right">
+                    <button onclick="SubmitComment(@Model.ID);" class="btn btn-primary">Postavi</button>
+                </div>
             </div>
-            <div class="comment-section-right">
-                <button onclick="SubmitComment(@Model.ID);" class="btn btn-primary">Postavi</button>
-            </div>
-        </div>
+            }
+        }
     </div>
 </div>
