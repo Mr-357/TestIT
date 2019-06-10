@@ -21,8 +21,8 @@
         {
             var base64 = Convert.ToBase64String(TestIT.Data.Managers.SeedDataManager.FileToByteArray(Model.Picture));
             var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
-            <img id="imageQ" src="@imgSrc" />
-            <canvas hidden="hidden" id='myCanvas' width='10000px' height='10000px'></canvas>
+            <img id="imageQ" onclick="onImageClick()" src="@imgSrc" />
+            <canvas hidden="hidden" onclick="onImageClick()" id='myCanvas' width='10000px' height='10000px'></canvas>
         }
     }
     @{
@@ -36,24 +36,26 @@
             }
             else
             {
-                var region = Model.Answers[0] as RegionAnswer;
-                <div class="sirinaDiv">
-                    <label>sirina</label>
-                    <input id="sirinaInput" />
-                </div>
-                <div class="dubinaDiv">
-                    <label>Dubina</label>
-                    <input id="dubinaInput" />
+                //var region = Model.Answers[0] as RegionAnswer;
+                <div class="multyAnswerArea" id="multyAnswerArea">
+                    <table class="table custom-table">
+                        <thead>
+                            <tr>
+                                <td>sirina i visina regiona</td>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
                 </div>
             }
         }
         else
         {
-            <div class="multyAnswerArea" id="multyAnswerArea" hidden="hidden">
+            <div class="multyAnswerArea" id="multyAnswerArea" >
                 <table class="table custom-table">
                     <thead>
                         <tr>
-                            <td>Odgovor</td>
+                            <td>sirina i visina regiona</td>
                             <td>tacan</td>
                             <td>brisanje</td>
                         </tr>
