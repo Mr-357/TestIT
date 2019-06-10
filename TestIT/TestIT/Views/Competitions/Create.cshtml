@@ -32,18 +32,21 @@
                     </div>
                     <input asp-for="CourseID" type="hidden" id="kurs" value="CourseID" />
                     <input asp-for="QuizID" type="hidden" id="kviz" value="QuizID" />
+
+                    <div class="form-group">
+                        <label class="control-label">Predmet</label>
+                        <select id="predmet" class="form-control" onchange="loadQuizzes()"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Kviz</label>
+                        <select id="kvizovi" class="form-control" onchange="showData()"></select>
+                    </div>
+
                     <div class="form-group">
                         <input type="submit" value="Napravi" class="btn btn-primary" />
                     </div>
                 </form>
-                <div class="form-group">
-                    <label class="control-label"></label>
-                    <select id="predmet" class="form-control" onchange="loadQuizzes()"></select>
-                </div>
-                <div class="form-group">
-                    <label class="control-label"></label>
-                    <select id="kvizovi" class="form-control" onchange="showData()"></select>
-                </div>
+                
                 <div>
                     <a asp-action="Index" class="btn btn-danger">Povratak na listu</a>
                 </div>

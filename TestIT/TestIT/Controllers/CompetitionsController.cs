@@ -51,11 +51,19 @@ namespace TestIT.Controllers
         public async Task<IActionResult> IndexUser()
         {
             var user = await _userManager.GetUserAsync(User);
-            return View(await _context.Competitions.Where(x=>x.Course.Users.Any(u=>u.User.Id.Equals(user.Id))).ToListAsync());
+            return View(await _context.Competitions
+                        .Include(x => x.Course)
+                        .Include(x=> x.Quiz)
+                        .Where(x=>x.Course.Users.Any(u=>u.User.Id.Equals(user.Id))).ToListAsync());
         }
         public async Task<IActionResult> IndexProf()
         {
-            return View(await _context.Competitions.ToListAsync());
+            var competition = await _context.Competitions
+                        .Include(x => x.Course)
+                        .Include(x=> x.Quiz)
+                        .ToListAsync();
+                        
+            return View(competition);
         }
         // GET: Competitions/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -66,6 +74,8 @@ namespace TestIT.Controllers
             }
 
             var competition = await _context.Competitions
+                .Include(x => x.Course)
+                .Include(x=> x.Quiz)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (competition == null)
             {
@@ -112,7 +122,11 @@ namespace TestIT.Controllers
                 return NotFound();
             }
 
-            var competition = await _context.Competitions.FindAsync(id);
+            var competition = await _context.Competitions
+                        .Include(x => x.Quiz)
+                        .Include(x => x.Course)
+                        .FirstOrDefaultAsync(x=> x.ID == id);
+
             if (competition == null)
             {
                 return NotFound();
@@ -164,6 +178,8 @@ namespace TestIT.Controllers
             }
 
             var competition = await _context.Competitions
+                .Include(x => x.Quiz)
+                .Include(x => x.Course)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (competition == null)
             {

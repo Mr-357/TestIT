@@ -18,6 +18,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Deadline)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quiz)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -34,8 +40,14 @@
                 @Html.DisplayFor(modelItem => item.Deadline)
             </td>
             <td>
-                <a asp-action="Details" class="table-button"  asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Do" class="table-button" asp-route-id="@item.ID">Do</a>
+                @Html.DisplayFor(modelItem => item.Course.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quiz.Name)
+            </td>
+            <td>
+                <a asp-action="Details" class="table-button"  asp-route-id="@item.ID">Detalji</a> |
+                <a asp-action="Do" class="table-button" asp-route-id="@item.ID">Odradi</a>
             </td>
         </tr>
 }
