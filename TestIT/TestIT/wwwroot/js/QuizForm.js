@@ -31,9 +31,9 @@ window.addQuestion = function addQuestion() {
     else if (answerQuantity == "multy") {
 
     }
-    console.log(QuestionTemplate);
     QuizTemplate.addQuestion(QuestionTemplate);
-    addQuestionToLeftSide(QuestionTemplate);
+    showQuestionsInTabel();
+    //addQuestionToLeftSide(QuestionTemplate);
     QuestionTemplate = new JSQuestion();
     let fileInput = document.querySelector('[type=file]');
     fileInput.value = "";
@@ -82,13 +82,46 @@ function replaceImageWithPath(paths) {
 }
 
 function addQuestionToLeftSide(question) {
+    let tbody = document.getElementById('questionTableBody');
+    let tr = document.createElement('tr');
+    let td = document.createElement("td");
+    let label = document.createElement("label");
+    label.innerHTML = question.QuestionText;
+    td.appendChild(label);
+    tr.appendChild(td);
+    let button = document.createElement("input");
+    button.type = "button";
+    button.className = "btn btn-danger"
+    button.value = "X";
+    button.onclick = function () { deleteQuestion(); }
+    td = document.createElement("td");
+    td.appendChild(button);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+}
 
-    let questions = document.getElementById('questions');
+function showQuestion(question,index) {
+    let tbody = document.getElementById('questionTableBody');
+    let tr = document.createElement('tr');
+    let td = document.createElement("td");
+    let label = document.createElement("label");
+    label.innerHTML = question.QuestionText;
+    td.appendChild(label);
+    tr.appendChild(td);
+    let button = document.createElement("input");
+    button.type = "button";
+    button.className = "btn btn-danger"
+    button.value = "X";
+    button.onclick = function () { deleteQuestion(index); }
+    td = document.createElement("td");
+    td.appendChild(button);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+}
 
-    let p = document.createElement('p');
-    p.className = "question"
-    p.innerHTML = question.QuestionText;
-    questions.appendChild(p);
+function deleteQuestion(index) {
+    QuizTemplate.questions.splice(index, 1);
+    showQuestionsInTabel();
 }
 
 window.showQuestions = function showQuestions() {
@@ -96,6 +129,13 @@ window.showQuestions = function showQuestions() {
     questions.hidden = !questions.hidden;
 }
 
+function showQuestionsInTabel() {
+    let tbody = document.getElementById('questionTableBody');
+    tbody.innerHTML = "";
+    for (let i = 0; i < QuizTemplate.questions.length; i++) {
+        showQuestion(QuizTemplate.questions[i], i);
+    }
+}
 
 window.createQuestion = function createQuestion(elements) {
     const tmp = elements[0].hidden;

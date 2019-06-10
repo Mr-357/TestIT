@@ -4,8 +4,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
-    ViewData["Title"] = "Predmet";
-    ViewBag.Title = "Course";
+    ViewData["Title"] = "Pregled predmeta";
 }
 
 
@@ -78,7 +77,7 @@
                         @{
                             if (SignInManager.IsSignedIn(User))
                             {
-                                if (!User.IsInRole("Student"))
+                                if (User.IsInRole("Profesor"))
                                 {
                                     <a href='/Courses/Validate/@Model.ID' class="table-button">Ceka na validaciju</a>
                                 }
@@ -96,7 +95,7 @@
                                 @p.Name
                             </td>
                             <td>
-                                <a href="https://www.google.com" class="table-button">Pokusaj</a> <a href="https://www.google.com" class="table-button-danger text-danger">Prijavi</a>
+                                <a href="/Quizzes/AttemptQuiz2/@Model.ID" class="table-button">Pokusaj</a>
                             </td>
                         </tr>
                     }

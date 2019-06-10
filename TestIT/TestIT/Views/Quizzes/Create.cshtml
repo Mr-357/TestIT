@@ -57,7 +57,15 @@
                 <div class="ExistingQuestions">
                     <input type='button' value='Prikazi postojeca pitanja' class="btn btn-primary existing-questions-button" onclick="showQuestions();" />
                     <div id="questions" hidden="hidden">
-
+                        <table class="table custom-table">
+                            <thead>
+                                <tr>
+                                    <td>Odgovor</td>
+                                    <td>brisanje</td>
+                                </tr>
+                            </thead>
+                            <tbody id="questionTableBody"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
