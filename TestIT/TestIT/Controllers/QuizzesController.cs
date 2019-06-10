@@ -389,5 +389,19 @@ namespace TestIT.Controllers
 
             return View(question);
         }
+        [HttpPost]
+        public async Task<IActionResult> EditQuestion([FromForm] EditQuestionModel model)
+        {
+            var question = await _context.Quiz
+                    .SelectMany(x => x.Questions)
+                    .Include(x => x.Answers)
+                    .Include(x => x.Quiz)
+                    .FirstOrDefaultAsync(x => x.ID == model.ID);
+            question.Answers.Clear();
+            question.update(model);
+            _context.Update(question);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
     }
 }

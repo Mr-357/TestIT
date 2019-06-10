@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TestIT.Models.ViewModels;
 
 namespace TestIT.Models
 {
@@ -19,6 +20,27 @@ namespace TestIT.Models
         public Question()
         {
             this.Answers = new List<Answer>();
+        }
+
+        public void update(EditQuestionModel model)
+        {
+
+            this.Points = Points;
+            this.QuestionText = model.QuestionText;
+            foreach(editAnswer answerModel in model.Answers)
+            {
+                Answer tempAnswer = null;
+                if (answerModel.type.ToLower().Contains("region"))
+                {
+                    tempAnswer = new RegionAnswer(answerModel.x1, answerModel.x2, answerModel.y1, answerModel.y2, answerModel.IsCorrect);
+                }
+                else if (answerModel.type.ToLower().Contains("text"))
+                {
+                    tempAnswer = new TextAnswer(answerModel.text, answerModel.IsCorrect);
+                }
+                //tempAnswer.ID = answerModel.ID;
+                this.Answers.Add(tempAnswer);
+            }
         }
     }
 

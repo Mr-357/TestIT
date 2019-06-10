@@ -28,4 +28,39 @@ namespace TestIT.Models.ViewModels
         }
     }
 
+    public class editAnswer : BaseAnswerModel
+    {
+        public int ID { get; set; }
+    }
+
+    public class EditQuestionModel : BaseQuestionModel
+    {
+        public int ID { get; set; }
+        public String Picture { get; set; }
+        public List<editAnswer> Answers { get; set; }
+        public Question toQuestio()
+        {
+            Question retQuestion = new Question();
+            retQuestion.ID = this.ID;
+            retQuestion.Picture = this.Picture;
+            retQuestion.Points = this.Points;
+            retQuestion.QuestionText = this.QuestionText;
+            foreach(editAnswer answerModel in this.Answers)
+            {
+                Answer tempAnswer = null;
+                if (answerModel.type.ToLower().Contains("region"))
+                {
+                    tempAnswer = new RegionAnswer(answerModel.x1, answerModel.x2, answerModel.y1, answerModel.y2, answerModel.IsCorrect);
+                }
+                else if (answerModel.type.ToLower().Contains("text"))
+                {
+                    tempAnswer = new TextAnswer(answerModel.text, answerModel.IsCorrect);
+                }
+                //tempAnswer.ID = answerModel.ID;
+                retQuestion.Answers.Add(tempAnswer);
+            }
+            return retQuestion;
+        }
+    }
+
 }

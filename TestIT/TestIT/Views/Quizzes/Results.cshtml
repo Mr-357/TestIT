@@ -59,10 +59,10 @@
                                         if (Model.Questions[i].Answers.Count > 1)
                                         {
                                             <div>
-                                                <input type="radio" name="Q@(i)" value="@(Model.Questions[i].Answers[j].answerText)" /><span>@(Model.Questions[i].Answers[j].answerText)</span>
+                                                <input type="radio" name="Q@(i)" value="@(Model.Questions[i].Answers[j].text)" /><span>@(Model.Questions[i].Answers[j].text)</span>
                                                 @{
                                                     bool userPick = Model.Questions[i].Answers[j].isUserPick;
-                                                    bool correct = Model.Questions[i].Answers[j].isCorrect;
+                                                    bool correct = Model.Questions[i].Answers[j].IsCorrect;
                                                     if (userPick)
                                                     {
                                                         if (correct)
@@ -80,11 +80,11 @@
                                                     }
                                                 }
                                             </div>
-                                        }
-                                        else
-                                        {
-                                            String style = (Model.Questions[i].Answers[0].isCorrect) ? "rightAnswerText" : "wrongAnwserText";
-                                            <textarea name="Q@(i)" class="@(style)">@(Model.Questions[i].Answers[0].answerText)</textarea>
+                                                    }
+                                                    else
+                                                    {
+                                                        String style = (Model.Questions[i].Answers[0].IsCorrect) ? "rightAnswerText" : "wrongAnwserText";
+                                            <textarea name="Q@(i)" class="@(style)">@(Model.Questions[i].Answers[0].text)</textarea>
                                             <label>Tacan Ogovor:</label>
                                             <p>@Model.Questions[i].Answers[0].RightAnswerText</p>
                                         }

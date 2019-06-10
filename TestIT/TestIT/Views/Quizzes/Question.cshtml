@@ -32,7 +32,9 @@
             if (single != null)
             {
                 <p>Odgovor</p>
-                <textarea id="answerTextArea" class="text-area"> @single.text </textarea>
+                <textarea onchange="editSingleText()" id="answerTextArea" class="text-area"> @single.text </textarea>
+                <a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
+                <a onclick="sendData()" class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>
             }
             else
             {
@@ -47,39 +49,41 @@
                         <tbody id="tableBody"></tbody>
                     </table>
                 </div>
+                <a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
+                <a onclick="sendData()" class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>
             }
         }
         else
         {
             var multy = Model.Answers[0] as TextAnswer;
-                <div class="multyAnswerArea" id="multyAnswerArea">
-                    <table class="table custom-table">
-                        <thead>
-                            <tr>
-                                <td>sirina i visina regiona</td>
-                                @{
-                                    if (multy != null)
-                                    {
-                                        <td>tacan</td>
-                                    }
+            <div class="multyAnswerArea" id="multyAnswerArea">
+                <table class="table custom-table">
+                    <thead>
+                        <tr>
+                            <td>sirina i visina regiona</td>
+                            @{
+                                if (multy != null)
+                                {
+                                    <td>tacan</td>
                                 }
-                                <td>brisanje</td>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody"></tbody>
-                    </table>
-                    <a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
-                    <a class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>
-                    @{
+                            }
+                            <td>brisanje</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+                <a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
+                <a onclick="sendData()" class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>
+                @{
 
-                        if (multy != null)
-                        {
-                            <input type="button" class="btn btn-success addButton" value="+" />
-                        }
+                    if (multy != null)
+                    {
+                        <input onclick="addAnswer()" type="button" class="btn btn-success addButton" value="+" />
                     }
+                }
 
-                </div>
+            </div>
         }
     }
-    
+
 </body>
