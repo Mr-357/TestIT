@@ -51,23 +51,35 @@
         }
         else
         {
-            <div class="multyAnswerArea" id="multyAnswerArea" >
-                <table class="table custom-table">
-                    <thead>
-                        <tr>
-                            <td>sirina i visina regiona</td>
-                            <td>tacan</td>
-                            <td>brisanje</td>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody"></tbody>
-                </table>
-            </div>
+            var multy = Model.Answers[0] as TextAnswer;
+                <div class="multyAnswerArea" id="multyAnswerArea">
+                    <table class="table custom-table">
+                        <thead>
+                            <tr>
+                                <td>sirina i visina regiona</td>
+                                @{
+                                    if (multy != null)
+                                    {
+                                        <td>tacan</td>
+                                    }
+                                }
+                                <td>brisanje</td>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                    <a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
+                    <a class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>
+                    @{
+
+                        if (multy != null)
+                        {
+                            <input type="button" class="btn btn-success addButton" value="+" />
+                        }
+                    }
+
+                </div>
         }
     }
-    <a href="/Quizzes/Edit/@Model.Quiz.ID" class="btn btn-danger">Povratak nazad</a>
-    <a class="btn btn-primary" style="color:white"> Sacuvaj izmene </a>
-</body>
-<div onload="startUp(questionData)" class="bodyDiv">
     
-</div>
+</body>
