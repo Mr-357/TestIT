@@ -23,7 +23,7 @@ window.addQuestion = function addQuestion() {
     if (answerQuantity == "single") {
         if (answerType == "text") {
             let tempAnswer = new JSAnswer(true);
-            tempAnswer.answerText = AnswerTextArea.value;
+            tempAnswer.text = AnswerTextArea.value;
             tempAnswer.type = answerQuantity + "-" + answerType;
             QuestionTemplate.addAnswer(tempAnswer);
         }
@@ -31,6 +31,7 @@ window.addQuestion = function addQuestion() {
     else if (answerQuantity == "multy") {
 
     }
+    console.log(QuestionTemplate);
     QuizTemplate.addQuestion(QuestionTemplate);
     addQuestionToLeftSide(QuestionTemplate);
     QuestionTemplate = new JSQuestion();
@@ -104,7 +105,7 @@ window.createQuestion = function createQuestion(elements) {
 
 window.addAnswer = function addAnswer() {
     let tempAnswer = new JSAnswer(false);
-    tempAnswer.answerText = AnswerTextArea.value;
+    tempAnswer.text = AnswerTextArea.value;
     tempAnswer.type = answerQuantity + "-" + answerType;
     QuestionTemplate.addAnswer(tempAnswer);
     showAnswers();
@@ -219,7 +220,7 @@ function showAnswer(answer, index) {
     let tr = document.createElement("tr");
     let tempLabel = document.createElement("label");
     if (answer.type.includes("text")) {
-        tempLabel.innerHTML = answer.answerText;
+        tempLabel.innerHTML = answer.text;
     }
     else if (answer.type.includes("region")) {
         tempLabel.innerHTML = "T"+(index+1) +": (" + answer.x1 + ", " + answer.y1 + ") (" + answer.x2 + ", " + answer.y2 + ")";

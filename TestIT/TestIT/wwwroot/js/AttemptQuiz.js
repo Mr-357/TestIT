@@ -76,7 +76,7 @@ function getherAnswers() {
 
             if (answerInput.length == 1) {
                 tempAnswer = new JSAnswer();
-                tempAnswer.answerText = answerInput.item(0).value;
+                tempAnswer.text = answerInput.item(0).value;
                 tempAnswer.type = "singleText";
                 tempQuestion.addAnswer(tempAnswer);
             }
@@ -84,7 +84,7 @@ function getherAnswers() {
                 for (let j = 0; j < answerInput.length; j++) {
                     if (answerInput[j].checked) {
                         tempAnswer = new JSAnswer();
-                        tempAnswer.answerText = answerInput[j].value;
+                        tempAnswer.text = answerInput[j].value;
                         tempAnswer.type = "multyText";
                         tempQuestion.addAnswer(tempAnswer);
                     }

@@ -6,11 +6,11 @@ export class JSAnswer {
         this.x2 = null;
         this.y2 = null;
         this.y1 = null;
-        this.answerText = null;
+        this.text = null;
         this.type = null;
     }
     setAnswerText(text) {
-        this.answerText = text;
+        this.text = text;
         this.type = "text";
     }
     sePoints(x1, x2, y1, y2) {
@@ -36,6 +36,6 @@ export class RegionAnswer extends JSAnswer {
 export class TextAnswer extends JSAnswer {
     constructor(answerText, isCorrect) {
         super(isCorrect);
-        this.answerText = answerText
+        this.text = answerText
     }
 }

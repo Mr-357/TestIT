@@ -171,14 +171,14 @@ namespace TestIT.Models.ViewModels
             else if (this.type != null && this.type.ToLower().Contains("region"))
             {
                 if (x1 == 0 || RightX1 == 0 || RightX2 == 0 || y1 == 0 || RightY1 == 0 || RightY2 == 0)
-                    this.IsCorrect = false;
+                    this.isUserPick = this.IsCorrect = false;
                 else if ((x1 >= RightX1 && x1 <= RightX2) && (y1 >= RightY1 && y1 <=RightY2))
-                    this.IsCorrect = true;
+                    this.isUserPick = this.IsCorrect = true;
                 else
-                    this.IsCorrect = false;
+                    this.isUserPick = this.IsCorrect = false;
             }else if(this.type == null)
             {
-                this.IsCorrect = false;
+                this.isUserPick = this.IsCorrect = false;
             }
         }
         public Boolean hasPoint(List<BaseAnswerModel> answers)
