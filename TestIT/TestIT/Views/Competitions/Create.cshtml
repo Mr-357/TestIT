@@ -1,13 +1,11 @@
 ﻿@model TestIT.Models.Competition
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Napravi novi turnir";
 }
 <script src="~/js/Competition.js" type="module"></script>
 <body onload="get()">
-    <h1>Create</h1>
-
-    <h4>Competition</h4>
+    <h1>Napravi novi turnir</h1>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -30,22 +28,22 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Course" class="control-label"></label>
-                    <select asp-for="Course" id="predmet" class="form-control" />
+                    <select asp-for="Course" id="predmet" class="form-control" ></select>
                 </div>
                 <div class="form-group">
                     <label asp-for="Quiz" class="control-label"></label>
-                    <select asp-for="Quiz" class="form-control" />
+                    <select asp-for="Quiz" class="form-control" ></select>
                     <span asp-validation-for="Deadline" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Napravi" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
 
     <div>
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" class="btn btn-danger">Povratak na listu</a>
     </div>
 
 </body>

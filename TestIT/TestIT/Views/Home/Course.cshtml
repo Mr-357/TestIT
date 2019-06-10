@@ -8,10 +8,11 @@
     ViewBag.Title = "Course";
 }
 
+
 <link rel="stylesheet" type="text/css" href="~/css/ConcreteSubject.css" />
 <script src="~/js/Course.js" type="module"></script>
 <div class="course-container">
-    <p class="name">@Model.Name</p>
+    <h3 class="name">@Model.Name</h3>
     @{
         string a = ViewBag.Message;
         if(ViewBag.Message != "prijavljen")
@@ -19,26 +20,23 @@
             <form asp-action="Subscribe" asp-controller="Courses"  method="post" >
                 <input type="text" name="course" value="@Model.ID" hidden >
                 <input type="text" name="user" value="@UserManager.GetUserId(User)" hidden >
-                <input type="submit" value="Prijava" />
+                <input type="submit" class="btn btn-primary" value="Prijava" />
             </form>
         }
         else
         {
-            <p>TODO: VIDI STO AKCIJA NECE DA OBRISE VEZU</p>
-
-            /* 
-                OVO BI TREBALO DA JE OK SAMO AKCIJA NE BRISE 
-            */
-
              <form asp-action="Unsubscribe" asp-controller="Courses"  method="post" >
                 <input type="text" name="course" value="@Model.ID" hidden >
                 <input type="text" name="user" value="@UserManager.GetUserId(User)" hidden >
-                <input type="submit" value="Odjava" />
+                <input type="submit" class="btn btn-danger" value="Odjava" />
             </form>   
         }
     }
 
 </div>
+
+<hr/>
+
 <p>@Model.Description</p>
 <div class="profesori-asistenti-container">
     <div class="left-container">
