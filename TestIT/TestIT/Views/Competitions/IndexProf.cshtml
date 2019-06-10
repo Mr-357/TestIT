@@ -20,6 +20,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Deadline)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quiz)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -36,7 +42,13 @@
                 @Html.DisplayFor(modelItem => item.Deadline)
             </td>
             <td>
-                <a asp-action="Edit" class="table-button text-primary" asp-route-id="@item.ID">Izmeni</a> |
+                @Html.DisplayFor(modelItem => item.Course.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quiz.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" class="table-button" style="color: #5190b6" asp-route-id="@item.ID">Izmeni</a> |
                 <a asp-action="Delete" class="table-button text-danger" asp-route-id="@item.ID">Obrisi</a>
             </td>
         </tr>
