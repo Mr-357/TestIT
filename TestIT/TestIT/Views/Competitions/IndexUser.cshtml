@@ -1,14 +1,11 @@
 ﻿@model IEnumerable<TestIT.Models.Competition>
 
 @{
-    ViewData["Title"] = "IndexUser";
+    ViewData["Title"] = "Turniri";
 }
 
-<h1>IndexUser</h1>
+<h1>Turniri na prijavljenim kursevima</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -37,8 +34,8 @@
                 @Html.DisplayFor(modelItem => item.Deadline)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Do" asp-route-id="@item.ID">Do</a>
+                <a asp-action="Details" class="table-button"  asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Do" class="table-button" asp-route-id="@item.ID">Do</a>
             </td>
         </tr>
 }

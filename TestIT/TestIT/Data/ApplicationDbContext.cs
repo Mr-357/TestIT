@@ -30,10 +30,10 @@ namespace TestIT.Data
                 .OnDelete(DeleteBehavior.Cascade);
             builder.Entity<onCours>()
                 .HasOne(x => x.User)
-                .WithMany(s => s.OnCours);//.OnDelete(DeleteBehavior.Cascade);
+                .WithMany(s => s.OnCours).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<onCours>()
                 .HasOne(x => x.Course)
-                .WithMany(c => c.Users);// .OnDelete(DeleteBehavior.Cascade);
+                .WithMany(c => c.Users).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Answer>()
                 .HasOne(a => a.Question)
                 .WithMany(q => q.Answers)

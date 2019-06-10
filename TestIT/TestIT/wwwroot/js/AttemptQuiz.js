@@ -12,8 +12,7 @@ let timer;
 let timerInterval;
 let timeO;
 let isResultPage = false;
-window.startUp = function startUp(json) { //ova fja moze da se renameuje u crtajkviz ili tako nesto
-    //console.log(json);
+window.startUp = function startUp(json) { 
     quiz = json;
     tempQuestions = bestCopyEver(quiz.Questions);
     tempQuestions.forEach(x => x.Answers = []);
