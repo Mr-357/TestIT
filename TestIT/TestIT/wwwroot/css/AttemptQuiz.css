@@ -54,7 +54,6 @@
     flex-direction: column;
     background-color: #548daf;
     border-radius: 5px;
-    //border-style: groove;
     width:50%;
 }
 
@@ -74,7 +73,7 @@
         background-color: lightgreen;
     }
     .questionBox .wrongAnwserText {
-        background-color: red;
+        background-color: #c82333;
     }
     
     .questionText {
