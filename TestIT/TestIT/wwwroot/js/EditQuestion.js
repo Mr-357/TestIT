@@ -1,5 +1,4 @@
-﻿console.log("Hello from edit question");
-let question;
+﻿let question;
 let answerQuantity = "";
 let answerType = "";
 let answerCount;
@@ -7,7 +6,6 @@ let img = document.getElementById("imageQ");
 let cnvs = document.getElementById("myCanvas");
 let tableBody = document.getElementById("tableBody");
 window.startUp = function startUp(data) {
-    console.log(data);
     question = data;
     answerQuantity = question.Answers.length == 1 ? "single": "multy";
     answerType = question.Answers[0].x1 == null ? "Text" : "Region";
@@ -35,7 +33,6 @@ function draw() {
     question.Answers.forEach(a => {
         console
         ctx.beginPath();
-        console.log(a);
         drawText(a.x1 * img.width, a.y1 * img.height, "T" + (i + 1), ctx);
         ctx.rect(a.x1 * img.width, a.y1 * img.height, (a.x2 * img.width) - (a.x1 * img.width), (a.y2 * img.height) - (a.y1 * img.height));
         i++;
@@ -75,7 +72,6 @@ function addRegionAnswer(x1, y1, x2, y2,id) {
         question.Answers = [];
     }
     question.Answers.push(tempAnswer);
-    console.log(question);
     showAnswers();
 }
 
@@ -138,7 +134,6 @@ function showAnswer(answer, index) {
 }
 function togleCorrect(index) {
     question.Answers[index].IsCorrect = !question.Answers[index].IsCorrect
-    console.log(question.Answers[index]);
 }
 
 function removeAnswer(index) {
@@ -162,7 +157,6 @@ function areaChange(size,index, isWidthEdit) {
 function textchange(newText, index) {
     let answer = question.Answers[index];
     answer.text = newText;
-    console.log(question);
 }
 
 window.addAnswer = function addAnswer() {
@@ -177,11 +171,9 @@ window.addAnswer = function addAnswer() {
 window.editSingleText = function editSingleText () {
     let textArea = document.getElementById("answerTextArea");
     question.Answers[0].text = textArea.value;
-    console.log("promena");
 }
 
 window.sendData = function sendData() {
-    console.log(question);
 
     const formData = new FormData();
     buildFormData(formData, question);
@@ -212,10 +204,6 @@ function buildFormData(formData, data, parentKey) {
             buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
         });
     } else {
-        if (data instanceof File) {
-            console.log("uraido sam ovo za File");
-            console.log(data);
-        }
 
         const value = data == null ? '' : data;
 

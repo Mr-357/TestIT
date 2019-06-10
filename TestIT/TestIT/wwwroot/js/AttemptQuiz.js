@@ -2,7 +2,6 @@
 import { JSAnswer } from "./Answer.js";
 import { JSQuestion } from "./Question.js";
 
-console.log("Attempt Quiz Hello");
 let quiz = null;
 let visibleQuestion = 0;
 let tempQuestions = [];
@@ -113,7 +112,6 @@ window.imageClick = function imageClick(questionIndex) {
     answer.y1 = y;
     answer.x2 = x;
     answer.y2 = y;
-    //console.log(quiz);
     if (quiz.Questions[questionIndex].Answers.length == 1) {
         answer.type = "singleRegion";
         tempQuestions[questionIndex].Answers[0] = answer;
@@ -149,7 +147,6 @@ function showAnswers(questionIndex) {
 
 
 function removeAnswer(questionIndex, answerIndex) {
-    console.log("ratatui");
     tempQuestions[questionIndex].Answers.splice(answerIndex, 1);
     showAnswers(questionIndex);
 }
@@ -199,7 +196,6 @@ function drawText(x, y, text, ctx) {
 
 window.onImageLoad = function onImageLoad(input, index) {
     isResultPage = true;
-    console.log(input);
     let img = document.getElementById("imageQ" + index);
     let cnvs = document.getElementById("myCanvas" + index);
     cnvs.style.position = "absolute";
@@ -238,17 +234,6 @@ function jsFetch(result) {
         redirect: 'follow',
         credentials: 'include' //ovo se dodaje da salje cookie odnosno podatke o korisniku, postoji sansa da vrati error 500 ako se ne posalje ovo
     }
-    /*fetch("/Quizzes/Results", fetchData)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-            else
-                window.location.replace("/Quizzes/Results"); //ovde sam hteo da me redirektuje nazad na index stranicu ali mora da se refreshuje index pre nego sto se pojavi novi kviz
-            //mozda proradi ako se iskoristi neki tajmer ili tako nesto? u svakom slucaju mi cemo fetch koristiti za in-page a ovo pravljenje kviza moze preko submit-a
-            return;
-        })
-        .catch(error => console.log(error));*/
     fetch("/Quizzes/Results", fetchData)
         .then(response => {
             return response.text();

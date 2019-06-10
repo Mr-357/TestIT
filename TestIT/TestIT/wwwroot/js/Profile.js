@@ -38,7 +38,6 @@ window.set = function set(modul) {
 
     for (let i = 0; i < select.length; i++)
     {
-        console.log(select.options[i]);
             if (select.options[i].value == modul)
                 select.selectedIndex = i;
         }

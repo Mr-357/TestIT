@@ -1,5 +1,4 @@
-﻿console.log("Hello from Create Turnir");
-
+﻿
 function Hide(num) {
 
     let div;

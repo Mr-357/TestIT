@@ -25,7 +25,6 @@ function AppendSubjects(container){
 }
 
 function GoToSubjectPage(){
-    console.log(this.value); 
     
     window.location.href = '/Home/ConcreteSubject/';
 }

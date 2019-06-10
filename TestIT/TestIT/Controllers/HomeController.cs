@@ -79,16 +79,7 @@ namespace TestIT.Controllers
                 .Select(x => x.Module)
                 .ToList();
 
-
-            //List<String> names = new List<string>();
-            //if (courses != null)
-            //{
-            //    foreach (Course course in courses)
-            //    {
-            //        names.Add(course.SchoolYear);
-            //    }
-            //}
-            // names.Reverse();
+            
             c.addYears(names);
             c.addModules(modules);
             return View(c);
@@ -165,7 +156,6 @@ namespace TestIT.Controllers
                 .Include(y => y.Quizzes)
                 .Include(z => z.Comments)
                 .ThenInclude(w => w.ApplicationUser)
-                // .Where(c => c.Users.Where( u =>userManager.GetRolesAsync(u.User).ToAsyncEnumerable().ElementAt(0).Equals("Profesor"))
                 .FirstOrDefaultAsync(m => m.ID == id);
 
             course.Quizzes = course.Quizzes

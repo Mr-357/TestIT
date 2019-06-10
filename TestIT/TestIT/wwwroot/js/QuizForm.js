@@ -75,24 +75,9 @@ function replaceImageWithPath(paths) {
             QuizTemplate.questions[i].Picture = null;
             QuizTemplate.questions[i].PicturePath = paths[j];
             j++;
-            console.log("promenejna slika");
-            console.log(QuizTemplate);
         }
     }
 
-}
-
-function saveImageFetch() {
-    let file = document.querySelector('[type=file]').files[0];
-    const formData = new FormData();
-    formData.append('image', file);
-
-    fetch("/Quizzes/FetchImagePost", {
-        method: 'POST',
-        body: formData
-    }).then(response => {
-        console.log(response)
-    });
 }
 
 function addQuestionToLeftSide(question) {
@@ -140,7 +125,6 @@ function addRegionAnswer(x1, y1, x2, y2) {
 
 window.imageClick = function imageClick() {
     if (answerType == "region") {
-        console.log("does this");
         let img = document.getElementById("questionImageArea");
         let x = event.pageX;
         let y = event.pageY;
@@ -185,7 +169,6 @@ function drowOnImage() {
 function drowText(x, y, text, ctx) {
     let tempSytyle = ctx.fillStyle;
     ctx.fillStyle = "red";
-    console.log("crta se text");
     ctx.font = "15px Arial";
     ctx.fillText(text, x - 4, y - 4);
     ctx.fillStyle = tempSytyle;
@@ -266,7 +249,6 @@ function showAnswer(answer, index) {
 }
 function togleCorrect(index) {
     QuestionTemplate.Answers[index].isCorrect = !QuestionTemplate.Answers[index].isCorrect
-    console.log(QuestionTemplate.Answers[index]);
 }
 
 function removeAnswer(index) {
@@ -307,7 +289,6 @@ window.createQuez = function createQuez() {
 } 
 
 function createFetch() {
-    console.log(QuizTemplate);
     const formData = new FormData();
     QuizTemplate.Name = document.getElementById("quizName").value;
     QuizTemplate.numberOfQustionsPerTry = document.getElementById("questionPerTry").value;
@@ -370,10 +351,6 @@ function buildFormData(formData, data, parentKey) {
             buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
         });
     } else {
-        if (data instanceof File) {
-            console.log("uraido sam ovo za File");
-            console.log(data);
-        }
             
         const value = data == null ? '' : data;
 
@@ -406,10 +383,8 @@ window.fetchCourses = function fetchCourses() {
             return;
         })
         .then(data => {
-            console.log(data);
             let lista = document.getElementById("predmeti");
             data.forEach(x => {
-                console.log(x);
                 let opcija = document.createElement("option");
                 opcija.innerHTML = x;
                 lista.add(opcija);
@@ -419,7 +394,6 @@ window.fetchCourses = function fetchCourses() {
 
 }
 window.fetchYears = function fetchYears() {
-    console.log("uslo ovde");
     const fetchData =
     {
         method: "GET",
@@ -438,10 +412,8 @@ window.fetchYears = function fetchYears() {
             return;
         })
         .then(data => {
-            console.log(data);
             let lista = document.getElementById("godina");
             data.forEach(x => {
-                console.log(x);
                 let opcija = document.createElement("option");
                 opcija.innerHTML = x;
                 lista.add(opcija);

@@ -28,10 +28,6 @@ function buildFormData(formData, data, parentKey) {
             buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
         });
     } else {
-        if (data instanceof File) {
-            console.log("uraido sam ovo za File");
-            console.log(data);
-        }
 
         const value = data == null ? '' : data;
 

@@ -64,7 +64,7 @@ window.showData = function showData() {
 window.loadQuizzes = function loadQuizzes() {
     let selected= document.getElementById("predmet");
     let select = document.getElementById("kvizovi");
-    console.log(selected[selected.selectedIndex].value)
+    // Perfection
     fetch("/Competitions/GetQuizzes/?name=" + selected[selected.selectedIndex].value)
         .then(response => {
             if (!response.ok) {
@@ -78,13 +78,9 @@ window.loadQuizzes = function loadQuizzes() {
         .then(data => {
             let opcija = document.createElement("option");
 
-            //opcija.innerHTML = "Predmet nije izabran";
-            //select.add(opcija);
-
             quizzes = data;
             data.forEach(x => {
                 opcija = document.createElement("option");
-                console.log(quizzes);
                 opcija.innerHTML = x.name;
                 select.add(opcija);
             });

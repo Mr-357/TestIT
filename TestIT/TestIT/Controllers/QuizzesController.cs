@@ -24,20 +24,12 @@ namespace TestIT.Controllers
             _context = context;
         }
 
-        // GET: Quizs
-        /*public async Task<IActionResult> Index()
-        {
-            string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            ApplicationUser currentUser = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
-            return View(await _context.Quiz.ToListAsync());
-            // return View(await _context.Quiz.ToListAsync());
-        }*/
+        
         public IActionResult Index()
         {
             string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             ApplicationUser currentUser = _context.Users.Include(user => user.Quizzes).FirstOrDefault(x => x.Id == currentUserId);
             return View(currentUser.Quizzes);
-            // return View(await _context.Quiz.ToListAsync());
         }
         
         public IActionResult ChooseQuiz()
@@ -75,13 +67,6 @@ namespace TestIT.Controllers
             public int ID { get; set; }
             public String Name { get; set; }
         }
-        //TLDR kako koristiti fetch i controller
-        //ovaj httppost tag znaci da fja podrzava post metodu
-        //fromform tag znaci da pravi objekat iz forme oblika u post-u,postoji i frombody koji to radi iz json-a (mada meni nije uspelo)
-        //iznad ovoga sam napravio pomocnu klasu fetchquiz cisto da vidim kako i da li ovo radi, trebalo bi da radi i sa nasim modelima
-        //fja vraca Ok() zbog one provere u js-u (response.ok) , moguce je da vrati npr json objekat sa nekim informacijama ili url za redirekciju
-        //redirecttoaction() NE RADI preko fetch-a
-        //ostatak objasnjena u site.js
         
         [HttpPost]
         public async Task<IActionResult> FetchCreate([FromForm]QuizViewModel model)
@@ -93,7 +78,6 @@ namespace TestIT.Controllers
             current.addQuiz(new Quiz(model));
             await _context.SaveChangesAsync();
             
-           // return Redirect("/Quizzes/Index");
             return Ok();
         }
 
@@ -123,38 +107,7 @@ namespace TestIT.Controllers
             // Don't rely on or trust the FileName property without validation.
             return Ok( Json(new { count = images.Count, size, filePaths }));
         }
-
-        // POST: Quizs/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        /* [HttpPost]
-         [ValidateAntiForgeryToken]
-         public async Task<IActionResult> Create(CreateQuizViewModel model, string command)
-         {
-             if(command.Equals("Napravi"))
-             {
-                 if (ModelState.IsValid)
-                 {
-                     string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                     ApplicationUser currentUser = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
-                     currentUser.addQuiz(model.Quiz);
-                     _context.Add(model.Quiz);
-                     await _context.SaveChangesAsync();
-                     this.tempQuiz = null;
-                     return RedirectToAction(nameof(Index));
-                 }
-                 return View(model);
-             }
-             if(command.Equals("Dodaj pitanje"))
-             {
-                 if (ModelState.IsValid)
-                 {
-                     model.Quiz.Questions.Add(model.TempQuestion);
-                     return View(model);
-                 }
-             }
-             return View(model);
-         }*/
+        
 
         // GET: Quizs/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -264,11 +217,7 @@ namespace TestIT.Controllers
             buff = br.ReadBytes((int)numBytes);
             return buff;
         }
-        /*[HttpGet]
-        public IActionResult Results()
-        {
-            return View();
-        }*/
+       
 
         // POST: Quizs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -357,14 +306,7 @@ namespace TestIT.Controllers
         {
             return _context.Quiz.Any(e => e.ID == id);
         }
-
-
-
-        //[HttpGet]
-        //public IActionResult CreateTournament()
-        //{
-        //    return View();
-        //}
+        
 
         [HttpGet]
         public IActionResult AdminQuiz()
