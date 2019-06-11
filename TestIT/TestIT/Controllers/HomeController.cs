@@ -110,6 +110,7 @@ namespace TestIT.Controllers
             var user = await _context.Users
                 .Include(x => x.OnCours)
                 .ThenInclude(x => x.Course)
+                .ThenInclude(x => x.Quizzes)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             var loggedInUserId = userManager.GetUserId(User);
@@ -117,13 +118,17 @@ namespace TestIT.Controllers
             var loggedInUser = await _context.Users
                                 .Include(x => x.OnCours)
                                 .ThenInclude(x => x.Course)
+                                .ThenInclude(x => x.Quizzes)
                                 .FirstOrDefaultAsync(x => x.Id == loggedInUserId);
+
+
 
             var zajednicki = new List<Course>();
             for (int i = 0; i < loggedInUser.OnCours.Count; i++)
                 for (int j = 0; j < user.OnCours.Count; j++)
                     if (user.OnCours[j].Course.Name == loggedInUser.OnCours[i].Course.Name)
                         zajednicki.Add(user.OnCours[j].Course);
+
 
             if (zajednicki.Count != 0)
                 ViewBag.Message = zajednicki;
