@@ -24,9 +24,13 @@ namespace TestIT.Data
             builder.Entity<TextAnswer>();
             builder.Entity<PictureAnswer>();
             builder.Entity<RegionAnswer>();
+            //builder.Entity<Quiz>()
+            //    .HasOne(q => q.Course)
+            //    .WithMany(c => c.Quizzes);
+            //.OnDelete(DeleteBehavior.SetNull);
             builder.Entity<Course>()
                 .HasMany(c => c.Quizzes)
-                .WithOne()
+                .WithOne(q => q.Course)
                 .OnDelete(DeleteBehavior.Cascade);
             builder.Entity<onCours>()
                 .HasOne(x => x.User)

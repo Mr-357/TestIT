@@ -76,13 +76,12 @@ namespace TestIT.Controllers
             
             string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             ApplicationUser current = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
-
+            Quiz temp = new Quiz(model);
             Course course = _context.Courses
                 .Where(x => x.Name == model.Course)
                 .FirstOrDefault();
+            current.addQuiz(temp);
 
-            Quiz temp = new Quiz(model);
-            current.addQuiz(new Quiz(model));
             course.Quizzes.Add(temp);
             await _context.SaveChangesAsync();
             
