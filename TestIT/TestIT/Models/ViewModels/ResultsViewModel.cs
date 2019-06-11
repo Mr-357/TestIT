@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TestIT.Models.ViewModels
@@ -93,12 +94,6 @@ namespace TestIT.Models.ViewModels
             }
             this.calculatePoint();
         }
-        private Boolean compareAnswers(String rightAnswer,String attemptAnswer)
-        {
-            if (attemptAnswer == null || rightAnswer == null)
-                return false;
-            return rightAnswer.ToLower().Equals(attemptAnswer.ToLower());
-        }
         private void calculatePoint()
         {
             if(this.Answers.Count == 1)
@@ -163,10 +158,11 @@ namespace TestIT.Models.ViewModels
         {
             if (this.type != null && this.type.ToLower().Contains("text"))
             {
-                if (this.text == null || this.RightAnswerText== null)
+                if (this.text == null || this.RightAnswerText == null)
                     this.IsCorrect = false;
                 else
-                    this.IsCorrect = this.RightAnswerText.ToLower().Equals(this.text.ToLower());
+                    this.IsCorrect = compareAnswers(RightAnswerText, text);
+                    //this.IsCorrect = this.RightAnswerText.ToLower().Equals(this.text.ToLower());
             }
             else if (this.type != null && this.type.ToLower().Contains("region"))
             {
@@ -181,6 +177,17 @@ namespace TestIT.Models.ViewModels
                 this.isUserPick = this.IsCorrect = false;
             }
         }
+
+        private Boolean compareAnswers(String rightAnswer, String attemptAnswer)
+        {
+            if (attemptAnswer == null || rightAnswer == null)
+                return false;
+            Regex rgx = new Regex("[^a-zA-Z0-9]");
+            rightAnswer = rgx.Replace(rightAnswer, "");
+            attemptAnswer = rgx.Replace(attemptAnswer, "");
+            return rightAnswer.ToLower().Equals(attemptAnswer.ToLower());
+        }
+
         public Boolean hasPoint(List<BaseAnswerModel> answers)
         {
             if (answers == null)
