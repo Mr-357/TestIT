@@ -90,15 +90,18 @@
                     if (User.IsInRole("Admin"))
                     {
                         <div style="margin-left:2%; margin-top:1%;">
-                            <select id="roles">
-                                @{
-                                    foreach (var role in RoleManager.Roles)
-                                    {
-                                        <option>@role</option>
+                            <form asp-action="promoteUser">
+                                <input type="text" name="userID" value="@(Model.Id)" hidden="hidden"/>
+                                <select id="roles" name="newRole">
+                                    @{
+                                        foreach (var role in RoleManager.Roles)
+                                        {
+                                            <option>@role</option>
+                                        }
                                     }
-                                }
-                            </select>
-                            <a class="btn btn-primary" href="" style="color:white">Postavi privilegije</a>
+                                </select>
+                                <button type="submit" class="btn btn-primary" style="color:white">Postavi privilegije</button>
+                            </form>
                         </div>
                     }
 
