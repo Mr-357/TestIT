@@ -11,9 +11,11 @@ let timer;
 let timerInterval;
 let timeO;
 let isResultPage = false;
+let competition;
 window.startUp = function startUp(json, comp) {
     if (comp != null) {
         register(comp);
+        competition = comp;
     }
     quiz = json;
     tempQuestions = bestCopyEver(quiz.Questions);
@@ -42,8 +44,19 @@ function register(comp) {
     }
     fetch("/Competitions/Start", fetchData)
         .then(response => {
-            if (!response.ok)
-                throw response;
+            console.log(response.status)
+            if (!response.ok) {
+                if (response.status == 401) {
+                    alert("Vec ste pokusali ovaj turnir");
+                    window.location.href = "/Competitions/IndexUser";
+                    clearInterval(timerInterval);
+                    clearTimeout(timeO);
+                }
+                else {
+                    throw response;
+                }
+            }
+            
         })
         .catch(error => console.log(error));
 }
@@ -246,6 +259,7 @@ window.onImageLoad = function onImageLoad(input, index) {
 function jsFetch(result) {
     const formData = new FormData();
     buildFormData(formData, result);
+    formData.append("comp", competition);
     const fetchData =
     {
         method: "post",

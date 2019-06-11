@@ -28,6 +28,10 @@ namespace TestIT.Controllers
                 return BadRequest();
             ApplicationUser user = await _userManager.GetUserAsync(User);
             var comp = await _context.Competitions.FirstOrDefaultAsync(x => x.ID == id);
+            if (_context.Competitions.Include(l=>l.Participations).FirstOrDefault(x => x.ID == id).Participations.Any(y => y.User.Id == user.Id))
+            {
+                return Unauthorized();
+            }
             Participation p = new Participation();
             p.Competition = comp;
             p.User = user;

@@ -18,10 +18,11 @@ namespace TestIT.Controllers
     public class QuizzesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public QuizzesController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public QuizzesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this._userManager = userManager;
         }
 
         
@@ -184,7 +185,7 @@ namespace TestIT.Controllers
 
         //POST:
         [HttpPost]
-        public async Task<IActionResult> Results([FromForm]QuizViewModel quizAttempt)
+        public async Task<IActionResult> Results([FromForm]QuizViewModel quizAttempt,int? comp)
         {
             int? id = quizAttempt.ID;
             if (id == null)//i ako mi kaze warning ovde da id nikad ne moze da bude null, mislim da ipak treda ba odtane ova provera
@@ -199,8 +200,16 @@ namespace TestIT.Controllers
             {
                 return NotFound();
             }
+      
             ResultsViewModel result = validate(quiz, quizAttempt); //tek treba da se implementira
+            if (comp != null)
+            {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
+                Participation p = _context.Competitions.Include(u=>u.Participations).FirstOrDefault(x => x.ID == comp).Participations.FirstOrDefault(y => y.User.Id == user.Id);
 
+                p.Score = result.NumberOfRightAnswers;
+                _context.SaveChanges();
+            }
             return View(result);
         }
 
