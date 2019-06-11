@@ -8,6 +8,7 @@ namespace TestIT.Models.ViewModels
     public class QuizViewModel : BaseQuizViewModel
     {
         public List<QuestionModel> Questions { get; set; }
+        public String Course { get; set; }
         public QuizViewModel()
         {
             this.Questions = new List<QuestionModel>();

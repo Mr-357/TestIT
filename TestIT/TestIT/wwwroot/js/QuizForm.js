@@ -14,7 +14,7 @@ let textAnserDiv = document.getElementsByClassName("textAnserDiv")[0];
 let multyAnswerArea = document.getElementById("multyAnswerArea");
 let addAnswerButton = document.getElementById("addAnswerButton");
 let tableBody = document.getElementById("tableBody");
-
+let predmeti = document.getElementById("predmeti");
 window.addQuestion = function addQuestion() {
     QuestionTemplate.QuestionText = document.getElementById("questionText").value.trim();
     QuestionTemplate.Points = document.getElementById("questionPoints").value;
@@ -390,6 +390,8 @@ function validateQuiz() {
         return false;
     if (time < 1)
         return false;
+    if (QuizTemplate.Course == null || QuizTemplate.Course == "")
+        return false;
     return true;
 }
 function createFetch() {
@@ -492,11 +494,18 @@ window.fetchCourses = function fetchCourses() {
                 let opcija = document.createElement("option");
                 opcija.innerHTML = x;
                 lista.add(opcija);
+                courseChange();
             });
         })
         .catch(error => console.log(error));
 
 }
+
+window.courseChange = function courseChange(){
+    QuizTemplate.Course = predmeti.options[predmeti.selectedIndex].value;
+    console.log(QuizTemplate);
+}
+
 window.fetchYears = function fetchYears() {
     const fetchData =
     {

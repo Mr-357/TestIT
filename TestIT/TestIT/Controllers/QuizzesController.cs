@@ -72,11 +72,17 @@ namespace TestIT.Controllers
         [HttpPost]
         public async Task<IActionResult> FetchCreate([FromForm]QuizViewModel model)
         {
+            
             string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             ApplicationUser current = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
 
+            Course course = _context.Courses
+                .Where(x => x.Name == model.Course)
+                .FirstOrDefault();
+
             Quiz temp = new Quiz(model);
             current.addQuiz(new Quiz(model));
+            course.Quizzes.Add(temp);
             await _context.SaveChangesAsync();
             
             return Ok();
