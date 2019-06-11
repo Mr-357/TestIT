@@ -59,15 +59,18 @@ namespace TestIT.Controllers
                                 .Include(x => x.Quizzes)
                                 .FirstOrDefaultAsync(x => x.ID == id);
 
-            IList<Quiz> tmp = course.Quizzes
+            List<Quiz> tmp = course.Quizzes
                                 .Where(x => x.Visibility == quizVisibility.Ceka).ToList();
+
+            var dict = new Dictionary<Course, List<Quiz>>();
+            dict[course] = tmp;
 
             if (tmp == null)
             {
                 return NotFound();
             }
 
-            return View(tmp);
+            return View(dict);
         }
 
         // GET: Courses/Create
@@ -217,7 +220,7 @@ namespace TestIT.Controllers
             _context.SaveChanges();
             return Ok();
         }
-        [HttpPost]
+        [HttpPost] //tehnicki ovo bi trebalo da vrati 503 ili tako nesto ako ga zoves preko GET, tacno?
         public async Task<IActionResult> Subscribe(int course, string user)
         {
             ApplicationUser u = await _context.Users.FirstOrDefaultAsync(x => x.Id == user);

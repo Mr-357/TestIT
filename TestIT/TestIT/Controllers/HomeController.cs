@@ -38,7 +38,7 @@ namespace TestIT.Controllers
         public async Task<IActionResult> Enroll(string module)
         {
             var tmp = module;
-            if (module != null)
+            if (module != null && module!="")
             {
                 if (signInManager.IsSignedIn(User))
                 {
@@ -49,7 +49,7 @@ namespace TestIT.Controllers
                 }
                 return RedirectToAction("Courses", new { module = tmp });
             }
-            return Error();
+            return BadRequest();
         }
         public async Task<IActionResult> Courses(string module)
         {
@@ -105,6 +105,8 @@ namespace TestIT.Controllers
 
         public async Task<IActionResult> VS(string id)
         {
+            if (id == null || id == "")
+                return BadRequest();
             var user = await _context.Users
                 .Include(x => x.OnCours)
                 .ThenInclude(x => x.Course)
@@ -148,8 +150,10 @@ namespace TestIT.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> Course(int id)
+        public async Task<IActionResult> Course(int? id)
         {
+            if (id == null)
+                return NotFound();
             var course = await _context.Courses
                 .Include(c => c.Users)
                 .ThenInclude(c => c.User)
@@ -157,7 +161,10 @@ namespace TestIT.Controllers
                 .Include(z => z.Comments)
                 .ThenInclude(w => w.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.ID == id);
-
+            if (course == null)
+            {
+                return NotFound();
+            }
             course.Quizzes = course.Quizzes
                         .Where(x => x.Visibility == quizVisibility.Javni)
                         .ToList();
@@ -176,13 +183,6 @@ namespace TestIT.Controllers
             {
                 ViewBag.Message = "nije";
             }
-       
- 
-
-            if (course == null)
-            {
-                return NotFound();
-            }
 
             return View(course);
         }
@@ -199,7 +199,7 @@ namespace TestIT.Controllers
             return View();
         }
 
-        [HttpGet]//ovo je primer za povezivanje kursa sas coveka,i ne treba koristiti ovu akciju direktno
+        [HttpGet]//ove sve akcije nadole bi trebalo da izbrisemo 
         public async Task<IActionResult> testRun()
         {
             Course course = await _context.Courses
