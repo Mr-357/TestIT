@@ -128,30 +128,31 @@ namespace TestIT.Controllers
             return View(quiz);
         }
 
-        public async Task<IActionResult> AttemptQuiz(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var quiz = await _context.Quiz
-                .Include(q => q.Questions)
-                .ThenInclude(q => q.Answers)
-                .FirstOrDefaultAsync(e => e.ID == id);
-            if (quiz == null)
-            {
-                return NotFound();
-            }
-            string quizData = Newtonsoft.Json.JsonConvert.SerializeObject(quiz, new Newtonsoft.Json.JsonSerializerSettings()
-            {
-                PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects,
-                Formatting = Newtonsoft.Json.Formatting.Indented
-            });
-            ViewBag.jsonQuiz = (quizData);
-            return View();
-        }
+        //public async Task<IActionResult> AttemptQuiz(int? id,int? comp) fuck off
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var quiz = await _context.Quiz
+        //        .Include(q => q.Questions)
+        //        .ThenInclude(q => q.Answers)
+        //        .FirstOrDefaultAsync(e => e.ID == id);
+        //    if (quiz == null)
+        //    {
+        //        return NotFound();
+        //    }
+       
+        //    string quizData = Newtonsoft.Json.JsonConvert.SerializeObject(quiz, new Newtonsoft.Json.JsonSerializerSettings()
+        //    {
+        //        PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects,
+        //        Formatting = Newtonsoft.Json.Formatting.Indented
+        //    });
+        //    ViewBag.jsonQuiz = (quizData);
+        //    return View();
+        //}
         //GET: 
-        public async Task<IActionResult> AttemptQuiz2(int? id)
+        public async Task<IActionResult> AttemptQuiz2(int? id,int? comp)
         {
             if (id == null)
             {
@@ -165,8 +166,13 @@ namespace TestIT.Controllers
             {
                 return NotFound();
             }
+
             AttemptQuizViewModel viewModel = new AttemptQuizViewModel();
             viewModel.fillFromQuiz(quiz);
+            if (comp != null)
+            {
+                viewModel.Comp = comp.Value;
+            }
             return View(viewModel);
         }
 

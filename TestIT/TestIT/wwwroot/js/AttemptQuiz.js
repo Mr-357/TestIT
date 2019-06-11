@@ -11,7 +11,10 @@ let timer;
 let timerInterval;
 let timeO;
 let isResultPage = false;
-window.startUp = function startUp(json) { 
+window.startUp = function startUp(json, comp) {
+    if (comp != null) {
+        register(comp);
+    }
     quiz = json;
     tempQuestions = bestCopyEver(quiz.Questions);
     tempQuestions.forEach(x => x.Answers = []);
@@ -27,7 +30,23 @@ window.startUp = function startUp(json) {
     }
 
 }
-
+function register(comp) {
+    const formData = new FormData();
+    formData.append("id",comp);
+    const fetchData =
+    {
+        method: "post",
+        body: formData,
+        redirect: 'follow',
+        credentials: 'include' //ovo se dodaje da salje cookie odnosno podatke o korisniku, postoji sansa da vrati error 500 ako se ne posalje ovo
+    }
+    fetch("/Competitions/Start", fetchData)
+        .then(response => {
+            if (!response.ok)
+                throw response;
+        })
+        .catch(error => console.log(error));
+}
 function bestCopyEver(src) {
     return JSON.parse(JSON.stringify(src));
 }

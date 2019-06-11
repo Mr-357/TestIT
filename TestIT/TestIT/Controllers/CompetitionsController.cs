@@ -21,6 +21,20 @@ namespace TestIT.Controllers
             _context = context;
             _userManager = userManager;
         }
+        [HttpPost]
+        public async Task<IActionResult> Start(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            var comp = await _context.Competitions.FirstOrDefaultAsync(x => x.ID == id);
+            Participation p = new Participation();
+            p.Competition = comp;
+            p.User = user;
+            comp.Participations.Add(p);
+            _context.SaveChanges();
+            return Ok();
+        }
         [HttpGet]
         public async Task<List<string>> GetCourses()
         {
