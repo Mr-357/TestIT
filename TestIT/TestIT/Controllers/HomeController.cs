@@ -99,11 +99,19 @@ namespace TestIT.Controllers
             return modules;
         }
 
-        public async Task<IActionResult> Users()
+
+        public async Task<IActionResult> Users(string filter)
         {
-            var uvm = new UsersViewModel(await _context.Users.ToListAsync());
-            List<ApplicationUser> users = _context.Users.ToList();
-            uvm.AddUsers(users);
+            string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            UsersViewModel uvm;
+            if(filter == null || filter.Equals(""))
+            {
+              uvm = new UsersViewModel(await _context.Users.Where(u => u.Id != currentUserId).ToListAsync());
+            }
+            else
+            {
+                uvm = new UsersViewModel(await _context.Users.Where(u => u.Name.ToLower().Contains(filter.ToLower()) && u.Id != currentUserId).ToListAsync());
+            }
             return View(uvm);
         }
 
