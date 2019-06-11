@@ -13,7 +13,7 @@ let timeO;
 let isResultPage = false;
 let competition;
 window.startUp = function startUp(json, comp) {
-    if (comp != null) {
+    if (comp != null && comp != 0) {
         register(comp);
         competition = comp;
     }
@@ -230,28 +230,31 @@ window.onImageLoad = function onImageLoad(input, index) {
     isResultPage = true;
     let img = document.getElementById("imageQ" + index);
     let cnvs = document.getElementById("myCanvas" + index);
-    cnvs.style.position = "absolute";
-    cnvs.style.left = img.offsetLeft + "px";
-    cnvs.style.top = img.offsetTop + "px";
-    cnvs.widht = img.widht;;
-    cnvs.height = img.height;
-    cnvs.hidden = "";
-    let ctx = cnvs.getContext("2d");
-    ctx.beginPath();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = '#00ff00';
-    let i = 0;
-    input[index].Answers.forEach(a => {
+    if (cnvs != null) {
+        cnvs.style.position = "absolute";
+        cnvs.style.left = img.offsetLeft + "px";
+        cnvs.style.top = img.offsetTop + "px";
+        cnvs.widht = img.widht;;
+        cnvs.height = img.height;
+        cnvs.hidden = "";
+        let ctx = cnvs.getContext("2d");
         ctx.beginPath();
-        //drawText(a.RightX1 * img.width, a.RightY1 * img.width, "T" + (i + 1), ctx);
-        if (a.isUserPick == true || (a.isCorrect == true && input[index].Answers.length == 1))
-            ctx.strokeStyle = '#00ff00';
-        else
-            ctx.strokeStyle = '#ff0000';
-        ctx.rect(a.RightX1 * img.width, a.RightY1 * img.height, (a.RightX2 * img.width) - (a.RightX1 * img.width), (a.RightY2 * img.height) - (a.RightY1*img.height));
-        i++;
-        ctx.stroke();
-    })
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#00ff00';
+        let i = 0;
+        input[index].Answers.forEach(a => {
+            ctx.beginPath();
+            //drawText(a.RightX1 * img.width, a.RightY1 * img.width, "T" + (i + 1), ctx);
+            if (a.isUserPick == true || (a.isCorrect == true && input[index].Answers.length == 1))
+                ctx.strokeStyle = '#00ff00';
+            else
+                ctx.strokeStyle = '#ff0000';
+            ctx.rect(a.RightX1 * img.width, a.RightY1 * img.height, (a.RightX2 * img.width) - (a.RightX1 * img.width), (a.RightY2 * img.height) - (a.RightY1 * img.height));
+            i++;
+            ctx.stroke();
+        })
+    }
+    
     //ctx.stroke();
 }
 

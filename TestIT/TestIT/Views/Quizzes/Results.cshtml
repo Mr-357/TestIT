@@ -30,7 +30,18 @@
                 @{
                     for (int i = 0; i < Model.Questions.Count; i++)
                     {
-                        <button  onclick="resultShowQuestion(@questionsData,@(i));" class="btn" value="Q@i">Q@(i + 1)</button>
+                        float points = Model.Questions[i].Points;
+                        String buttonStyle = "";
+                        if (points == 0)
+                        {
+                            buttonStyle = "wrongAnswerButton";
+                        }
+                        else if(points > 0)
+                        {
+                            buttonStyle = "correctAnswerButton";
+                        }
+
+                        <button  onclick="resultShowQuestion(@questionsData,@(i));" class="btn @(buttonStyle)" value="Q@i">Q@(i + 1)</button>
                     }
                 }
             </div>

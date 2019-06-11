@@ -105,4 +105,11 @@
     margin-top : 2%;
 }
 
+.wrongAnswerButton {
+    background-color : darkred;
+}
+.correctAnswerButton {
+    background-color: greenyellow;
+}
+
 
