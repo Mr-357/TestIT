@@ -217,7 +217,7 @@ namespace TestIT.Controllers
             _context.SaveChanges();
             return Ok();
         }
-        [HttpPost]
+        [HttpPost] //tehnicki ovo bi trebalo da vrati 503 ili tako nesto ako ga zoves preko GET, tacno?
         public async Task<IActionResult> Subscribe(int course, string user)
         {
             ApplicationUser u = await _context.Users.FirstOrDefaultAsync(x => x.Id == user);

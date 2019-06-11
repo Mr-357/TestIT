@@ -35,17 +35,18 @@ namespace TestIT.Controllers
             return courses;
         }
         [HttpGet]
-        public async Task<List<Quiz>> GetQuizzes(string name)
+        public List<Quiz> GetQuizzes(string name)
         {
-            onCours search = new onCours();
-            ApplicationUser user = await _userManager.GetUserAsync(User);
-            search.User = user;
-
-            List<Quiz> quizzes = _context.Courses
+            if (name != null && name != "")
+            {
+                List<Quiz> quizzes = _context.Courses
                 .Where(x => x.Name.Equals(name))
-                .SelectMany(x=>x.Quizzes)
+                .SelectMany(x => x.Quizzes)
                 .ToList();
-            return quizzes;
+                return quizzes;
+            }
+            return null;
+
         }
         // GET: Competitions
         public async Task<IActionResult> IndexUser()
