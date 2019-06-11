@@ -74,7 +74,7 @@ namespace TestIT.Models.ViewModels
                     if (question.Answers[j].GetType() == typeof(TextAnswer))
                     {
                         if (attemptQuestion.Answers.Count > 0 && attemptQuestion.Answers[0].text != null)
-                            tempAnswer.isUserPick = (tempAnswer.text.Equals(attemptQuestion.Answers[0].text)) ? true : false;
+                            tempAnswer.isUserPick = attemptQuestion.hasAnswerText(tempAnswer.text); //(tempAnswer.text.Equals(attemptQuestion.Answers[0].text)) ? true : false;
                         else tempAnswer.isUserPick = false;
                     }
                     else if(question.Answers[j].GetType() == typeof(RegionAnswer))
@@ -115,6 +115,17 @@ namespace TestIT.Models.ViewModels
                 }
                 this.AchievedPoints = (numUserGotRigt == 0)?0:this.Points * (numCorrect / numUserGotRigt);
             }
+        }
+
+        public int numOfCorrectAnswers()
+        {
+            int sum = 0;
+            foreach (ResultAnswer answer in this.Answers)
+            {
+                if (answer.IsCorrect)
+                    sum++;
+            }
+            return sum;
         }
     }
 

@@ -27,6 +27,16 @@ namespace TestIT.Models.ViewModels
         {
             this.Answers = new List<BaseAnswerModel>();     
         }
+
+        public Boolean hasAnswerText(String text)
+        {
+            foreach(BaseAnswerModel answer in this.Answers)
+            {
+                if (answer.text.ToLower().Equals(text.ToLower()))
+                    return true;
+            }
+            return false;
+        }
     }
 
     public class editAnswer : BaseAnswerModel

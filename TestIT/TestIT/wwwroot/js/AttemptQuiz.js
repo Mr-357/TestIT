@@ -127,9 +127,6 @@ function getherAnswers() {
             result.addQuestion(tempQuestions[i]);
         }  
     }
-    quiz.Questions.forEach(question => {
-        
-    })
     return result;
 }
 

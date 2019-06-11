@@ -69,28 +69,38 @@
                                     {
                                         if (Model.Questions[i].Answers.Count > 1)
                                         {
-                                            <div>
-                                                <input type="radio" name="Q@(i)" value="@(Model.Questions[i].Answers[j].text)" /><span>@(Model.Questions[i].Answers[j].text)</span>
-                                                @{
-                                                    bool userPick = Model.Questions[i].Answers[j].isUserPick;
-                                                    bool correct = Model.Questions[i].Answers[j].IsCorrect;
-                                                    if (userPick)
-                                                    {
-                                                        if (correct)
-                                                        {
-                                                            <span>✔</span>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span class="wrongSimbol">❌</span>
-                                                        }
-                                                    }
-                                                    else if (correct)
-                                                    {
-                                                        <span class="rightSimbol">🙀</span>
-                                                    }
-                                                }
-                                            </div>
+                                <div>
+                                    @{
+                                        String check = Model.Questions[i].Answers[j].isUserPick ? "checked" : "";
+                                        if (Model.Questions[i].numOfCorrectAnswers() > 1)
+                                        {
+                                            <input type="checkbox" name="Q@(i)" value="@(Model.Questions[i].Answers[j].text)" /><span>@(Model.Questions[i].Answers[j].text)</span>
+                                        }
+                                        else if (Model.Questions[i].numOfCorrectAnswers() == 1)
+                                        {
+                                            <input type="radio" name="Q@(i)" value="@(Model.Questions[i].Answers[j].text)" /><span>@(Model.Questions[i].Answers[j].text)</span>
+                                        }
+                                    }
+                                    @{
+                                        bool userPick = Model.Questions[i].Answers[j].isUserPick;
+                                        bool correct = Model.Questions[i].Answers[j].IsCorrect;
+                                        if (userPick)
+                                        {
+                                            if (correct)
+                                            {
+                                                <span>✔</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="wrongSimbol">❌</span>
+                                            }
+                                        }
+                                        else if (correct)
+                                        {
+                                            <span class="rightSimbol">⚠</span>
+                                        }
+                                    }
+                                </div>
                                                     }
                                                     else
                                                     {

@@ -25,10 +25,6 @@
                     {
                         <button onclick="showQuestion(@(i));" class="btn" value="Q@i">Q@(i + 1)</button>
                     }
-                    foreach (Question question in Model.Questions)
-                    {
-
-                    }
                 }
             </div>
             <div id="desniDeo" class="desniDeo">
@@ -57,9 +53,19 @@
                                             {
                                                 if (Model.Questions[i].Answers.Count > 1)
                                                 {
-                                                    <div>
-                                                        <input type="radio" name="Q@(i)" value="@(((TextAnswer)Model.Questions[i].Answers[j]).text)" /><span>@(((TextAnswer)Model.Questions[i].Answers[j]).text) </span>
-                                                    </div>
+                                        <div>
+                                            @{
+                                                if (Model.IndexOfCheckBox.Contains(i))
+                                                {
+                                                    <input type="checkbox" name="Q@(i)" value="@(((TextAnswer)Model.Questions[i].Answers[j]).text)" /><span>@(((TextAnswer)Model.Questions[i].Answers[j]).text) </span>
+                                                }
+                                                else
+                                                {
+                                                    <input type="radio" name="Q@(i)" value="@(((TextAnswer)Model.Questions[i].Answers[j]).text)" /><span>@(((TextAnswer)Model.Questions[i].Answers[j]).text) </span>
+                                                }
+                                            }
+
+                                        </div>
                                                 }
                                                 else
                                                 {
