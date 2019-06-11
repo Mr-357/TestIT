@@ -12,13 +12,6 @@
 <table class="table custom-table">
     <thead>
         <th>Kvizovi</th>
-        @if(User.IsInRole("Profesor"))
-        {
-        }
-        else if(User.IsInRole("Admin") || User.IsInRole("Moderator"))
-        {
-            <th>Predmeti</th>
-        }
     </thead>
     <tbody>
         @foreach(var q in Model)
@@ -29,12 +22,6 @@
                 <td>
                     <a class="table-button" href="/Quizzes/Validate/@p.ID" >@p.Name</a>
                 </td>
-                @if(User.IsInRole("Admin") || User.IsInRole("Moderator"))
-                {
-                <td>
-                    <a class="table-button" href="/Home/Course/@q.Key.ID">@q.Key.Name</a>
-                </td>
-                }
             </tr>
             }
         }
