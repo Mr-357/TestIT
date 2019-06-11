@@ -110,7 +110,7 @@ namespace TestIT.Controllers
             }
             else
             {
-                uvm = new UsersViewModel(await _context.Users.Where(u => u.Name.ToLower().Contains(filter.ToLower()) && u.Id != currentUserId).ToListAsync());
+                uvm = new UsersViewModel(await _context.Users.Where(u => u.FullName().ToLower().Contains(filter.ToLower()) && u.Id != currentUserId).ToListAsync());
             }
             return View(uvm);
         }
