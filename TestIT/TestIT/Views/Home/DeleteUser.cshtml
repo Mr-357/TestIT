@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "DeleteUser";
+}
+
+<h1>Da li ste sigurni da zelite da obrisete korisnika</h1>
+<h2>@ViewBag.username</h2>
+<form asp-action="DeleteUser" style="display:flex; flex-direction:column; width:40%">
+    <input type="text" name="userID" value="@ViewBag.userID" hidden="hidden" />
+    <div style="margin-top:4%; display:flex; flex-direction:row" >
+        <a class="btn btn-primary" href="Index">odustani</a>
+        <button type="submit" class="btn btn-danger" style="margin-left:1%">posalji opomenu</button>
+    </div>
+</form>
+

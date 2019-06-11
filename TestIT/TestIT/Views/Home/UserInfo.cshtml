@@ -83,13 +83,15 @@
                 {
                     <hr />
                     <h3>Administracija</h3>
-                    <div style="margin-left:2%; margin-top:1%;">
-                        <form asp-action="warnUser">
+                    <div style="margin-left:2%; margin-top:1%; display:flex; flex-direction:row;">
+                        <form asp-action="warnUser" style="width:20%">
                             <input type="text" name="userID" value="@(Model.Id)" hidden="hidden" />
                             <input type="text" name="username" value="@(Model.UserName)" hidden="hidden" />
-                            <button type="submit" class="btn btn-danger" style="color:white">Opomeni</button>
+                            <button type="submit" class="btn btn-warning" style="color:white">Opomeni</button>
                         </form>
-                        <form action="/" method="post">
+                        <form asp-action="DeleteUser" style="width:20%">
+                            <input type="text" name="userID" value="@(Model.Id)" hidden="hidden" />
+                            <input type="text" name="username" value="@(Model.UserName)" hidden="hidden" />
                             <button type="submit" class="btn btn-danger" style="color:white">Obrisi nalog korisnika</button>
                         </form>
                         

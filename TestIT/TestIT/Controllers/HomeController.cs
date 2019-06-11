@@ -327,11 +327,26 @@ namespace TestIT.Controllers
         }
 
         [HttpPost]
-        public IActionResult deleteUser([FromForm]string userID, [FromForm]string username)
+        public async Task<IActionResult> DeleteUser([FromForm]string userID, [FromForm]string username)
         {
-            ViewBag.userID = userID;
-            ViewBag.username = username;
-            return View();
+            if(username != null)
+            {
+                ViewBag.userID = userID;
+                ViewBag.username = username;
+                return View();
+            }
+            ApplicationUser user = userManager.Users.Where(u => u.Id.Equals(userID)).FirstOrDefault();
+            var rolesForUser = await userManager.GetRolesAsync(user);
+            if(rolesForUser.Count > 0)
+            {
+                foreach (String role in rolesForUser)
+                {
+                    await userManager.RemoveFromRoleAsync(user, role);
+                }
+            }
+            await userManager.DeleteAsync(user);
+            return View("index");
+            
         }
 
     }
