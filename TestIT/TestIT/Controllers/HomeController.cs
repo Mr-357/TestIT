@@ -237,13 +237,14 @@ namespace TestIT.Controllers
 
             return View("Index");
         }
-        [HttpGet]
-        public async Task<IActionResult> roleProf()
+        [HttpPost]
+        public async Task<IActionResult> roleProf(string id)
         {
 
             //privavljane trenutno ulogovanog korisnika
-            string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            ApplicationUser currentUser = _context.Users.Include(user => user.Quizzes).FirstOrDefault(x => x.Id == currentUserId);
+            var currentUser = await _context.Users
+                            .Include( x=> x.Quizzes)
+                            .FirstOrDefaultAsync(x => x.Id == id);
 
             //dodavanje role korisniku, ovo je glavni deo
             await userManager.AddToRoleAsync(currentUser, "Profesor");
