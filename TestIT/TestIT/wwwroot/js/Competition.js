@@ -1,4 +1,5 @@
 ﻿var done = false;
+var done2 = false;
 var quizzes;
 window.get = function get() {
 
@@ -24,11 +25,13 @@ window.get = function get() {
                 opcija = document.createElement("option");
                 opcija.innerHTML = x;
                 select.add(opcija);
+
+
             });
         })
         .catch(error => console.log(error));
 
-
+    reset();
 }
 
 window.deleteNema = function deleteNema() {
@@ -39,11 +42,26 @@ window.deleteNema = function deleteNema() {
         select.remove(0);
         done = true;
     }
-
-
 }
+function deleteNije() {
+    if (!done2) {
+        let select = document.getElementById("kvizovi");
 
+        select.remove(0);
+        done2 = true;
+    }
+}
+function reset() {
+    let kv = document.getElementById("kvizovi");
+    kv.innerHTML = "";
+    let opcija = document.createElement("option");
+    opcija.innerHTML = "Kviz nije izabran";
+    kv.add(opcija);
+    done2 = false;
+}
 window.showData = function showData() {
+    deleteNije();
+    console.log(quizzes);
     let selected = document.getElementById("kvizovi").selectedIndex;
 
     let container = document.getElementsByClassName("right")[0];
@@ -60,8 +78,17 @@ window.showData = function showData() {
     inp.className = "form-control";
     inp.disabled = true;
     container.appendChild(inp);
+    label = document.createElement("label");
+    label.innerHTML = "Vreme izrade:";
+    container.appendChild(label);
+    inp = document.createElement("input");
+    inp.value = quizzes[selected].time+" minut";
+    inp.className = "form-control";
+    inp.disabled = true;
+    container.appendChild(inp);
 }
 window.loadQuizzes = function loadQuizzes() {
+    reset();
     let selected= document.getElementById("predmet");
     let select = document.getElementById("kvizovi");
     // Perfection
