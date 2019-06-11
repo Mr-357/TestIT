@@ -262,5 +262,10 @@ namespace TestIT.Controllers
 
             return View("Index");
         }
+
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
     }
 }
