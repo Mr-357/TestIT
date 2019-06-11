@@ -1,0 +1,75 @@
+﻿@model IEnumerable<TestIT.Models.Competition>
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Izazovi";
+}
+
+<h1>Izazovi</h1>
+
+<h4>Primljeni izazovi</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.Participations[1].User.Id ==UserManager.GetUserId(User))
+            { 
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Deadline)
+                    </td>
+                    
+                        @if (item.Deadline > DateTime.Now)
+                        {<td>
+                            <a asp-action="AttemptQuiz2" asp-controller="Quizzes" class="table-button" asp-route-id="@item.Quiz.ID" asp-route-comp="@item.ID">Odradi</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                            Vas rezultat:@item.Participations[1].Score Rezultat protivnika:@item.Participations[0].Score
+                           </td>
+                        }
+
+                  
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<h4>Poslati izazovi</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th>Rezultati</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.Participations[0].User.Id == UserManager.GetUserId(User))
+            { 
+                <tr>
+                 
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Deadline)
+                    </td>
+                    <td>
+                       Vas rezultat:@item.Participations[0].Score Rezultat protivnika:@item.Participations[1].Score
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

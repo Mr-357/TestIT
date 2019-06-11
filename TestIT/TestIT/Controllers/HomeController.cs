@@ -208,7 +208,7 @@ namespace TestIT.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> DeleteComment(int? id)
+        public IActionResult DeleteComment(int? id)
         {
             if (id == null)
             {

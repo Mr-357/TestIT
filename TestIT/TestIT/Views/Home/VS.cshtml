@@ -5,7 +5,7 @@
     ViewData["Title"] = "1 na 1";
 }
 
-<script src="~/js/Users.js" type="module"></script>
+<script src="~/js/VS.js" type="module"></script>
 
 <h3>Izazivate korisnika: @Model.UserName</h3>
 <hr />
@@ -13,6 +13,12 @@
     <div class="left-container">
                 @{
                     var zajednicki = ViewBag.Message as List<TestIT.Models.Course>;
+                    if (zajednicki == null)
+                    {
+                        zajednicki = new List<Course>();
+                        <p>Nemoguce je izazvati korisnika, nemate zajednicke predmete!</p>
+                    }
+
                     foreach(var p in zajednicki)
                     {
                         <table class="table custom-table common-courses">
@@ -21,17 +27,17 @@
                             </thead>
                             <tbody>
                                 @foreach(var q in p.Quizzes)
-                                {
-                                    @if(q.Visibility == quizVisibility.Javni)
+                            {
+                                @if(q.Visibility == quizVisibility.Javni)
                                     {
                                         <tr>
                                             <td>
-                                                <a class="table-button text-danger" href="/Quizzes/AttemptQuiz2/@q.ID">@q.Name</a>
+                                                <button class="table-button text-danger" onclick="start(@q.ID,'@Model.Id')">@q.Name</button>
                                             </td>
                                         </tr>
                                     }
-                                    
-                                }
+
+                    }
                             </tbody>
                         </table>
                     }

@@ -158,9 +158,9 @@ namespace TestIT.Controllers
         //    return View();
         //}
         //GET: 
-        public async Task<IActionResult> AttemptQuiz2(int? id,int? comp)
+        public async Task<IActionResult> AttemptQuiz2(int? id,int? comp,string vs)
         {
-            if (id == null)
+             if (id == null)
             {
                 return NotFound();
             }
@@ -184,6 +184,8 @@ namespace TestIT.Controllers
                     return Forbid();
                 }
             }
+            if (vs != null && vs != "")
+                viewModel.vs = vs;
             return View(viewModel);
         }
 
@@ -209,9 +211,12 @@ namespace TestIT.Controllers
             if (comp != null)
             {
                 ApplicationUser user = await _userManager.GetUserAsync(User);
-                Participation p = _context.Competitions.Include(u=>u.Participations).FirstOrDefault(x => x.ID == comp).Participations.FirstOrDefault(y => y.User.Id == user.Id);
+                Competition c = _context.Competitions.Include(u => u.Participations).ThenInclude(u=>u.User).FirstOrDefault(x => x.ID == comp);
+                Participation p = c.Participations.FirstOrDefault(y => y.User.Id == user.Id);
 
                 p.Score = result.NumberOfRightAnswers;
+                if (c.Participations.Count == 2 && c.Name == null && user.Id==c.Participations[1].User.Id)
+                    c.Deadline = DateTime.Now;
                 _context.SaveChanges();
             }
             return View(result);
