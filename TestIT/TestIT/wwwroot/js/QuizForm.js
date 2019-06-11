@@ -16,28 +16,38 @@ let addAnswerButton = document.getElementById("addAnswerButton");
 let tableBody = document.getElementById("tableBody");
 
 window.addQuestion = function addQuestion() {
-
-    QuestionTemplate.QuestionText = document.getElementById("questionText").value;
+    QuestionTemplate.QuestionText = document.getElementById("questionText").value.trim();
     QuestionTemplate.Points = document.getElementById("questionPoints").value;
     QuestionTemplate.Picture = document.querySelector('[type=file]').files[0];
     if (answerQuantity == "single") {
-        if (answerType == "text") {
+        if (answerType == "text" && AnswerTextArea.value.trim() != "") {
             let tempAnswer = new JSAnswer(true);
-            tempAnswer.text = AnswerTextArea.value;
+            tempAnswer.text = AnswerTextArea.value.trim();
             tempAnswer.type = answerQuantity + "-" + answerType;
             QuestionTemplate.addAnswer(tempAnswer);
         }
     }
-    else if (answerQuantity == "multy") {
-
+    if (!validateQuestion()) {
+        alert("niste lepo popunili pitanje");
     }
-    QuizTemplate.addQuestion(QuestionTemplate);
-    showQuestionsInTabel();
-    //addQuestionToLeftSide(QuestionTemplate);
-    QuestionTemplate = new JSQuestion();
-    let fileInput = document.querySelector('[type=file]');
-    fileInput.value = "";
-    previewFile();
+    else {
+        QuizTemplate.addQuestion(QuestionTemplate);
+        showQuestionsInTabel();
+        QuestionTemplate = new JSQuestion();
+        let fileInput = document.querySelector('[type=file]');
+        fileInput.value = "";
+        previewFile();
+    }  
+}
+
+function validateQuestion() {
+    if (QuestionTemplate.QuestionText == null || QuestionTemplate.QuestionText == "")
+        return false;
+    if (QuestionTemplate.Points == null || QuestionTemplate.Points == "" || QuestionTemplate.Points < 1)
+        return false;
+    if (QuestionTemplate.Answers.length == 0)
+        return false
+    return true;
 }
 function fillPictureFilePaths() {
     let files = [];
@@ -80,24 +90,15 @@ function replaceImageWithPath(paths) {
     }
 
 }
-
-function addQuestionToLeftSide(question) {
-    let tbody = document.getElementById('questionTableBody');
-    let tr = document.createElement('tr');
-    let td = document.createElement("td");
-    let label = document.createElement("label");
-    label.innerHTML = question.QuestionText;
-    td.appendChild(label);
-    tr.appendChild(td);
-    let button = document.createElement("input");
-    button.type = "button";
-    button.className = "btn btn-danger"
-    button.value = "X";
-    button.onclick = function () { deleteQuestion(); }
-    td = document.createElement("td");
-    td.appendChild(button);
-    tr.appendChild(td);
-    tbody.appendChild(tr);
+window.pointsChange = function pointsChange() {
+    let input = document.getElementById("questionPoints");
+    if (input.value < 1)
+        input.value = 1;
+}
+window.timeChange = function timeChange() {
+    let input = document.getElementById("timeForQuiz");
+    if (input.value < 1)
+        input.value = 1;
 }
 
 function showQuestion(question,index) {
@@ -144,11 +145,13 @@ window.createQuestion = function createQuestion(elements) {
 }
 
 window.addAnswer = function addAnswer() {
-    let tempAnswer = new JSAnswer(false);
-    tempAnswer.text = AnswerTextArea.value;
-    tempAnswer.type = answerQuantity + "-" + answerType;
-    QuestionTemplate.addAnswer(tempAnswer);
-    showAnswers();
+    if (AnswerTextArea.value.trim() != "") {
+        let tempAnswer = new JSAnswer(false);
+        tempAnswer.text = AnswerTextArea.value.trim();
+        tempAnswer.type = answerQuantity + "-" + answerType;
+        QuestionTemplate.addAnswer(tempAnswer);
+        showAnswers();
+    }
 }
 
 function addRegionAnswer(x1, y1, x2, y2) {
@@ -222,7 +225,7 @@ window.setAnswerCuantity = function setAnswerCuantity(quantity) {
 }
 window.createTextAnswerArea = function createTextAnswerArea() {
     textAnserDiv.hidden = "";
-    answerType = "single";
+    answerType = "text";
     QuestionTemplate.Answers = [];
     showAnswers();
     toggleButton();
@@ -257,17 +260,49 @@ function showAnswers() {
 }
 
 function showAnswer(answer, index) {
+    let img = document.getElementById("questionImageArea");
     let tr = document.createElement("tr");
+    let infoDiv = document.createElement("div");
     let tempLabel = document.createElement("label");
+    let checkBox = null;
     if (answer.type.includes("text")) {
         tempLabel.innerHTML = answer.text;
+        infoDiv.appendChild(tempLabel);
+        let tacanTD = document.getElementById("tacanTD");
+        if (answerQuantity == "multy") {
+            
+            tacanTD.hidden = "";
+            checkBox = document.createElement("input");
+            checkBox.type = "checkbox"
+            checkBox.onclick = function () { togleCorrect(index); };
+        }
+        else if (answerQuantity == "single") {
+            tacanTD.hidden = "hidden";
+        }
     }
     else if (answer.type.includes("region")) {
-        tempLabel.innerHTML = "T"+(index+1) +": (" + answer.x1 + ", " + answer.y1 + ") (" + answer.x2 + ", " + answer.y2 + ")";
+        let tacanTD = document.getElementById("tacanTD");
+        tacanTD.hidden = "hidden";
+        tempLabel.innerHTML = "T" + (index + 1);//+ ": (" + answer.x1 + ", " + answer.y1 + ") (" + answer.x2 + ", " + answer.y2 + ")";
+        let widthEditBox = document.createElement("input");
+        widthEditBox.type = "number";
+        widthEditBox.min = "0";
+        let value = parseFloat((answer.x2 - answer.x1) * img.width).toFixed(2);
+        widthEditBox.value = value;
+        //widthEditBox.value = (answer.x2 - answer.x1) * img.width;
+        widthEditBox.onchange = function () { areaChange(widthEditBox.value, index, true) }
+        let heightEditBox = document.createElement("input");
+        heightEditBox.type = "number";
+        heightEditBox.min = "0";
+        value = parseFloat((answer.y2 - answer.y1) * img.height).toFixed(2);
+        heightEditBox.value = value;
+        //heightEditBox.value = (answer.x2 - answer.x1) * img.height;
+        heightEditBox.onchange = function () { areaChange(heightEditBox.value, index, false) }
+        tempLabel.innerHTML = "T" + (index + 1);
+        infoDiv.appendChild(tempLabel);
+        infoDiv.appendChild(widthEditBox);
+        infoDiv.appendChild(heightEditBox);
     }
-    let checkBox = document.createElement("input");
-    checkBox.type = "checkbox"
-    checkBox.onclick = function () { togleCorrect(index); };
     let button = document.createElement("input");
     button.type = "button";
     button.value = "x";
@@ -276,17 +311,30 @@ function showAnswer(answer, index) {
 
     let td;
     td = document.createElement("td");
-    td.appendChild(tempLabel);
+    td.appendChild(infoDiv);
     tr.appendChild(td);
-
-    td = document.createElement("td");
-    td.appendChild(checkBox);
-    tr.appendChild(td);
-
+    if (checkBox != null) {
+        td = document.createElement("td");
+        td.appendChild(checkBox);
+        tr.appendChild(td);
+    }
     td = document.createElement("td");
     td.appendChild(button);
     tr.appendChild(td);
     tableBody.appendChild(tr);
+}
+
+function areaChange(size, index, isWidthEdit) {
+    let answer = QuestionTemplate.Answers[index];
+    let img = document.getElementById("questionImageArea");
+    if (isWidthEdit) {
+        size = size / img.width;
+        answer.x2 = answer.x1 + size;
+    } else if (!isWidthEdit) {
+        size = size / img.height;
+        answer.y2 = answer.y1 + size;
+    }
+    drowOnImage();
 }
 function togleCorrect(index) {
     QuestionTemplate.Answers[index].isCorrect = !QuestionTemplate.Answers[index].isCorrect
@@ -320,19 +368,34 @@ window.previewFile = function previewFile() {
 //fetch stuff
 
 window.createQuez = function createQuez() {
-    let files = [];
-    for (let i = 0; i < QuizTemplate.questions.length; i++) {
-        if (QuizTemplate.questions[i].Picture) {
-            files.push(QuizTemplate.questions[i].Picture);
+    if (!validateQuiz()) {
+        alert("niste lepo popunili kviz");
+    } else {
+        let files = [];
+        for (let i = 0; i < QuizTemplate.questions.length; i++) {
+            if (QuizTemplate.questions[i].Picture) {
+                files.push(QuizTemplate.questions[i].Picture);
+            }
         }
+        saveImagesFetch(files); //ovde se i salje kviz 
     }
-    saveImagesFetch(files); //ovde se i salje kviz 
 } 
-
+function validateQuiz() {
+    let name = document.getElementById("quizName").value;
+    //let numberOfQustionsPerTry = document.getElementById("questionPerTry").value;
+    let time = document.getElementById("timeForQuiz").value;
+    if (QuizTemplate.questions.length == 0)
+        return false;
+    if (name.trim() == "")
+        return false;
+    if (time < 1)
+        return false;
+    return true;
+}
 function createFetch() {
     const formData = new FormData();
-    QuizTemplate.Name = document.getElementById("quizName").value;
-    QuizTemplate.numberOfQustionsPerTry = document.getElementById("questionPerTry").value;
+    QuizTemplate.Name = document.getElementById("quizName").value.trim();
+    //QuizTemplate.numberOfQustionsPerTry = document.getElementById("questionPerTry").value;
     QuizTemplate.time = document.getElementById("timeForQuiz").value;
     buildFormData(formData, QuizTemplate);
     const fetchData =

@@ -110,10 +110,18 @@ function showAnswer(answer, index) {
     }
     else if (answerType.includes("Region")) {
         let widthEditBox = document.createElement("input");
-        widthEditBox.value = (answer.x2 - answer.x1) * img.width;
+        widthEditBox.type = "number";
+        widthEditBox.min = "0";
+        let value = parseFloat((answer.x2 - answer.x1) * img.width).toFixed(2);
+        widthEditBox.value = value;
+        //widthEditBox.value = (answer.x2 - answer.x1) * img.width;
         widthEditBox.onchange = function () { areaChange(widthEditBox.value, index, true) }
         let heightEditBox = document.createElement("input");
-        heightEditBox.value = (answer.x2 - answer.x1) * img.height;
+        heightEditBox.type = "number";
+        heightEditBox.min = "0";
+        value = parseFloat((answer.y2 - answer.y1) * img.height).toFixed(2);
+        heightEditBox.value = value;
+        //heightEditBox.value = (answer.x2 - answer.x1) * img.height;
         heightEditBox.onchange = function () { areaChange(heightEditBox.value, index,false) }
         tempLabel.innerHTML = "T" + (index + 1); 
         infoDiv.appendChild(tempLabel);
