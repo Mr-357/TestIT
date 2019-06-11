@@ -320,10 +320,10 @@ namespace TestIT.Controllers
             ApplicationUser user = userManager.Users.Where(u => u.Id.Equals(userID)).FirstOrDefault();
             if(user != null)
             {
-                emailSender.SendEmailAsync(user.Email, "upozorine ste", warningText != null ? warningText : "upozoreni ste od strane jednog od aministratora TestIT platforme");
+                emailSender.SendEmailAsync(user.Email, "upozoreni ste", warningText != null ? warningText : "upozoreni ste od strane jednog od aministratora TestIT platforme");
             }
             return View("index");
-            
+
         }
 
         [HttpPost]
