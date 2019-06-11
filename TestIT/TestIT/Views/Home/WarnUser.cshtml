@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewData["Title"] = "Opomena";
+}
+
+<h1>Opomeni Korisnika?</h1>
+<h2>@ViewBag.username</h2>
+<form asp-action="Opomena" style="display:flex; flex-direction:column; width:40%">
+
+    <label>Unesite poruku:</label>
+    <input type="text" name="userID" value="@ViewBag.userID" hidden="hidden" />
+    <textarea name="warningText" style="resize:vertical; margin-top:4%" ></textarea>
+    <div style="margin-top:4%">
+        <button type="submit" class="btn btn-warning" style="">posalji opomenu</button>
+    </div>
+    
+</form>
+

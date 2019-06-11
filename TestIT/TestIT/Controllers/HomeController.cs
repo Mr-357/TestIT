@@ -5,9 +5,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestIT.Data;
+using TestIT.Data.Managers;
 using TestIT.Models;
 using TestIT.Models.ViewModels;
 
@@ -19,12 +21,14 @@ namespace TestIT.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
+        private readonly EmailSender emailSender;
+        public HomeController(IEmailSender emailSender, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.signInManager = signInManager;
+            this.emailSender = (EmailSender)emailSender;
         }
         public IActionResult Index()
         {
@@ -303,5 +307,32 @@ namespace TestIT.Controllers
 
             return View("index");
         }
+
+        [HttpPost]
+        public IActionResult warnUser([FromForm]string userID,[FromForm]string username,[FromForm]string warningText)
+        {
+            if(username != null)
+            {
+                ViewBag.userID = userID;
+                ViewBag.username = username;
+                return View();
+            }
+            ApplicationUser user = userManager.Users.Where(u => u.Id.Equals(userID)).FirstOrDefault();
+            if(user != null)
+            {
+                emailSender.SendEmailAsync(user.Email, "upozorine ste", warningText != null ? warningText : "upozoreni ste od strane jednog od aministratora TestIT platforme");
+            }
+            return View("index");
+            
+        }
+
+        [HttpPost]
+        public IActionResult deleteUser([FromForm]string userID, [FromForm]string username)
+        {
+            ViewBag.userID = userID;
+            ViewBag.username = username;
+            return View();
+        }
+
     }
 }

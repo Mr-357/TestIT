@@ -84,8 +84,15 @@
                     <hr />
                     <h3>Administracija</h3>
                     <div style="margin-left:2%; margin-top:1%;">
-                        <a class="btn btn-warning" href="" style="color:white">Opomeni</a>
-                        <a class="btn btn-danger" href="" style="color:white">Obrisi nalog korisnika</a>
+                        <form asp-action="warnUser">
+                            <input type="text" name="userID" value="@(Model.Id)" hidden="hidden" />
+                            <input type="text" name="username" value="@(Model.UserName)" hidden="hidden" />
+                            <button type="submit" class="btn btn-danger" style="color:white">Opomeni</button>
+                        </form>
+                        <form action="/" method="post">
+                            <button type="submit" class="btn btn-danger" style="color:white">Obrisi nalog korisnika</button>
+                        </form>
+                        
                     </div>
                     if (User.IsInRole("Admin"))
                     {
