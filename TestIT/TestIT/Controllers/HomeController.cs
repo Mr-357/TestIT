@@ -291,5 +291,17 @@ namespace TestIT.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> promoteUser([FromForm]string userID, [FromForm]string newRole)
+        {
+            ApplicationUser user = userManager.Users.Where(u => u.Id.Equals(userID)).FirstOrDefault();
+            var roles = userManager.GetRolesAsync(user);
+            var role = roles.Result.FirstOrDefault();
+            await userManager.RemoveFromRoleAsync(user, role);
+            await userManager.AddToRoleAsync(user, newRole);
+
+            return View("index");
+        }
     }
 }
