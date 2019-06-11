@@ -1,97 +1,108 @@
 @model TestIT.Models.ApplicationUser
 @using Microsoft.AspNetCore.Identity;
 @inject UserManager<ApplicationUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "Korisnicki podaci";
-
+    var currentrole = (await UserManager.GetRolesAsync(Model))[0];
 }
 
 <link rel="stylesheet" type="text/css" href="~/css/EditCourse.css">
 <script src="~/js/Users.js" type="module"></script>
+<body onload="set('@currentrole')">
+    <h3>Pregled profila</h3>
+    <hr />
+    <div class="container-cst">
+        <div class="left">
+            <label>Korisnicko ime</label>
+            <input value="@Model.UserName" class="form-control" disabled />
 
-<h3>Pregled profila</h3>
-<hr />
-<div class="container-cst"> 
-    <div class="left">
-        <label>Korisnicko ime</label>
-        <input value="@Model.UserName" class="form-control" disabled/>
+            <label>Ime</label>
+            <input value="@Model.Name" class="form-control" disabled />
 
-        <label>Ime</label>
-        <input value="@Model.Name" class="form-control" disabled/>
-
-        <label>Prezime</label>
-        <input value="@Model.Surname" class="form-control" disabled/>
-        <br/>
-        <div >
-            <table class="table custom-table common-courses">
+            <label>Prezime</label>
+            <input value="@Model.Surname" class="form-control" disabled />
+            <br />
+            <div>
+                <table class="table custom-table common-courses">
                     <thead>
-                        <th>
-                            Predmeti na koje je korisnik prijavljen
-                        </th>
+                    <th>
+                        Predmeti na koje je korisnik prijavljen
+                    </th>
                     </thead>
                     <tbody>
                         <tr>
-                             @{
-                                foreach(var k in Model.OnCours)
+                            @{
+                                foreach (var k in Model.OnCours)
                                 {
-                                    <tr><td class="courses">@k.Course.Name</td></tr>
+                                <tr><td class="courses">@k.Course.Name</td></tr>
+                            }
+                            }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="right">
+                <table class="table custom-table common-courses">
+                    <thead>
+                    <th>
+                        Javni kvizovi korisnika
+                    </th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @{
+                                foreach (var k in Model.Quizzes)
+                                {
+                                    if (k.Visibility == quizVisibility.Javni)
+                                    {
+                                    <tr><td class="courses">@k.Name</td></tr>
                                 }
                             }
-                        </tr>
-                    </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="right">
-        <table class="table custom-table common-courses">
-            <thead>
-                <th>
-                    Javni kvizovi korisnika
-                </th>
-            </thead>
-            <tbody>
-                <tr>
-                    @{
-                        foreach(var k in Model.Quizzes)
-                        {
-                            if(k.Visibility == quizVisibility.Javni)
-                            {
-                                <tr><td class="courses">@k.Name</td></tr>
                             }
-                        }
-                    }
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-<div style="margin-left:2%">
-    <button onclick="window.history.back()" class="btn btn-primary">Povratak nazad</button>
-    <a class="btn btn-danger" href="/Home/VS/@Model.Id" style="color:white">Izazovi</a>
-</div>
-    
-@{
-    if(User.IsInRole("Admin"))
-    {
-        <hr/>
-        <h3>Administracija</h3>
-        <div style="margin-left:2%; margin-top:1%;">
-            <a class="btn btn-warning" href="" style="color:white">Opomeni</a>
-            <a class="btn btn-danger" href="" style="color:white">Obrisi nalog korisnika</a>
-        </div>
-        <div style="margin-left:2%; margin-top:1%;">
-            <a class="btn btn-danger" href="" style="color:white">Postavi kao profesora</a>
-            <a class="btn btn-primary" href="" style="color:white">Ukloni kao profesora</a>
-        </div>
-        <div style="margin-left:2%; margin-top:1%;">
-            <a class="btn btn-danger" href="" style="color:white">Postavi kao moderatora</a>
-            <a class="btn btn-primary" href="" style="color:white">Ukloni kao moderatora</a>
-        </div>
-        <div style="margin-left:2%; margin-top:1%;">
-            <a class="btn btn-danger" href="" style="color:white">Postavi kao admina</a>
-            <a class="btn btn-primary" href="" style="color:white">Ukloni kao admina</a>
-        </div>
-    }
-}
+            <div style="margin-left:2%">
+                <button onclick="window.history.back()" class="btn btn-primary">Povratak nazad</button>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a class="btn btn-danger" href="/Home/VS/@Model.Id" style="color:white">Izazovi</a>
+                }
+
+            </div>
+
+            @{
+                if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                {
+                    <hr />
+                    <h3>Administracija</h3>
+                    <div style="margin-left:2%; margin-top:1%;">
+                        <a class="btn btn-warning" href="" style="color:white">Opomeni</a>
+                        <a class="btn btn-danger" href="" style="color:white">Obrisi nalog korisnika</a>
+                    </div>
+                    if (User.IsInRole("Admin"))
+                    {
+                        <div style="margin-left:2%; margin-top:1%;">
+                            <select id="roles">
+                                @{
+                                    foreach (var role in RoleManager.Roles)
+                                    {
+                                        <option>@role</option>
+                                    }
+                                }
+                            </select>
+                            <a class="btn btn-primary" href="" style="color:white">Postavi privilegije</a>
+                        </div>
+                    }
+
+
+                }
+            }
+        </body>

@@ -134,6 +134,7 @@ namespace TestIT.Controllers
             }
             return View(user);
         }
+
         public async Task<IActionResult> UserInfo(string id)
         {
             var user = await _context.Users
