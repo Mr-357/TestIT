@@ -41,7 +41,7 @@ namespace TestIT
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(
-                    Configuration.GetConnectionString("LocalConnection")));
+                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<ApplicationUser>( options => 
             {
                 options.User.RequireUniqueEmail = true;
@@ -94,7 +94,7 @@ namespace TestIT
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-            UpdateDatabase(app);
+            //UpdateDatabase(app);
         }
 
         private static void UpdateDatabase(IApplicationBuilder app)
