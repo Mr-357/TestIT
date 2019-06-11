@@ -3,39 +3,58 @@
 @{
     ViewData["Title"] = "Detalji";
 }
+<link rel="stylesheet" type="text/css" href="~/css/EditCourse.css" />
 
+<div>
 <h1>Detalji</h1>
-
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.numberOfQustionsPerTry)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.numberOfQustionsPerTry)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.time)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.time)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Visibility)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Visibility)
-        </dd>
-    </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-primary">Izmeni</a> 
-    <a asp-action="Index" class="btn btn-primary">Nazad na listu kvizova</a>
+<hr />
+
+<div class="container-cst">
+    <div class="left">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.time)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.time)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Visibility)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Visibility)
+            </dd>
+        </dl>
+
+        <div>
+            <a asp-action="Index" class="btn btn-danger">Nazad na listu kvizova</a>
+        </div>
+    </div>
+
+
+    <div class="right">
+        <table class="table custom-table">
+            <thead>
+                <th>Pitanja</th>
+            </thead>
+            <tbody>
+                @{
+                    foreach(var k in Model.Questions)
+                    {
+                        <tr>
+                            <td> <p>@k.QuestionText</p> 
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

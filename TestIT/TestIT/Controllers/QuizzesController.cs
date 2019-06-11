@@ -47,6 +47,7 @@ namespace TestIT.Controllers
             }
 
             var quiz = await _context.Quiz
+                .Include(x => x.Questions)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (quiz == null)
             {

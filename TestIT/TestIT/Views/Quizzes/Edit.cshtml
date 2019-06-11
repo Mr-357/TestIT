@@ -32,9 +32,7 @@
                 <div class="form-group">
                     <input type="submit" value="Sačuvaj" class="btn btn-primary" />
                 </div>
-                <div>
-                    <a asp-action="Index" class="btn btn-danger">Povratak na listu kvizova</a>
-                </div>
+                
             </form>
         </div>
         <div class="right">
@@ -58,7 +56,9 @@
         </div>
     </div>
 </div>
-
+<div>
+    <a asp-action="Index" class="btn btn-danger" style="margin-left:1%">Povratak na listu kvizova</a>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

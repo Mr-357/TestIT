@@ -6,13 +6,13 @@
 
 }
 
-<link rel="stylesheet" type="text/css" href="~/css/Users.css">
+<link rel="stylesheet" type="text/css" href="~/css/EditCourse.css">
 <script src="~/js/Users.js" type="module"></script>
 
 <h3>Pregled profila</h3>
 <hr />
-<div class="container"> 
-    <div class="left-container">
+<div class="container-cst"> 
+    <div class="left">
         <label>Korisnicko ime</label>
         <input value="@Model.UserName" class="form-control" disabled/>
 
@@ -25,9 +25,9 @@
         <div >
             <table class="table custom-table common-courses">
                     <thead>
-                        <tr >
-                            <p style="text-align: center">Predmeti na koje je korisnik prijavljen</p>
-                        </tr>
+                        <th>
+                            Predmeti na koje je korisnik prijavljen
+                        </th>
                     </thead>
                     <tbody>
                         <tr>
@@ -41,18 +41,14 @@
                     </tbody>
             </table>
         </div>
-        <div>
-            <button onclick="window.history.back()" class="btn btn-primary">Povratak nazad</button>
-            <a class="btn btn-danger" href="/Home/VS/@Model.Id" style="color:white">Izazovi</a>
-        </div>
     </div>
 
-    <div class="right-container">
+    <div class="right">
         <table class="table custom-table common-courses">
             <thead>
-                <tr >
-                    <p style="text-align: center">Javni kvizovi korisnika</p>
-                </tr>
+                <th>
+                    Javni kvizovi korisnika
+                </th>
             </thead>
             <tbody>
                 <tr>
@@ -68,3 +64,7 @@
     </div>
 </div>
 
+<div style="margin-left:2%">
+    <button onclick="window.history.back()" class="btn btn-primary">Povratak nazad</button>
+    <a class="btn btn-danger" href="/Home/VS/@Model.Id" style="color:white">Izazovi</a>
+</div>
