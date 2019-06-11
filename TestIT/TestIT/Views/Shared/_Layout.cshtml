@@ -47,7 +47,7 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            if (User.IsInRole("Profesor"))
+                            if (!User.IsInRole("Student"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="" asp-controller="Competitions" asp-action="IndexProf" style="color:white; font-weight:bold">Kreiraj Turnir</a>

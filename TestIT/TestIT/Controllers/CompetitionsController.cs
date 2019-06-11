@@ -89,7 +89,7 @@ namespace TestIT.Controllers
                         .Include(x => x.Course)
                         .Include(x=> x.Quiz)
                         .ToListAsync();
-                        
+            competition = competition.Where(x => x.Name != null).ToList();            
             return View(competition);
         }
         // GET: Competitions/Details/5
