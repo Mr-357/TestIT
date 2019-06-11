@@ -5,9 +5,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestIT.Data;
+using TestIT.Data.Managers;
 using TestIT.Models;
 using TestIT.Models.ViewModels;
 
@@ -19,12 +21,14 @@ namespace TestIT.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
+        private readonly EmailSender emailSender;
+        public HomeController(IEmailSender emailSender, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.signInManager = signInManager;
+            this.emailSender = (EmailSender)emailSender;
         }
         public IActionResult Index()
         {
@@ -95,11 +99,19 @@ namespace TestIT.Controllers
             return modules;
         }
 
-        public async Task<IActionResult> Users()
+
+        public async Task<IActionResult> Users(string filter)
         {
-            var uvm = new UsersViewModel(await _context.Users.ToListAsync());
-            List<ApplicationUser> users = _context.Users.ToList();
-            uvm.AddUsers(users);
+            string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            UsersViewModel uvm;
+            if(filter == null || filter.Equals(""))
+            {
+              uvm = new UsersViewModel(await _context.Users.Where(u => u.Id != currentUserId).ToListAsync());
+            }
+            else
+            {
+                uvm = new UsersViewModel(await _context.Users.Where(u => u.FullName().ToLower().Contains(filter.ToLower()) && u.Id != currentUserId).ToListAsync());
+            }
             return View(uvm);
         }
 
@@ -110,6 +122,7 @@ namespace TestIT.Controllers
             var user = await _context.Users
                 .Include(x => x.OnCours)
                 .ThenInclude(x => x.Course)
+                .ThenInclude(x => x.Quizzes)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             var loggedInUserId = userManager.GetUserId(User);
@@ -117,13 +130,17 @@ namespace TestIT.Controllers
             var loggedInUser = await _context.Users
                                 .Include(x => x.OnCours)
                                 .ThenInclude(x => x.Course)
+                                .ThenInclude(x => x.Quizzes)
                                 .FirstOrDefaultAsync(x => x.Id == loggedInUserId);
+
+
 
             var zajednicki = new List<Course>();
             for (int i = 0; i < loggedInUser.OnCours.Count; i++)
                 for (int j = 0; j < user.OnCours.Count; j++)
                     if (user.OnCours[j].Course.Name == loggedInUser.OnCours[i].Course.Name)
                         zajednicki.Add(user.OnCours[j].Course);
+
 
             if (zajednicki.Count != 0)
                 ViewBag.Message = zajednicki;
@@ -199,7 +216,7 @@ namespace TestIT.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> DeleteComment(int? id)
+        public IActionResult DeleteComment(int? id)
         {
             if (id == null)
             {
@@ -286,5 +303,59 @@ namespace TestIT.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> promoteUser([FromForm]string userID, [FromForm]string newRole)
+        {
+            ApplicationUser user = userManager.Users.Where(u => u.Id.Equals(userID)).FirstOrDefault();
+            var roles = userManager.GetRolesAsync(user);
+            var role = roles.Result.FirstOrDefault();
+            await userManager.RemoveFromRoleAsync(user, role);
+            await userManager.AddToRoleAsync(user, newRole);
+
+            return View("index");
+        }
+
+        [HttpPost]
+        public IActionResult warnUser([FromForm]string userID,[FromForm]string username,[FromForm]string warningText)
+        {
+            if(username != null)
+            {
+                ViewBag.userID = userID;
+                ViewBag.username = username;
+                return View();
+            }
+            ApplicationUser user = userManager.Users.Where(u => u.Id.Equals(userID)).FirstOrDefault();
+            if(user != null)
+            {
+                emailSender.SendEmailAsync(user.Email, "upozoreni ste", warningText != null ? warningText : "upozoreni ste od strane jednog od aministratora TestIT platforme");
+            }
+            return View("index");
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser([FromForm]string userID, [FromForm]string username)
+        {
+            if(username != null)
+            {
+                ViewBag.userID = userID;
+                ViewBag.username = username;
+                return View();
+            }
+            ApplicationUser user = userManager.Users.Where(u => u.Id.Equals(userID)).FirstOrDefault();
+            var rolesForUser = await userManager.GetRolesAsync(user);
+            if(rolesForUser.Count > 0)
+            {
+                foreach (String role in rolesForUser)
+                {
+                    await userManager.RemoveFromRoleAsync(user, role);
+                }
+            }
+            await userManager.DeleteAsync(user);
+            return View("index");
+            
+        }
+
     }
 }

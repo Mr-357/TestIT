@@ -12,9 +12,9 @@ let timerInterval;
 let timeO;
 let isResultPage = false;
 let competition;
-window.startUp = function startUp(json, comp) {
+window.startUp = function startUp(json, comp,vs) {
     if (comp != null && comp != 0) {
-        register(comp);
+        register(comp,vs);
         competition = comp;
     }
     quiz = json;
@@ -32,9 +32,10 @@ window.startUp = function startUp(json, comp) {
     }
 
 }
-function register(comp) {
+function register(comp,vs) {
     const formData = new FormData();
-    formData.append("id",comp);
+    formData.append("id", comp);
+    formData.append("vs", vs);
     const fetchData =
     {
         method: "post",
@@ -44,7 +45,7 @@ function register(comp) {
     }
     fetch("/Competitions/Start", fetchData)
         .then(response => {
-            console.log(response.status)
+            
             if (!response.ok) {
                 if (response.status == 401) {
                     alert("Vec ste pokusali ovaj turnir");

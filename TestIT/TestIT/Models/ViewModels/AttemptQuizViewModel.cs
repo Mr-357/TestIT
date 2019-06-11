@@ -7,6 +7,7 @@ namespace TestIT.Models.ViewModels
 {
     public class AttemptQuizViewModel : Quiz
     {
+        public string vs { get; set; }
         public int Comp { get; set; }
         public Dictionary<int,byte[]> Images { get; set; }
         public List<int> IndexOfCheckBox { get; set; }

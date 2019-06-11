@@ -4,9 +4,13 @@
     ViewData["Title"] = "Korisnici";
 }
 
-<label>Pretrazi po imenu</label>
-<input maxlength="250" />
-<br>
+<form>
+    <label>Pretrazi po imenu</label>
+    <input type="text" name="filter" maxlength="250" />
+    <br>
+    <button class="btn btn-primary" type="submit">pretrazuj</button>
+</form>
+
 
 <table class="table custom-table">
     <thead>

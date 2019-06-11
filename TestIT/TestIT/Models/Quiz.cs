@@ -25,7 +25,7 @@ namespace TestIT.Models
         public quizVisibility Visibility { get; set; }
 
         public IList<Question> Questions { get; set; }
-
+        public Course Course { get; set; }
         public Quiz()
         {
             this.Questions = new List<Question>();

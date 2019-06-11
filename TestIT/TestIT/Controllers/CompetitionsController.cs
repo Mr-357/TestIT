@@ -22,20 +22,28 @@ namespace TestIT.Controllers
             _userManager = userManager;
         }
         [HttpPost]
-        public async Task<IActionResult> Start(int? id)
+        public async Task<IActionResult> Start(int? id,string vs)
         {
             if (id == null)
                 return BadRequest();
             ApplicationUser user = await _userManager.GetUserAsync(User);
-            var comp = await _context.Competitions.FirstOrDefaultAsync(x => x.ID == id);
-            if (_context.Competitions.Include(l=>l.Participations).FirstOrDefault(x => x.ID == id).Participations.Any(y => y.User.Id == user.Id))
+            var comp = await _context.Competitions.Include(x=>x.Participations).FirstOrDefaultAsync(x => x.ID == id);
+            if (comp.Participations.Any(y => y.User.Id == user.Id) && comp.Name!=null)
             {
                 return Unauthorized();
+            }
+            if (vs != null && vs != "" && comp.Name == null)
+            {
+                Participation p2 = new Participation();
+                p2.Competition = comp;
+                p2.User = _context.Users.FirstOrDefault(x => x.Id == vs);
+                comp.Participations.Add(p2);
             }
             Participation p = new Participation();
             p.Competition = comp;
             p.User = user;
             comp.Participations.Add(p);
+     
             _context.SaveChanges();
             return Ok();
         }
@@ -81,7 +89,7 @@ namespace TestIT.Controllers
                         .Include(x => x.Course)
                         .Include(x=> x.Quiz)
                         .ToListAsync();
-                        
+            competition = competition.Where(x => x.Name != null).ToList();            
             return View(competition);
         }
         // GET: Competitions/Details/5
@@ -134,7 +142,35 @@ namespace TestIT.Controllers
             }
             return View(competition);
         }
+        [HttpPost]
+        public int VS(int? quizid)
+        {
+            if (quizid != null)
+            {
+                Competition comp = new Competition();
+                comp.StartDate = DateTime.Now;
+                comp.Deadline = DateTime.Now.AddHours(1);
+                comp.Quiz = _context.Quiz.FirstOrDefault(x => x.ID == quizid);
+                _context.Add(comp);
+                _context.SaveChanges();
+                return comp.ID;
 
+            }
+            return 0;
+        }
+        public async Task<IActionResult> VSIndex()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var list = await _context.Competitions
+                        .Include(x => x.Participations)
+                        .ThenInclude(x=>x.User)
+                        .Include(x => x.Quiz)
+                        .Include(x=>x.Course)
+                        .Where(x => x.Participations.Any(y => y.User.Id == user.Id)).ToListAsync();
+            list = list.Where(x=>(x.Course==null && x.Name==null)).ToList();
+            return View(list);
+        }
         // GET: Competitions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

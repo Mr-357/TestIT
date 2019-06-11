@@ -5,38 +5,43 @@
     ViewData["Title"] = "1 na 1";
 }
 
-<link rel="stylesheet" type="text/css" href="~/css/Users.css">
-<script src="~/js/Users.js" type="module"></script>
+<script src="~/js/VS.js" type="module"></script>
 
 <h3>Izazivate korisnika: @Model.UserName</h3>
 <hr />
 <div class="container">
     <div class="left-container">
-            <table class="table custom-table common-courses">
-                    <thead>
-                        <tr >
-                            <p style="text-align: center">Vasi zajednicki predmeti</p>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            @{
-                                var zajednicki = ViewBag.Message as List<TestIT.Models.Course>;
-                                if(zajednicki != null)
-                                {
-                                    foreach( var p in zajednicki)
+                @{
+                    var zajednicki = ViewBag.Message as List<TestIT.Models.Course>;
+                    if (zajednicki == null)
+                    {
+                        zajednicki = new List<Course>();
+                        <p>Nemoguce je izazvati korisnika, nemate zajednicke predmete!</p>
+                    }
+
+                    foreach(var p in zajednicki)
+                    {
+                        <table class="table custom-table common-courses">
+                            <thead>
+                                <th>@p.Name</th>
+                            </thead>
+                            <tbody>
+                                @foreach(var q in p.Quizzes)
+                            {
+                                @if(q.Visibility == quizVisibility.Javni)
                                     {
-                                        <tr><td class="courses">@p.Name</td></tr>
+                                        <tr>
+                                            <td>
+                                                <button class="table-button text-danger" onclick="start(@q.ID,'@Model.Id')">@q.Name</button>
+                                            </td>
+                                        </tr>
                                     }
-                                }
-                                else
-                                {
-                                    <tr><td class="courses">Nemate zajednickih predmeta</td></tr>
-                                }
-                            }
-                        </tr>
-                    </tbody>
-            </table>
+
+                    }
+                            </tbody>
+                        </table>
+                    }
+                }
     </div>
     <div class="right-container">
 
@@ -45,5 +50,4 @@
 </div>
 <div>
     <a href="/Home/Users" class="btn btn-danger" >Povratak nazad</a>
-    <a class="btn btn-primary" style="color:white">Izazovi</a>
 </div>

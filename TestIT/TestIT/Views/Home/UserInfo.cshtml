@@ -79,26 +79,38 @@
             </div>
 
             @{
-                if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                if (SignInManager.IsSignedIn(User) && ((User.IsInRole("Admin") || User.IsInRole("Moderator"))))
                 {
                     <hr />
                     <h3>Administracija</h3>
-                    <div style="margin-left:2%; margin-top:1%;">
-                        <a class="btn btn-warning" href="" style="color:white">Opomeni</a>
-                        <a class="btn btn-danger" href="" style="color:white">Obrisi nalog korisnika</a>
+                    <div style="margin-left:2%; margin-top:1%; display:flex; flex-direction:row; width:25%">
+                        <form asp-action="warnUser" style="">
+                            <input type="text" name="userID" value="@(Model.Id)" hidden="hidden" />
+                            <input type="text" name="username" value="@(Model.UserName)" hidden="hidden" />
+                            <button type="submit" class="btn btn-warning" style="color:white">Opomeni</button>
+                        </form>
+                        <form asp-action="DeleteUser" style="">
+                            <input type="text" name="userID" value="@(Model.Id)" hidden="hidden" />
+                            <input type="text" name="username" value="@(Model.UserName)" hidden="hidden" />
+                            <button type="submit" class="btn btn-danger" style="color:white">Obrisi nalog korisnika</button>
+                        </form>
+                        
                     </div>
                     if (User.IsInRole("Admin"))
                     {
                         <div style="margin-left:2%; margin-top:1%;">
-                            <select id="roles">
-                                @{
-                                    foreach (var role in RoleManager.Roles)
-                                    {
-                                        <option>@role</option>
+                            <form asp-action="promoteUser">
+                                <input type="text" name="userID" value="@(Model.Id)" hidden="hidden"/>
+                                <select id="roles" name="newRole">
+                                    @{
+                                        foreach (var role in RoleManager.Roles)
+                                        {
+                                            <option>@role</option>
+                                        }
                                     }
-                                }
-                            </select>
-                            <a class="btn btn-primary" href="" style="color:white">Postavi privilegije</a>
+                                </select>
+                                <button type="submit" class="btn btn-primary" style="color:white">Postavi privilegije</button>
+                            </form>
                         </div>
                     }
 
