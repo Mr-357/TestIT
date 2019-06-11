@@ -97,3 +97,9 @@
 body h1 {
     color: #0d004f;
 }
+
+.text-area{
+    resize: vertical;
+    max-height: 400px;
+    min-height: 50px;
+}

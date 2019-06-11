@@ -21,7 +21,7 @@
                         <div class="quiz-creation">
                             <label>Ime kviza</label>
                             <br />
-                            <textarea id="quizName" class="form-control" style="resize: height"></textarea>
+                            <textarea id="quizName" class="form-control text-area" maxlength="400" style="resize: height"></textarea>
                             <br />
                             <div class="form-group">
                                 <label class="control-label">Pitanja po pokušaju</label>
@@ -81,7 +81,7 @@
                 <div class="new-question-form">
                     <label>Pitanje </label>
                     <br />
-                    <textarea id="questionText" class="form-control" style="resize: height"></textarea>
+                    <textarea id="questionText" class="form-control text-area" maxlength="1500" style="resize: height"></textarea>
                     <div>
                         <br />
                         <label>Broj poena: </label>
@@ -114,7 +114,7 @@
                     </div>
                     <div class="textAnserDiv">
                         <label>Unesite Odgovor</label>
-                        <textarea class="textAnswerArea" id="AnswerTextArea"></textarea>
+                        <textarea class="textAnswerArea text-area" maxlength="1500" id="AnswerTextArea"></textarea>
                         <input type="button" hidden="hidden" id="addAnswerButton" value="Dodaj Odgovor" class="btn btn-primary" onclick="addAnswer();" />
                     </div>
                     <div class="multyAnswerArea" id="multyAnswerArea" hidden="hidden">
