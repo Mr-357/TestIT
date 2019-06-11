@@ -1,13 +1,42 @@
-﻿@model  List<Quiz>
+﻿@using Microsoft.AspNetCore.Identity;
+@model  Dictionary<Course,List<Quiz>>
+@inject UserManager<ApplicationUser> UserManager
+
 @{
     ViewData["Title"] = "Validate";
 }
 
-<h1>Validate</h1>
-@{ 
-    foreach(Quiz q in Model)
-    {
-        <p> @q.Name </p>
-        <p> @q.ID </p>
-    }
-}
+<h3>Kvizovi koji cekaju na validaciju</h3>
+<hr/>
+
+<table class="table custom-table">
+    <thead>
+        <th>Kvizovi</th>
+        @if(User.IsInRole("Profesor"))
+        {
+        }
+        else if(User.IsInRole("Admin") || User.IsInRole("Moderator"))
+        {
+            <th>Predmeti</th>
+        }
+    </thead>
+    <tbody>
+        @foreach(var q in Model)
+        {
+            @foreach( var p in q.Value)
+            {
+            <tr>
+                <td>
+                    <a class="table-button" href="/Quizzes/Validate/@p.ID" >@p.Name</a>
+                </td>
+                @if(User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                {
+                <td>
+                    <a class="table-button" href="/Home/Course/@q.Key.ID">@q.Key.Name</a>
+                </td>
+                }
+            </tr>
+            }
+        }
+    </tbody>
+</table>

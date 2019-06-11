@@ -77,7 +77,7 @@
                         if(SignInManager.IsSignedIn(User))
                         {
                             <td>
-                                @if (User.IsInRole("Profesor"))
+                                @if(User.IsInRole("Profesor") || User.IsInRole("Moderator") || User.IsInRole("Admin"))
                                 {
                                     <a href='/Courses/Validate/@Model.ID' class="table-button">Ceka na validaciju</a>
                                 }

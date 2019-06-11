@@ -59,15 +59,18 @@ namespace TestIT.Controllers
                                 .Include(x => x.Quizzes)
                                 .FirstOrDefaultAsync(x => x.ID == id);
 
-            IList<Quiz> tmp = course.Quizzes
+            List<Quiz> tmp = course.Quizzes
                                 .Where(x => x.Visibility == quizVisibility.Ceka).ToList();
+
+            var dict = new Dictionary<Course, List<Quiz>>();
+            dict[course] = tmp;
 
             if (tmp == null)
             {
                 return NotFound();
             }
 
-            return View(tmp);
+            return View(dict);
         }
 
         // GET: Courses/Create

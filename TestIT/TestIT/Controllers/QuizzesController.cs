@@ -192,6 +192,88 @@ namespace TestIT.Controllers
             return View(result);
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ValidateSuccessful(int id, [Bind("ID,Name,numberOfQustionsPerTry,time,Visibility")] Quiz quiz)
+        {
+            if (id != quiz.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    quiz.Visibility = quizVisibility.Javni;
+                    _context.Update(quiz);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!QuizExists(quiz.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(quiz);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ValidateFailed(int? id)
+        {
+            var quiz = _context.Quiz
+                    .FirstOrDefault(x => x.ID == id);
+            if(quiz != null)
+            {
+                try
+                {
+                    quiz.Visibility = quizVisibility.Privatni;
+                    _context.Update(quiz);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!QuizExists(quiz.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(quiz);
+        }
+
+        public async Task<IActionResult> Validate(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var quiz = await _context.Quiz
+                    .Include(x=> x.Questions)
+                    .FirstOrDefaultAsync(x => x.ID == id);
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+            return View(quiz);
+        }
+
+
         private ResultsViewModel validate(Quiz quiz, QuizViewModel viewModel)
         {
             ResultsViewModel results = new ResultsViewModel();
