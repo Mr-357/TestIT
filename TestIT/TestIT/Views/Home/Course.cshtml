@@ -133,7 +133,7 @@
                         @if (!User.IsInRole("Student"))
                         {
                             <td>
-                                <button onclick="del(@p.ID)" class="table-button text-danger" >Obrisi</button>
+                                <button onclick="del(@p.ID,@Model.ID)" class="table-button text-danger" >Obrisi</button>
                             </td>
                         }
                     }

@@ -36,8 +36,8 @@ function buildFormData(formData, data, parentKey) {
         formData.append(parentKey, value);
     }
 }
-window.del = function del(id) {
-    fetch("/Home/DeleteComment/"+id)
+window.del = function del(id,pid) {
+    fetch("/Home/DeleteComment/?cid="+id+"&pid="+pid)
         .then(response => {
             if (!response.ok) {
                 throw new Error(response.statusText);

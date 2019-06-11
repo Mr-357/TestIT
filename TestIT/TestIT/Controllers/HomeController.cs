@@ -216,9 +216,9 @@ namespace TestIT.Controllers
         {
             return View();
         }
-        public IActionResult DeleteComment(int? id)
+        public IActionResult DeleteComment(int? cid,int? pid)
         {
-            if (id == null)
+            if (cid == null ||pid==null)
             {
                 return BadRequest();
             }
@@ -226,8 +226,9 @@ namespace TestIT.Controllers
             {
                 return Unauthorized();
             }
-            Comment toremove = _context.Courses.Include(x=>x.Comments).Select(x=>x.Comments).FirstOrDefault().Where(x=>x.ID==id).FirstOrDefault();
-            _context.Courses.Include(x => x.Comments).Select(x => x.Comments).FirstOrDefault().Remove(toremove);
+            Course c = _context.Courses.Include(x => x.Comments).FirstOrDefault(x=>x.ID==pid);
+            Comment toremove = c.Comments.FirstOrDefault(x => x.ID == cid);
+            c.Comments.Remove(toremove);
            
             _context.Remove(toremove);
             _context.SaveChanges();
