@@ -35,17 +35,18 @@
     </dl>
 </div>
 <div>
-    <table>
+    <table class="table custom-table">
         <thead>
-            <tr>
-                <td>Korisnik</td>     
-                <td>Tacnih pitanja</td>
-            </tr>
+            <th>
+                Korisnik     
+            </th>
+            <th>
+                Tacnih pitanja
+            </th>
         </thead>
         <tbody>
 
             @{
-                double s;
                 foreach (var p in Model.Participations)
                 {
                     
@@ -53,7 +54,7 @@
                         <td>@p.User.UserName</td>
                         <td>@p.Score</td>
                     </tr>
-                        }
+                }
               }
                
          </tbody>
