@@ -199,7 +199,24 @@ namespace TestIT.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> DeleteComment(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            if (User.IsInRole("Student"))
+            {
+                return Unauthorized();
+            }
+            Comment toremove = _context.Courses.Include(x=>x.Comments).Select(x=>x.Comments).FirstOrDefault().Where(x=>x.ID==id).FirstOrDefault();
+            _context.Courses.Include(x => x.Comments).Select(x => x.Comments).FirstOrDefault().Remove(toremove);
+           
+            _context.Remove(toremove);
+            _context.SaveChanges();
 
+            return Ok();
+        }
         [HttpGet]//ove sve akcije nadole bi trebalo da izbrisemo 
         public async Task<IActionResult> testRun()
         {

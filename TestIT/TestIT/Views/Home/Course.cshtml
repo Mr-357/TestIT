@@ -121,17 +121,23 @@
                 @{
                     foreach (var p in Model.Comments)
                     {
-                        <tr>
+                <tr>
+                    <td>
+                        @p.Content
+                    </td>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <td>
+                            <a href='/Home/UserInfo/@p.ApplicationUser.Id' class="table-button" style="color:#5190b6">@p.ApplicationUser.UserName</a>
+                        </td>
+                        @if (!User.IsInRole("Student"))
+                        {
                             <td>
-                                @p.Content
+                                <button onclick="del(@p.ID)" class="table-button text-danger" >Obrisi</button>
                             </td>
-                            @if(SignInManager.IsSignedIn(User))
-                            { 
-                                <td> 
-                                    <a href='/Home/UserInfo/@p.ApplicationUser.Id' class="table-button" style="color:#5190b6">@p.ApplicationUser.UserName</a> 
-                                </td>
-                            }
-                        </tr>
+                        }
+                    }
+                </tr>
                     }
                 }
             </tbody>
