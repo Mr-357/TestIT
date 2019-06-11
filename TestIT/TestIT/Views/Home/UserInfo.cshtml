@@ -55,7 +55,10 @@
                     @{
                         foreach(var k in Model.Quizzes)
                         {
-                            <tr><td class="courses">@k.Name</td></tr>
+                            if(k.Visibility == quizVisibility.Javni)
+                            {
+                                <tr><td class="courses">@k.Name</td></tr>
+                            }
                         }
                     }
                 </tr>
