@@ -42,6 +42,16 @@ namespace TestIT.Models
                 this.Answers.Add(tempAnswer);
             }
         }
+        public int countRightAnswers()
+        {
+            int sum = 0;
+            foreach (Answer answer in this.Answers)
+            {
+                if (answer.IsCorrect)
+                    sum++;
+            }
+            return sum;
+        }
     }
 
     public abstract class Answer

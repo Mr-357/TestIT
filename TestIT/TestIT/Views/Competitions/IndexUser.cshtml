@@ -47,7 +47,7 @@
             </td>
             <td>
                 <a asp-action="Details" class="table-button"  asp-route-id="@item.ID">Detalji</a> |
-                <a asp-action="Do" class="table-button" asp-route-id="@item.ID">Odradi</a>
+                <a asp-action="AttemptQuiz2" asp-controller="Quizzes" class="table-button" asp-route-id="@item.Quiz.ID" asp-route-comp="@item.ID">Odradi</a>
             </td>
         </tr>
 }

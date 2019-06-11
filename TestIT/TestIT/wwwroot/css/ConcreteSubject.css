@@ -40,8 +40,11 @@
     flex-direction: row;
 }
 
-.comment-content{
+.text-area{
     width:95%;
+    resize: vertical;
+    max-height: 200px;
+    min-height: 50px;
 }
 
 .comment-section-left{

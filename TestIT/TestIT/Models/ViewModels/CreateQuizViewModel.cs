@@ -8,6 +8,7 @@ namespace TestIT.Models.ViewModels
     public class QuizViewModel : BaseQuizViewModel
     {
         public List<QuestionModel> Questions { get; set; }
+        public String Course { get; set; }
         public QuizViewModel()
         {
             this.Questions = new List<QuestionModel>();
@@ -25,6 +26,16 @@ namespace TestIT.Models.ViewModels
         public QuestionModel()
         {
             this.Answers = new List<BaseAnswerModel>();     
+        }
+
+        public Boolean hasAnswerText(String text)
+        {
+            foreach(BaseAnswerModel answer in this.Answers)
+            {
+                if (answer.text.ToLower().Equals(text.ToLower()))
+                    return true;
+            }
+            return false;
         }
     }
 

@@ -12,7 +12,7 @@
 <script src="~/js/AttemptQuiz.js" type="module"></script>
 <link rel="stylesheet" type="text/css" href="~/css/AttemptQuiz.css">
 
-<body onload="startUp(@quizData);">
+<body onload="startUp(@quizData,@Model.Comp);">
     <div class="pageBox">
         <div class="titleDeo">
             <h1>@Model.Name</h1>
@@ -24,10 +24,6 @@
                     for (int i = 0; i < Model.Questions.Count; i++)
                     {
                         <button onclick="showQuestion(@(i));" class="btn" value="Q@i">Q@(i + 1)</button>
-                    }
-                    foreach (Question question in Model.Questions)
-                    {
-
                     }
                 }
             </div>
@@ -57,9 +53,19 @@
                                             {
                                                 if (Model.Questions[i].Answers.Count > 1)
                                                 {
-                                                    <div>
-                                                        <input type="radio" name="Q@(i)" value="@(((TextAnswer)Model.Questions[i].Answers[j]).text)" /><span>@(((TextAnswer)Model.Questions[i].Answers[j]).text) </span>
-                                                    </div>
+                                        <div>
+                                            @{
+                                                if (Model.IndexOfCheckBox.Contains(i))
+                                                {
+                                                    <input type="checkbox" name="Q@(i)" value="@(((TextAnswer)Model.Questions[i].Answers[j]).text)" /><span>@(((TextAnswer)Model.Questions[i].Answers[j]).text) </span>
+                                                }
+                                                else
+                                                {
+                                                    <input type="radio" name="Q@(i)" value="@(((TextAnswer)Model.Questions[i].Answers[j]).text)" /><span>@(((TextAnswer)Model.Questions[i].Answers[j]).text) </span>
+                                                }
+                                            }
+
+                                        </div>
                                                 }
                                                 else
                                                 {

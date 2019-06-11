@@ -30,7 +30,18 @@
                 @{
                     for (int i = 0; i < Model.Questions.Count; i++)
                     {
-                        <button  onclick="resultShowQuestion(@questionsData,@(i));" class="btn" value="Q@i">Q@(i + 1)</button>
+                        float points = Model.Questions[i].Points;
+                        String buttonStyle = "";
+                        if (points == 0)
+                        {
+                            buttonStyle = "wrongAnswerButton";
+                        }
+                        else if(points > 0)
+                        {
+                            buttonStyle = "correctAnswerButton";
+                        }
+
+                        <button  onclick="resultShowQuestion(@questionsData,@(i));" class="btn @(buttonStyle)" value="Q@i">Q@(i + 1)</button>
                     }
                 }
             </div>
@@ -58,28 +69,38 @@
                                     {
                                         if (Model.Questions[i].Answers.Count > 1)
                                         {
-                                            <div>
-                                                <input type="radio" name="Q@(i)" value="@(Model.Questions[i].Answers[j].text)" /><span>@(Model.Questions[i].Answers[j].text)</span>
-                                                @{
-                                                    bool userPick = Model.Questions[i].Answers[j].isUserPick;
-                                                    bool correct = Model.Questions[i].Answers[j].IsCorrect;
-                                                    if (userPick)
-                                                    {
-                                                        if (correct)
-                                                        {
-                                                            <span>✔</span>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span class="wrongSimbol">❌</span>
-                                                        }
-                                                    }
-                                                    else if (correct)
-                                                    {
-                                                        <span class="rightSimbol">🙀</span>
-                                                    }
-                                                }
-                                            </div>
+                                <div>
+                                    @{
+                                        String check = Model.Questions[i].Answers[j].isUserPick ? "checked" : "";
+                                        if (Model.Questions[i].numOfCorrectAnswers() > 1)
+                                        {
+                                            <input type="checkbox" name="Q@(i)" value="@(Model.Questions[i].Answers[j].text)" /><span>@(Model.Questions[i].Answers[j].text)</span>
+                                        }
+                                        else if (Model.Questions[i].numOfCorrectAnswers() == 1)
+                                        {
+                                            <input type="radio" name="Q@(i)" value="@(Model.Questions[i].Answers[j].text)" /><span>@(Model.Questions[i].Answers[j].text)</span>
+                                        }
+                                    }
+                                    @{
+                                        bool userPick = Model.Questions[i].Answers[j].isUserPick;
+                                        bool correct = Model.Questions[i].Answers[j].IsCorrect;
+                                        if (userPick)
+                                        {
+                                            if (correct)
+                                            {
+                                                <span>✔</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="wrongSimbol">❌</span>
+                                            }
+                                        }
+                                        else if (correct)
+                                        {
+                                            <span class="rightSimbol">⚠</span>
+                                        }
+                                    }
+                                </div>
                                                     }
                                                     else
                                                     {

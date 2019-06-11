@@ -11,7 +11,12 @@ let timer;
 let timerInterval;
 let timeO;
 let isResultPage = false;
-window.startUp = function startUp(json) { 
+let competition;
+window.startUp = function startUp(json, comp) {
+    if (comp != null && comp != 0) {
+        register(comp);
+        competition = comp;
+    }
     quiz = json;
     tempQuestions = bestCopyEver(quiz.Questions);
     tempQuestions.forEach(x => x.Answers = []);
@@ -27,7 +32,34 @@ window.startUp = function startUp(json) {
     }
 
 }
-
+function register(comp) {
+    const formData = new FormData();
+    formData.append("id",comp);
+    const fetchData =
+    {
+        method: "post",
+        body: formData,
+        redirect: 'follow',
+        credentials: 'include' //ovo se dodaje da salje cookie odnosno podatke o korisniku, postoji sansa da vrati error 500 ako se ne posalje ovo
+    }
+    fetch("/Competitions/Start", fetchData)
+        .then(response => {
+            console.log(response.status)
+            if (!response.ok) {
+                if (response.status == 401) {
+                    alert("Vec ste pokusali ovaj turnir");
+                    window.location.href = "/Competitions/IndexUser";
+                    clearInterval(timerInterval);
+                    clearTimeout(timeO);
+                }
+                else {
+                    throw response;
+                }
+            }
+            
+        })
+        .catch(error => console.log(error));
+}
 function bestCopyEver(src) {
     return JSON.parse(JSON.stringify(src));
 }
@@ -95,9 +127,6 @@ function getherAnswers() {
             result.addQuestion(tempQuestions[i]);
         }  
     }
-    quiz.Questions.forEach(question => {
-        
-    })
     return result;
 }
 
@@ -198,28 +227,31 @@ window.onImageLoad = function onImageLoad(input, index) {
     isResultPage = true;
     let img = document.getElementById("imageQ" + index);
     let cnvs = document.getElementById("myCanvas" + index);
-    cnvs.style.position = "absolute";
-    cnvs.style.left = img.offsetLeft + "px";
-    cnvs.style.top = img.offsetTop + "px";
-    cnvs.widht = img.widht;;
-    cnvs.height = img.height;
-    cnvs.hidden = "";
-    let ctx = cnvs.getContext("2d");
-    ctx.beginPath();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = '#00ff00';
-    let i = 0;
-    input[index].Answers.forEach(a => {
+    if (cnvs != null) {
+        cnvs.style.position = "absolute";
+        cnvs.style.left = img.offsetLeft + "px";
+        cnvs.style.top = img.offsetTop + "px";
+        cnvs.widht = img.widht;;
+        cnvs.height = img.height;
+        cnvs.hidden = "";
+        let ctx = cnvs.getContext("2d");
         ctx.beginPath();
-        //drawText(a.RightX1 * img.width, a.RightY1 * img.width, "T" + (i + 1), ctx);
-        if (a.isUserPick == true || (a.isCorrect == true && input[index].Answers.length == 1))
-            ctx.strokeStyle = '#00ff00';
-        else
-            ctx.strokeStyle = '#ff0000';
-        ctx.rect(a.RightX1 * img.width, a.RightY1 * img.height, (a.RightX2 * img.width) - (a.RightX1 * img.width), (a.RightY2 * img.height) - (a.RightY1*img.height));
-        i++;
-        ctx.stroke();
-    })
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#00ff00';
+        let i = 0;
+        input[index].Answers.forEach(a => {
+            ctx.beginPath();
+            //drawText(a.RightX1 * img.width, a.RightY1 * img.width, "T" + (i + 1), ctx);
+            if (a.isUserPick == true || (a.isCorrect == true && input[index].Answers.length == 1))
+                ctx.strokeStyle = '#00ff00';
+            else
+                ctx.strokeStyle = '#ff0000';
+            ctx.rect(a.RightX1 * img.width, a.RightY1 * img.height, (a.RightX2 * img.width) - (a.RightX1 * img.width), (a.RightY2 * img.height) - (a.RightY1 * img.height));
+            i++;
+            ctx.stroke();
+        })
+    }
+    
     //ctx.stroke();
 }
 
@@ -227,6 +259,7 @@ window.onImageLoad = function onImageLoad(input, index) {
 function jsFetch(result) {
     const formData = new FormData();
     buildFormData(formData, result);
+    formData.append("comp", competition);
     const fetchData =
     {
         method: "post",

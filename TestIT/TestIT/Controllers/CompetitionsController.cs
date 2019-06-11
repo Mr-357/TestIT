@@ -21,6 +21,24 @@ namespace TestIT.Controllers
             _context = context;
             _userManager = userManager;
         }
+        [HttpPost]
+        public async Task<IActionResult> Start(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            var comp = await _context.Competitions.FirstOrDefaultAsync(x => x.ID == id);
+            if (_context.Competitions.Include(l=>l.Participations).FirstOrDefault(x => x.ID == id).Participations.Any(y => y.User.Id == user.Id))
+            {
+                return Unauthorized();
+            }
+            Participation p = new Participation();
+            p.Competition = comp;
+            p.User = user;
+            comp.Participations.Add(p);
+            _context.SaveChanges();
+            return Ok();
+        }
         [HttpGet]
         public async Task<List<string>> GetCourses()
         {
@@ -35,17 +53,18 @@ namespace TestIT.Controllers
             return courses;
         }
         [HttpGet]
-        public async Task<List<Quiz>> GetQuizzes(string name)
+        public List<Quiz> GetQuizzes(string name)
         {
-            onCours search = new onCours();
-            ApplicationUser user = await _userManager.GetUserAsync(User);
-            search.User = user;
-
-            List<Quiz> quizzes = _context.Courses
+            if (name != null && name != "")
+            {
+                List<Quiz> quizzes = _context.Courses
                 .Where(x => x.Name.Equals(name))
-                .SelectMany(x=>x.Quizzes)
+                .SelectMany(x => x.Quizzes)
                 .ToList();
-            return quizzes;
+                return quizzes;
+            }
+            return null;
+
         }
         // GET: Competitions
         public async Task<IActionResult> IndexUser()
@@ -76,6 +95,8 @@ namespace TestIT.Controllers
             var competition = await _context.Competitions
                 .Include(x => x.Course)
                 .Include(x=> x.Quiz)
+                .Include(x=>x.Participations)
+                .ThenInclude(x=>x.User)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (competition == null)
             {

@@ -18,10 +18,11 @@ namespace TestIT.Controllers
     public class QuizzesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public QuizzesController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public QuizzesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this._userManager = userManager;
         }
 
         
@@ -47,6 +48,7 @@ namespace TestIT.Controllers
             }
 
             var quiz = await _context.Quiz
+                .Include(x => x.Questions)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (quiz == null)
             {
@@ -71,11 +73,17 @@ namespace TestIT.Controllers
         [HttpPost]
         public async Task<IActionResult> FetchCreate([FromForm]QuizViewModel model)
         {
+            
             string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             ApplicationUser current = _context.Users.FirstOrDefault(x => x.Id == currentUserId);
 
+            Course course = _context.Courses
+                .Where(x => x.Name == model.Course)
+                .FirstOrDefault();
+
             Quiz temp = new Quiz(model);
             current.addQuiz(new Quiz(model));
+            course.Quizzes.Add(temp);
             await _context.SaveChangesAsync();
             
             return Ok();
@@ -127,30 +135,31 @@ namespace TestIT.Controllers
             return View(quiz);
         }
 
-        public async Task<IActionResult> AttemptQuiz(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var quiz = await _context.Quiz
-                .Include(q => q.Questions)
-                .ThenInclude(q => q.Answers)
-                .FirstOrDefaultAsync(e => e.ID == id);
-            if (quiz == null)
-            {
-                return NotFound();
-            }
-            string quizData = Newtonsoft.Json.JsonConvert.SerializeObject(quiz, new Newtonsoft.Json.JsonSerializerSettings()
-            {
-                PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects,
-                Formatting = Newtonsoft.Json.Formatting.Indented
-            });
-            ViewBag.jsonQuiz = (quizData);
-            return View();
-        }
+        //public async Task<IActionResult> AttemptQuiz(int? id,int? comp) fuck off
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var quiz = await _context.Quiz
+        //        .Include(q => q.Questions)
+        //        .ThenInclude(q => q.Answers)
+        //        .FirstOrDefaultAsync(e => e.ID == id);
+        //    if (quiz == null)
+        //    {
+        //        return NotFound();
+        //    }
+       
+        //    string quizData = Newtonsoft.Json.JsonConvert.SerializeObject(quiz, new Newtonsoft.Json.JsonSerializerSettings()
+        //    {
+        //        PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects,
+        //        Formatting = Newtonsoft.Json.Formatting.Indented
+        //    });
+        //    ViewBag.jsonQuiz = (quizData);
+        //    return View();
+        //}
         //GET: 
-        public async Task<IActionResult> AttemptQuiz2(int? id)
+        public async Task<IActionResult> AttemptQuiz2(int? id,int? comp)
         {
             if (id == null)
             {
@@ -164,14 +173,24 @@ namespace TestIT.Controllers
             {
                 return NotFound();
             }
+
             AttemptQuizViewModel viewModel = new AttemptQuizViewModel();
             viewModel.fillFromQuiz(quiz);
+            if (comp != null)
+            {
+                viewModel.Comp = comp.Value;
+                var check=_context.Competitions.FirstOrDefault(x => x.ID == comp);
+                if (check.Deadline < DateTime.Now)
+                {
+                    return Forbid();
+                }
+            }
             return View(viewModel);
         }
 
         //POST:
         [HttpPost]
-        public async Task<IActionResult> Results([FromForm]QuizViewModel quizAttempt)
+        public async Task<IActionResult> Results([FromForm]QuizViewModel quizAttempt,int? comp)
         {
             int? id = quizAttempt.ID;
             if (id == null)//i ako mi kaze warning ovde da id nikad ne moze da bude null, mislim da ipak treda ba odtane ova provera
@@ -186,10 +205,100 @@ namespace TestIT.Controllers
             {
                 return NotFound();
             }
+      
             ResultsViewModel result = validate(quiz, quizAttempt); //tek treba da se implementira
+            if (comp != null)
+            {
+                ApplicationUser user = await _userManager.GetUserAsync(User);
+                Participation p = _context.Competitions.Include(u=>u.Participations).FirstOrDefault(x => x.ID == comp).Participations.FirstOrDefault(y => y.User.Id == user.Id);
 
+                p.Score = result.NumberOfRightAnswers;
+                _context.SaveChanges();
+            }
             return View(result);
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ValidateSuccessful(int id, [Bind("ID,Name,numberOfQustionsPerTry,time,Visibility")] Quiz quiz)
+        {
+            if (id != quiz.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    quiz.Visibility = quizVisibility.Javni;
+                    _context.Update(quiz);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!QuizExists(quiz.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(quiz);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ValidateFailed(int? id)
+        {
+            var quiz = _context.Quiz
+                    .FirstOrDefault(x => x.ID == id);
+            if(quiz != null)
+            {
+                try
+                {
+                    quiz.Visibility = quizVisibility.Privatni;
+                    _context.Update(quiz);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!QuizExists(quiz.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(quiz);
+        }
+
+        public async Task<IActionResult> Validate(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var quiz = await _context.Quiz
+                    .Include(x=> x.Questions)
+                    .FirstOrDefaultAsync(x => x.ID == id);
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+            return View(quiz);
+        }
+
 
         private ResultsViewModel validate(Quiz quiz, QuizViewModel viewModel)
         {

@@ -38,7 +38,7 @@ namespace TestIT.Controllers
         public async Task<IActionResult> Enroll(string module)
         {
             var tmp = module;
-            if (module != null)
+            if (module != null && module!="")
             {
                 if (signInManager.IsSignedIn(User))
                 {
@@ -49,7 +49,7 @@ namespace TestIT.Controllers
                 }
                 return RedirectToAction("Courses", new { module = tmp });
             }
-            return Error();
+            return BadRequest();
         }
         public async Task<IActionResult> Courses(string module)
         {
@@ -105,6 +105,8 @@ namespace TestIT.Controllers
 
         public async Task<IActionResult> VS(string id)
         {
+            if (id == null || id == "")
+                return BadRequest();
             var user = await _context.Users
                 .Include(x => x.OnCours)
                 .ThenInclude(x => x.Course)
@@ -132,6 +134,7 @@ namespace TestIT.Controllers
             }
             return View(user);
         }
+
         public async Task<IActionResult> UserInfo(string id)
         {
             var user = await _context.Users
@@ -148,8 +151,10 @@ namespace TestIT.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> Course(int id)
+        public async Task<IActionResult> Course(int? id)
         {
+            if (id == null)
+                return NotFound();
             var course = await _context.Courses
                 .Include(c => c.Users)
                 .ThenInclude(c => c.User)
@@ -157,7 +162,10 @@ namespace TestIT.Controllers
                 .Include(z => z.Comments)
                 .ThenInclude(w => w.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.ID == id);
-
+            if (course == null)
+            {
+                return NotFound();
+            }
             course.Quizzes = course.Quizzes
                         .Where(x => x.Visibility == quizVisibility.Javni)
                         .ToList();
@@ -176,13 +184,6 @@ namespace TestIT.Controllers
             {
                 ViewBag.Message = "nije";
             }
-       
- 
-
-            if (course == null)
-            {
-                return NotFound();
-            }
 
             return View(course);
         }
@@ -198,8 +199,25 @@ namespace TestIT.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> DeleteComment(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            if (User.IsInRole("Student"))
+            {
+                return Unauthorized();
+            }
+            Comment toremove = _context.Courses.Include(x=>x.Comments).Select(x=>x.Comments).FirstOrDefault().Where(x=>x.ID==id).FirstOrDefault();
+            _context.Courses.Include(x => x.Comments).Select(x => x.Comments).FirstOrDefault().Remove(toremove);
+           
+            _context.Remove(toremove);
+            _context.SaveChanges();
 
-        [HttpGet]//ovo je primer za povezivanje kursa sas coveka,i ne treba koristiti ovu akciju direktno
+            return Ok();
+        }
+        [HttpGet]//ove sve akcije nadole bi trebalo da izbrisemo 
         public async Task<IActionResult> testRun()
         {
             Course course = await _context.Courses
@@ -237,13 +255,14 @@ namespace TestIT.Controllers
 
             return View("Index");
         }
-        [HttpGet]
-        public async Task<IActionResult> roleProf()
+        [HttpPost]
+        public async Task<IActionResult> roleProf(string id)
         {
 
             //privavljane trenutno ulogovanog korisnika
-            string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            ApplicationUser currentUser = _context.Users.Include(user => user.Quizzes).FirstOrDefault(x => x.Id == currentUserId);
+            var currentUser = await _context.Users
+                            .Include( x=> x.Quizzes)
+                            .FirstOrDefaultAsync(x => x.Id == id);
 
             //dodavanje role korisniku, ovo je glavni deo
             await userManager.AddToRoleAsync(currentUser, "Profesor");
@@ -261,6 +280,11 @@ namespace TestIT.Controllers
             _context.SaveChanges();
 
             return View("Index");
+        }
+
+        public IActionResult AboutUs()
+        {
+            return View();
         }
     }
 }

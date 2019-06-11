@@ -7,6 +7,17 @@ window.ShowQuizzes = function ShowQuizzes(course) {
     }
     Draw();
 }
+window.set = function set(role) {
+    let select = document.getElementById("roles");
+    if (select != null)
+    {
+        for (let i = 0; i < select.length; i++)
+        {
+            if (role == select.options[i].value)
+                select.selectedIndex = i;
+        }
+    }
+}
 function Draw(){
     let div = document.getElementsByClassName("right-container");
 

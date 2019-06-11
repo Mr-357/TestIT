@@ -21,7 +21,7 @@
             <form asp-action="Subscribe" asp-controller="Courses"  method="post" >
                 <input type="text" name="course" value="@Model.ID" hidden >
                 <input type="text" name="user" value="@UserManager.GetUserId(User)" hidden >
-                <input type="submit" class="btn btn-primary" value="Prijava" />
+                <input type="submit" class="btn btn-primary" value="Prijavi me na predmet" />
             </form>
         }
         else
@@ -29,7 +29,7 @@
              <form asp-action="Unsubscribe" asp-controller="Courses"  method="post" >
                 <input type="text" name="course" value="@Model.ID" hidden >
                 <input type="text" name="user" value="@UserManager.GetUserId(User)" hidden >
-                <input type="submit" class="btn btn-danger" value="Odjava" />
+                <input type="submit" class="btn btn-danger" value="Odjavi me sa predmeta" />
             </form>   
             }
         }
@@ -73,17 +73,17 @@
             <thead>
                 <tr>
                     <td>Kvizovi</td>
-                    <td>
-                        @{
-                            if (SignInManager.IsSignedIn(User))
-                            {
-                                if (User.IsInRole("Profesor"))
+                    @{
+                        if(SignInManager.IsSignedIn(User))
+                        {
+                            <td>
+                                @if(User.IsInRole("Profesor") || User.IsInRole("Moderator") || User.IsInRole("Admin"))
                                 {
                                     <a href='/Courses/Validate/@Model.ID' class="table-button">Ceka na validaciju</a>
                                 }
-                            }
-                         }
-                    </td>
+                            </td>
+                        }
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -94,9 +94,12 @@
                             <td>
                                 @p.Name
                             </td>
-                            <td>
-                                <a href="/Quizzes/AttemptQuiz2/@Model.ID" class="table-button">Pokusaj</a>
-                            </td>
+                            @if(SignInManager.IsSignedIn(User))
+                            {           
+                                <td>
+                                    <a href="/Quizzes/AttemptQuiz2/@p.ID" class="table-button">Pokusaj</a>
+                                </td>
+                            }
                         </tr>
                     }
                 }
@@ -108,19 +111,33 @@
             <thead>
                 <tr>
                     <td>Komentari</td>
-                    <td>Korisnik</td>
+                    @if(SignInManager.IsSignedIn(User))
+                    { 
+                        <td>Korisnik</td>
+                    }
                 </tr>
             </thead>
             <tbody>
                 @{
                     foreach (var p in Model.Comments)
                     {
-                        <tr>
+                <tr>
+                    <td>
+                        @p.Content
+                    </td>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <td>
+                            <a href='/Home/UserInfo/@p.ApplicationUser.Id' class="table-button" style="color:#5190b6">@p.ApplicationUser.UserName</a>
+                        </td>
+                        @if (!User.IsInRole("Student"))
+                        {
                             <td>
-                                @p.Content
-                            <td> <a href='/Home/UserInfo/@p.ApplicationUser.Id' class="table-button" style="color:#5190b6">@p.ApplicationUser.UserName</a> </td>
+                                <button onclick="del(@p.ID)" class="table-button text-danger" >Obrisi</button>
                             </td>
-                        </tr>
+                        }
+                    }
+                </tr>
                     }
                 }
             </tbody>
@@ -130,7 +147,7 @@
             { 
             <div class="comment-section">
                 <div class="comment-section-left">
-                    <textarea class="comment-content" class="form-control" style="resize: height"></textarea>
+                    <textarea class="comment-content text-area" maxlength="250" style="resize: height"></textarea>
                 </div>
                 <div class="comment-section-right">
                     <button onclick="SubmitComment(@Model.ID);" class="btn btn-primary">Postavi</button>
