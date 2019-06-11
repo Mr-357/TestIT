@@ -179,6 +179,11 @@ namespace TestIT.Controllers
             if (comp != null)
             {
                 viewModel.Comp = comp.Value;
+                var check=_context.Competitions.FirstOrDefault(x => x.ID == comp);
+                if (check.Deadline < DateTime.Now)
+                {
+                    return Forbid();
+                }
             }
             return View(viewModel);
         }

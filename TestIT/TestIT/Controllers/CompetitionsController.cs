@@ -95,6 +95,8 @@ namespace TestIT.Controllers
             var competition = await _context.Competitions
                 .Include(x => x.Course)
                 .Include(x=> x.Quiz)
+                .Include(x=>x.Participations)
+                .ThenInclude(x=>x.User)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (competition == null)
             {

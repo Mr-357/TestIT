@@ -71,3 +71,27 @@
     <button onclick="window.history.back()" class="btn btn-primary">Povratak nazad</button>
     <a class="btn btn-danger" href="/Home/VS/@Model.Id" style="color:white">Izazovi</a>
 </div>
+    
+@{
+    if(User.IsInRole("Admin"))
+    {
+        <hr/>
+        <h3>Administracija</h3>
+        <div style="margin-left:2%; margin-top:1%;">
+            <a class="btn btn-warning" href="" style="color:white">Opomeni</a>
+            <a class="btn btn-danger" href="" style="color:white">Obrisi nalog korisnika</a>
+        </div>
+        <div style="margin-left:2%; margin-top:1%;">
+            <a class="btn btn-danger" href="" style="color:white">Postavi kao profesora</a>
+            <a class="btn btn-primary" href="" style="color:white">Ukloni kao profesora</a>
+        </div>
+        <div style="margin-left:2%; margin-top:1%;">
+            <a class="btn btn-danger" href="" style="color:white">Postavi kao moderatora</a>
+            <a class="btn btn-primary" href="" style="color:white">Ukloni kao moderatora</a>
+        </div>
+        <div style="margin-left:2%; margin-top:1%;">
+            <a class="btn btn-danger" href="" style="color:white">Postavi kao admina</a>
+            <a class="btn btn-primary" href="" style="color:white">Ukloni kao admina</a>
+        </div>
+    }
+}
