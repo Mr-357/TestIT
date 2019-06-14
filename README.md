@@ -1,6 +1,5 @@
 Predlog projekta: Mini kvizovi, "forum" za diskusiju pitanja i predmeta
 
-Naziv tima: Lambda  
 Naziv projekta: TestIT
 
 Ukratko o projektu:
@@ -16,7 +15,7 @@ Korisnici:
 - admin
 
 
-Dodatne funkcionalnosti u slucaju dodatnog vremena :  
+Dodatne funkcionalnosti (nakon odbrane/public release) :  
 
 - Poeni za 1v1
 - Poeni za postovanje pitanja i odgovora
@@ -52,5 +51,6 @@ Hosting: https://test-it.azurewebsites.net/ (master branch hostovan)
 - [x] Prototip aplikacije do 19.5.2019 
 - [x] Test specifikacija do 26.05.2019. godine
 - [x] Korisnicko uputstvo do 02.06.2019. godine
+
 Projekat zavrsen 11.6.2019.
-Odbrana 12.6.2019 u 12:00
+- [x] Odbrana 12.6.2019 u 12:00
