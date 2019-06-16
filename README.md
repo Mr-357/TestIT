@@ -38,8 +38,6 @@ Predlozene tehnologije:
 
 --------------------------------------------------------------------------------------------------------------
 
-Za sada stoji da se sastajemo cetvrtkom jer su tada svi clanovi slobodni
-
 Hosting: https://test-it.azurewebsites.net/ (master branch hostovan) 
 
 - [x] Predlog projekta predat 02.03.2019
