@@ -62,6 +62,12 @@ namespace TestIT.Controllers
             return c;
         }
 
+         public Course CourseAngular(int id)
+        {
+            var c = _context.Courses.FirstOrDefault(x => x.ID == id);
+            return c;
+        }
+
         public async Task<IActionResult> Courses(string module)
         {
             ApplicationUser user = null;

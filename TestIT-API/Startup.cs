@@ -55,10 +55,10 @@ namespace TestIT
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(
                     Configuration.GetConnectionString("LocalConnection")));
-            services.AddDefaultIdentity<ApplicationUser>( options => 
-            {
-                options.User.RequireUniqueEmail = true;
-            })
+            services.AddDefaultIdentity<ApplicationUser>(options =>
+           {
+               options.User.RequireUniqueEmail = true;
+           })
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

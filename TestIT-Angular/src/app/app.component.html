@@ -1,4 +1,7 @@
-<button (click)="show=!show"> Show courses</button>
-<div *ngIf="show">
-  <p  *ngFor="let item of items">{{item.name}}</p>
+<div class="container">
+  <div class="ro">
+    <div class="col-xs-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
