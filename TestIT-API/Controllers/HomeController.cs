@@ -55,6 +55,13 @@ namespace TestIT.Controllers
             }
             return BadRequest();
         }
+
+        public List<Course> CoursesAngular(string module)
+        {
+            var c = _context.Courses.Where(x => x.Module == module).ToList();
+            return c;
+        }
+
         public async Task<IActionResult> Courses(string module)
         {
             ApplicationUser user = null;

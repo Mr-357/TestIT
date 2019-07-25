@@ -1,0 +1,4 @@
+<button (click)="show=!show"> Show courses</button>
+<div *ngIf="show">
+  <p  *ngFor="let item of items">{{item.name}}</p>
+</div>
