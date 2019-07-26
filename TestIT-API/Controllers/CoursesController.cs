@@ -22,6 +22,12 @@ namespace TestIT.Controllers
             _context = context;
             _userManager = userManager;
         }
+		
+        public Course Course(int id)
+        {
+            var c = _context.Courses.FirstOrDefault(x => x.ID == id);
+            return c;
+        }
 
         // GET: Courses
         public async Task<IActionResult> Index()
@@ -145,7 +151,7 @@ namespace TestIT.Controllers
             }
             return View(course);
         }
- 
+
         // GET: Courses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -199,8 +205,8 @@ namespace TestIT.Controllers
                .OrderBy(x => x.ID)
                .Select(x => x.SchoolYear)
                .ToList();
-     
-   
+
+
             return names;
         }
         private bool CourseExists(int id)
@@ -214,8 +220,8 @@ namespace TestIT.Controllers
             Comment save = com.Create();
             ApplicationUser user = await _userManager.GetUserAsync(User);
             save.ApplicationUser = user;
-          
-             Course course = _context.Courses.Include(x=>x.Comments).FirstOrDefault(x => x.ID == com.CourseID);
+
+            Course course = _context.Courses.Include(x => x.Comments).FirstOrDefault(x => x.ID == com.CourseID);
             course.Comments.Add(save);
             _context.SaveChanges();
             return Ok();
@@ -234,30 +240,30 @@ namespace TestIT.Controllers
 
             _context.SaveChanges();
             int idc = course;
-            return RedirectToAction("Course", "Home", new { id = idc  });
+            return RedirectToAction("Course", "Home", new { id = idc });
         }
 
         [HttpPost]
         public async Task<IActionResult> Unsubscribe(int course, string user)
         {
-            ApplicationUser u = await _context.Users.Include(us=>us.OnCours).ThenInclude(c=>c.Course).FirstOrDefaultAsync(x => x.Id == user);
-            Course crs = await _context.Courses.Include(c=>c.Users)
+            ApplicationUser u = await _context.Users.Include(us => us.OnCours).ThenInclude(c => c.Course).FirstOrDefaultAsync(x => x.Id == user);
+            Course crs = await _context.Courses.Include(c => c.Users)
                                 .FirstOrDefaultAsync(m => m.ID == course);
-            
-            for(int i=0;i<u.OnCours.Count;i++)
+
+            for (int i = 0; i < u.OnCours.Count; i++)
             {
-                if (u.OnCours[i].Course.ID== crs.ID)
+                if (u.OnCours[i].Course.ID == crs.ID)
                 {
                     u.OnCours.RemoveAt(i);
                 }
             }
-            for (int i = 0;i<crs.Users.Count;i++)
-                if(crs.Users[i].User.Id == u.Id)
+            for (int i = 0; i < crs.Users.Count; i++)
+                if (crs.Users[i].User.Id == u.Id)
                     crs.Users.RemoveAt(i);
-       
+
             _context.SaveChanges();
             int idc = course;
-            return RedirectToAction("Course", "Home", new { id = idc  });
+            return RedirectToAction("Course", "Home", new { id = idc });
         }
     }
 }

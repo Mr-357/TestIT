@@ -42,7 +42,7 @@ namespace TestIT.Controllers
         public async Task<IActionResult> Enroll(string module)
         {
             var tmp = module;
-            if (module != null && module!="")
+            if (module != null && module != "")
             {
                 if (signInManager.IsSignedIn(User))
                 {
@@ -55,53 +55,13 @@ namespace TestIT.Controllers
             }
             return BadRequest();
         }
-
-        public List<Course> CoursesAngular(string module)
+        
+        public List<Course> Courses(string module)
         {
             var c = _context.Courses.Where(x => x.Module == module).ToList();
             return c;
         }
 
-         public Course CourseAngular(int id)
-        {
-            var c = _context.Courses.FirstOrDefault(x => x.ID == id);
-            return c;
-        }
-
-        public async Task<IActionResult> Courses(string module)
-        {
-            ApplicationUser user = null;
-            String selectedmodule = null;
-            if (signInManager.IsSignedIn(User))
-            {
-                user = await userManager.GetUserAsync(User);
-                selectedmodule = (user).Modul;
-            }
-            else
-            {
-                selectedmodule = module;
-            }
-
-            CoursesViewModel c = new CoursesViewModel(await _context.Courses.Where(x => x.Module.Contains(selectedmodule)).ToListAsync());
-            List<String> names = c.getCourses()
-                .Where(x => x.Module.Contains(selectedmodule))
-               .GroupBy(x => x.SchoolYear)
-               .Select(x => x.FirstOrDefault())
-               .OrderBy(x => x.ID)
-               .Select(x => x.SchoolYear)
-               .ToList();
-            List<String> modules = _context.Courses
-                .GroupBy(x => x.Module)
-                .Select(x => x.FirstOrDefault())
-                .Select(x => x.Module)
-                .ToList();
-
-            
-            c.addYears(names);
-            c.addModules(modules);
-            return View(c);
-        }
-        [HttpGet]
         public List<String> GetModules()
         {
             List<String> modules = _context.Courses
@@ -117,9 +77,9 @@ namespace TestIT.Controllers
         {
             string currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             UsersViewModel uvm;
-            if(filter == null || filter.Equals(""))
+            if (filter == null || filter.Equals(""))
             {
-              uvm = new UsersViewModel(await _context.Users.Where(u => u.Id != currentUserId).ToListAsync());
+                uvm = new UsersViewModel(await _context.Users.Where(u => u.Id != currentUserId).ToListAsync());
             }
             else
             {
@@ -224,14 +184,13 @@ namespace TestIT.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpGet]
         public IActionResult AdminUser()
         {
             return View();
         }
-        public IActionResult DeleteComment(int? cid,int? pid)
+        public IActionResult DeleteComment(int? cid, int? pid)
         {
-            if (cid == null ||pid==null)
+            if (cid == null || pid == null)
             {
                 return BadRequest();
             }
@@ -239,16 +198,16 @@ namespace TestIT.Controllers
             {
                 return Unauthorized();
             }
-            Course c = _context.Courses.Include(x => x.Comments).FirstOrDefault(x=>x.ID==pid);
+            Course c = _context.Courses.Include(x => x.Comments).FirstOrDefault(x => x.ID == pid);
             Comment toremove = c.Comments.FirstOrDefault(x => x.ID == cid);
             c.Comments.Remove(toremove);
-           
+
             _context.Remove(toremove);
             _context.SaveChanges();
 
             return Ok();
         }
-        [HttpGet]//ove sve akcije nadole bi trebalo da izbrisemo 
+
         public async Task<IActionResult> testRun()
         {
             Course course = await _context.Courses
@@ -269,9 +228,6 @@ namespace TestIT.Controllers
             return View("Index");
         }
 
-
-
-        [HttpGet]
         public async Task<IActionResult> roleTestRun()
         {
             //kreiranje role-a
@@ -286,13 +242,14 @@ namespace TestIT.Controllers
 
             return View("Index");
         }
+
         [HttpPost]
         public async Task<IActionResult> roleProf(string id)
         {
 
             //privavljane trenutno ulogovanog korisnika
             var currentUser = await _context.Users
-                            .Include( x=> x.Quizzes)
+                            .Include(x => x.Quizzes)
                             .FirstOrDefaultAsync(x => x.Id == id);
 
             //dodavanje role korisniku, ovo je glavni deo
@@ -331,16 +288,16 @@ namespace TestIT.Controllers
         }
 
         [HttpPost]
-        public IActionResult warnUser([FromForm]string userID,[FromForm]string username,[FromForm]string warningText)
+        public IActionResult warnUser([FromForm]string userID, [FromForm]string username, [FromForm]string warningText)
         {
-            if(username != null)
+            if (username != null)
             {
                 ViewBag.userID = userID;
                 ViewBag.username = username;
                 return View();
             }
             ApplicationUser user = userManager.Users.Where(u => u.Id.Equals(userID)).FirstOrDefault();
-            if(user != null)
+            if (user != null)
             {
                 emailSender.SendEmailAsync(user.Email, "upozoreni ste", warningText != null ? warningText : "upozoreni ste od strane jednog od aministratora TestIT platforme");
             }
@@ -351,7 +308,7 @@ namespace TestIT.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteUser([FromForm]string userID, [FromForm]string username)
         {
-            if(username != null)
+            if (username != null)
             {
                 ViewBag.userID = userID;
                 ViewBag.username = username;
@@ -359,7 +316,7 @@ namespace TestIT.Controllers
             }
             ApplicationUser user = userManager.Users.Where(u => u.Id.Equals(userID)).FirstOrDefault();
             var rolesForUser = await userManager.GetRolesAsync(user);
-            if(rolesForUser.Count > 0)
+            if (rolesForUser.Count > 0)
             {
                 foreach (String role in rolesForUser)
                 {
@@ -368,7 +325,7 @@ namespace TestIT.Controllers
             }
             await userManager.DeleteAsync(user);
             return View("index");
-            
+
         }
 
     }

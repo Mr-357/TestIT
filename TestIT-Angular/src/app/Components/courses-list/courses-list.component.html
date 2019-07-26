@@ -1,0 +1,55 @@
+<br>
+<div class="container">
+	<div class="row modules">
+		<button *ngFor="let module of modules" class="btn btn-primary" (click)="onModuleChosen(module)">{{module}}</button>
+	</div>
+	<br>
+	<div class="row">
+		<div class="table-responsive">
+			<table class="table" *ngIf="courses!=null">
+				<thead>
+
+				</thead>
+
+				<tbody>
+					<tr class="font-weight-bold text-center" style="background-color:whitesmoke">Prva</tr>
+					<tr *ngFor="let course of courses">
+						<td (click)="onCourseChosen(course.id)" style="cursor: pointer" class="text-center" *ngIf="course.schoolYear=='Prva'">
+							{{course.name}}
+						</td>
+					</tr>
+					<tr class="font-weight-bold text-center" style="background-color:whitesmoke">Druga</tr>
+					<tr *ngFor="let course of courses">
+						<td (click)="onCourseChosen(course.id)" style="cursor: pointer" class="text-center" *ngIf="course.schoolYear=='Druga'">
+							{{course.name}}
+						</td>
+					</tr>
+					<tr class="font-weight-bold text-center" style="background-color:whitesmoke">Treca</tr>
+					<tr *ngFor="let course of courses">
+						<td (click)="onCourseChosen(course.id)" style="cursor: pointer" class="text-center" *ngIf="course.schoolYear=='Treca'">
+							{{course.name}}
+						</td>
+					</tr>
+					<tr class="font-weight-bold text-center" style="background-color:whitesmoke">Cetvrta</tr>
+					<tr *ngFor="let course of courses">
+						<td (click)="onCourseChosen(course.id)" style="cursor: pointer" class="text-center" *ngIf="course.schoolYear=='Cetvrta'">
+							{{course.name}}
+						</td>
+					</tr>
+					<tr class="font-weight-bold text-center" style="background-color:whitesmoke">Master</tr>
+					<tr *ngFor="let course of courses">
+						<td (click)="onCourseChosen(course.id)" style="cursor: pointer" class="text-center" *ngIf="course.schoolYear=='Master'">
+							{{course.name}}
+						</td>
+					</tr>
+					<tr class="font-weight-bold text-center" style="background-color:whitesmoke">Doktorske</tr>
+					<tr *ngFor="let course of courses">
+						<td (click)="onCourseChosen(course.id)" style="cursor: pointer" class="text-center" *ngIf="course.schoolYear=='Doktorske'">
+							{{course.name}}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

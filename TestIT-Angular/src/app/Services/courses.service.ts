@@ -4,16 +4,21 @@ import { Course } from '../Models/course.model';
 
 @Injectable()
 export class CoursesService{
+
     constructor(private http: HttpClient) {
 
     }
 
+    getModules(){
+        return this.http.get<Array<string>>('https://localhost:5001/Home/GetModules');
+    }
+
     getCourses(module:string) {
-        return this.http.get<Array<Course>>('https://localhost:5001/Home/CoursesAngular?module=' + module);
+        return this.http.get<Array<Course>>('https://localhost:5001/Home/Courses?module=' + module);
     }
 
     getCourse(id:string){
-        console.log(id)
-        return this.http.get<Course>('https://localhost:5001/Home/CourseAngular/' + id);
+        return this.http.get<Course>('https://localhost:5001/Courses/Course?id=' + id);
     }
+
 }

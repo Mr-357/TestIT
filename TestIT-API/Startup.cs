@@ -103,6 +103,7 @@ namespace TestIT
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
             var cultureInfo = new CultureInfo("en-US");
 
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
